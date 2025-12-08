@@ -1,8 +1,8 @@
-import Bg from "/mempelai/bg.webp";
-import kananAtas from "/dekor/kanan-atas.png";
-import kiriAtas from "/dekor/kiri-atas.png";
-import kananBawah from "/dekor/kanan-bawah.png";
-import kiriBawah from "/dekor/kiri-bawah.png";
+import Bg from "/src/mempelai/bg.webp";
+import kananAtas from "/src/dekor/kanan-atas.png";
+import kiriAtas from "/src/dekor/kiri-atas.png";
+import kananBawah from "/src/dekor/kanan-bawah.png";
+import kiriBawah from "/src/dekor/kiri-bawah.png";
 import { TombolBuka } from "./Tombolbuka";
 
 const Pembuka = () => {

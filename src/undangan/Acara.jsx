@@ -1,7 +1,7 @@
 import Hitung from "./Hitung";
 import Detail from "./detail";
-import wanita from "/public/mempelai/003-2.webp";
-import pria from "/public/mempelai/003-1.webp";
+import wanita from "/src/mempelai/003-2.webp";
+import pria from "/src/mempelai/003-1.webp";
 
 const Acara = () => {
   // Data Mempelai - sesuaikan dengan data yang benar

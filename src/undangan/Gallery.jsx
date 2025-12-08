@@ -5,15 +5,15 @@ const galleryItems = [
   {
     id: 1,
     type: "photo",
-    src: "/src/mempelai/001.webp",
+    src: "https://picsum.photos/200/300",
     alt: "Pre-wedding romantic moment",
     caption: "Moment Romantis",
-    size: "tall", // tall, wide, normal
+    size: "normal", // tall, wide, normal
   },
   {
     id: 2,
     type: "photo",
-    src: "/src/mempelai/002.webp",
+    src: "https://picsum.photos/200/300",
     alt: "Pre-wedding romantic moment",
     caption: "Moment Romantis",
     size: "tall", // tall, wide, normal
@@ -21,7 +21,7 @@ const galleryItems = [
   {
     id: 3,
     type: "photo",
-    src: "/src/mempelai/003.webp",
+    src: "https://picsum.photos/200/300",
     alt: "Pre-wedding romantic moment",
     caption: "Moment Romantis",
     size: "tall", // tall, wide, normal
@@ -29,26 +29,26 @@ const galleryItems = [
   {
     id: 4,
     type: "photo",
-    src: "/src/mempelai/004.webp",
+    src: "https://picsum.photos/200/300",
     alt: "Pre-wedding romantic moment",
     caption: "Moment Romantis",
-    size: "tall", // tall, wide, normal
+    size: "normal", // tall, wide, normal
   },
   {
     id: 5,
     type: "photo",
-    src: "/src/mempelai/005.webp",
+    src: "https://picsum.photos/200/300",
     alt: "Pre-wedding romantic moment",
     caption: "Moment Romantis",
-    size: "tall", // tall, wide, normal
+    size: "normal", // tall, wide, normal
   },
   {
     id: 6,
     type: "photo",
-    src: "/src/mempelai/006.webp",
+    src: "https://picsum.photos/200/300",
     alt: "Pre-wedding romantic moment",
     caption: "Moment Romantis",
-    size: "tall", // tall, wide, normal
+    size: "normal", // tall, wide, normal
   },
 
   //   {
@@ -436,11 +436,6 @@ const GallerySection = () => {
               </div>
               <span className="block w-10 sm:w-14 md:w-20 h-px bg-linear-to-l from-transparent to-rose/40"></span>
             </div>
-
-            <p className="font-sans text-xs sm:text-sm md:text-base text-sage-dark max-w-xl mx-auto leading-relaxed">
-              Beberapa potret dari perjalanan cinta kami yang penuh makna dan
-              cerita indah.
-            </p>
           </div>
 
           {/* Masonry Grid Gallery */}

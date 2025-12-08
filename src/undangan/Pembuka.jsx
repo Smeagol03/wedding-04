@@ -8,7 +8,6 @@ import { TombolBuka } from "./Tombolbuka";
 const Pembuka = () => {
   const namaPria = "Sopian";
   const namaWanita = "Yuyun";
-  const tanggalAcara = "28 Desember 2025";
 
   return (
     <>
@@ -49,7 +48,7 @@ const Pembuka = () => {
         ></div>
         {/* Decorative Ornaments */}
         {/* Top Left Corner */}
-        <div className="absolute z-50 opacity-50 -top-14 -left-14 w-32 h-32 md:w-48 md:h-48 lg:w-56 lg:h-56">
+        <div className="absolute z-50 opacity-50 -top-18 -left-18 w-32 h-32 md:w-48 md:h-48 lg:w-56 lg:h-56">
           <img
             src={kiriAtas}
             alt="Ornamen"
@@ -58,7 +57,7 @@ const Pembuka = () => {
         </div>
 
         {/* Top Right Corner */}
-        <div className="absolute z-50 opacity-50 -top-14 -right-14 w-32 h-32 md:w-48 md:h-48 lg:w-56 lg:h-56">
+        <div className="absolute z-50 opacity-50 -top-18 -right-18 w-32 h-32 md:w-48 md:h-48 lg:w-56 lg:h-56">
           <img
             src={kananAtas}
             alt="Ornamen"
@@ -67,7 +66,7 @@ const Pembuka = () => {
         </div>
 
         {/* Bottom Left Corner */}
-        <div className="absolute z-50 opacity-50 -bottom-14 -left-14 w-24 h-24 md:w-40 md:h-40 lg:w-48 lg:h-48">
+        <div className="absolute z-50 opacity-50 -bottom-18 -left-18 w-24 h-24 md:w-40 md:h-40 lg:w-48 lg:h-48">
           <img
             src={kiriBawah}
             alt="Ornamen"
@@ -76,7 +75,7 @@ const Pembuka = () => {
         </div>
 
         {/* Bottom Right Corner */}
-        <div className="absolute z-50 opacity-50 -bottom-14 -right-14 w-24 h-24 md:w-40 md:h-40 lg:w-48 lg:h-48">
+        <div className="absolute z-50 opacity-50 -bottom-18 -right-18 w-24 h-24 md:w-40 md:h-40 lg:w-48 lg:h-48">
           <img
             src={kananBawah}
             alt="Ornamen"
@@ -98,25 +97,25 @@ const Pembuka = () => {
           The Wedding Of
         </p>
         {/* Main Content - Using flex-1 to fill available space */}
-        <div className="absolute bottom-7 z-30 flex flex-col items-center justify-center text-center px-4 py-6 sm:py-8 w-full max-w-lg mx-auto animate-fade-in-up flex-1">
+        <div className="absolute bottom-5 z-30 flex flex-col items-center justify-center text-center px-4 py-6 sm:py-8 w-full max-w-lg mx-auto animate-fade-in-up flex-1">
           {/* Names */}
-          <div className="mb-2 sm:mb-4 mt-4 sm:mt-2">
-            <h1 className="font-serif text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-white leading-tight tracking-wide drop-shadow-lg">
+          <div className="mb-2 sm:mb-4 mt-4 sm:mt-2 bg-black/50 backdrop-blur-lg px-6 sm:px-8 py-3 sm:py-4 rounded-full">
+            <h1
+              className="font-serif text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-white font-bold leading-tight tracking-wide"
+              style={{
+                textShadow:
+                  "2px 2px 4px rgba(0,0,0,0.7), 0 0 20px rgba(0,0,0,0.5)",
+              }}
+            >
               {namaPria}
-              <span className="font-serif text-xl sm:text-2xl md:text-3xl lg:text-4xl text-gold italic mx-1 sm:mx-2 drop-shadow-md">
+              <span
+                className="font-serif text-xl sm:text-2xl md:text-3xl lg:text-4xl text-gold italic mx-1 sm:mx-2"
+                style={{ textShadow: "1px 1px 3px rgba(0,0,0,0.6)" }}
+              >
                 &
               </span>
               {namaWanita}
             </h1>
-          </div>
-
-          {/* Date Badge */}
-          <div className="inline-flex items-center gap-2 sm:gap-3 border-t border-b border-white/30 py-1.5 sm:py-2 px-4 sm:px-6 mb-3 sm:mb-6">
-            <span className="w-5 sm:w-8 h-px bg-white/40"></span>
-            <p className="font-sans text-[10px] sm:text-xs md:text-sm tracking-widest text-white/90 drop-shadow-sm">
-              {tanggalAcara}
-            </p>
-            <span className="w-5 sm:w-8 h-px bg-white/40"></span>
           </div>
 
           {/* Kepada Tamu */}

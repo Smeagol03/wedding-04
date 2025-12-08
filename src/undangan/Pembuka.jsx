@@ -1,8 +1,5 @@
 import Bg from "/src/mempelai/bg.webp";
-import kananAtas from "/src/dekor/kanan-atas.png";
-import kiriAtas from "/src/dekor/kiri-atas.png";
-import kananBawah from "/src/dekor/kanan-bawah.png";
-import kiriBawah from "/src/dekor/kiri-bawah.png";
+import corner from "/src/dekor/10003.webp";
 import { TombolBuka } from "./Tombolbuka";
 
 const Pembuka = () => {
@@ -48,38 +45,38 @@ const Pembuka = () => {
         ></div>
         {/* Decorative Ornaments */}
         {/* Top Left Corner */}
-        <div className="absolute z-50 opacity-50 -top-14 -left-14 md:-top-18 md:-left-18 w-32 h-32 md:w-48 md:h-48 lg:w-56 lg:h-56">
+        <div className="absolute z-50 top-0 left-0 w-18 h-18 md:w-32 md:h-32">
           <img
-            src={kiriAtas}
+            src={corner}
             alt="Ornamen"
-            className="w-full h-full object-cover"
+            className="w-full h-full object-contain"
           />
         </div>
 
         {/* Top Right Corner */}
-        <div className="absolute z-50 opacity-50 -top-14 -right-14 md:-top-18 md:-right-18 w-32 h-32 md:w-48 md:h-48 lg:w-56 lg:h-56">
+        <div className="absolute -scale-x-100 z-50 top-0 right-0 w-18 h-18 md:w-32 md:h-32">
           <img
-            src={kananAtas}
+            src={corner}
             alt="Ornamen"
-            className="w-full h-full object-cover"
+            className="w-full h-full object-contain"
           />
         </div>
 
         {/* Bottom Left Corner */}
-        <div className="absolute z-50 opacity-50 -bottom-9 -left-9 md:-bottom-18 md:-left-18 w-24 h-24 md:w-40 md:h-40 lg:w-48 lg:h-48">
+        <div className="absolute -scale-y-100 z-50 bottom-0 left-0 w-18 h-18 md:w-32 md:h-32">
           <img
-            src={kiriBawah}
+            src={corner}
             alt="Ornamen"
-            className="w-full h-full object-cover"
+            className="w-full h-full object-contain"
           />
         </div>
 
         {/* Bottom Right Corner */}
-        <div className="absolute z-50 opacity-50 -bottom-9 -right-9 md:-bottom-18 md:-right-18 w-24 h-24 md:w-40 md:h-40 lg:w-48 lg:h-48">
+        <div className="absolute -scale-x-100 -scale-y-100 z-50 bottom-0 right-0 w-18 h-18 md:w-32 md:h-32">
           <img
-            src={kananBawah}
+            src={corner}
             alt="Ornamen"
-            className="w-full h-full object-cover"
+            className="w-full h-full object-contain"
           />
         </div>
 

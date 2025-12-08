@@ -19,12 +19,12 @@ const Pembuka = () => {
         <img
           src={Bg}
           alt=""
-          className="absolute inset-0 w-full h-full z-0 object-top object-cover"
+          className="absolute inset-0 h-full w-full z-0 object-top object-cover"
         />
 
         {/* Aesthetic Overlay - Multiple layers */}
         {/* Layer 1: Gradient vertikal - gelap di atas dan bawah */}
-        <div className="absolute inset-0 z-10 bg-linear-to-b from-black/60 via-transparent to-black/70"></div>
+        <div className="absolute inset-0 z-10 bg-linear-to-b from-transparent via-black/50 to-black"></div>
 
         {/* Layer 2: Radial vignette - gelap di pinggir */}
         <div
@@ -48,7 +48,7 @@ const Pembuka = () => {
         ></div>
         {/* Decorative Ornaments */}
         {/* Top Left Corner */}
-        <div className="absolute z-50 opacity-50 -top-18 -left-18 w-32 h-32 md:w-48 md:h-48 lg:w-56 lg:h-56">
+        <div className="absolute z-50 opacity-50 -top-14 -left-14 md:-top-18 md:-left-18 w-32 h-32 md:w-48 md:h-48 lg:w-56 lg:h-56">
           <img
             src={kiriAtas}
             alt="Ornamen"
@@ -57,7 +57,7 @@ const Pembuka = () => {
         </div>
 
         {/* Top Right Corner */}
-        <div className="absolute z-50 opacity-50 -top-18 -right-18 w-32 h-32 md:w-48 md:h-48 lg:w-56 lg:h-56">
+        <div className="absolute z-50 opacity-50 -top-14 -right-14 md:-top-18 md:-right-18 w-32 h-32 md:w-48 md:h-48 lg:w-56 lg:h-56">
           <img
             src={kananAtas}
             alt="Ornamen"
@@ -66,7 +66,7 @@ const Pembuka = () => {
         </div>
 
         {/* Bottom Left Corner */}
-        <div className="absolute z-50 opacity-50 -bottom-18 -left-18 w-24 h-24 md:w-40 md:h-40 lg:w-48 lg:h-48">
+        <div className="absolute z-50 opacity-50 -bottom-9 -left-9 md:-bottom-18 md:-left-18 w-24 h-24 md:w-40 md:h-40 lg:w-48 lg:h-48">
           <img
             src={kiriBawah}
             alt="Ornamen"
@@ -75,7 +75,7 @@ const Pembuka = () => {
         </div>
 
         {/* Bottom Right Corner */}
-        <div className="absolute z-50 opacity-50 -bottom-18 -right-18 w-24 h-24 md:w-40 md:h-40 lg:w-48 lg:h-48">
+        <div className="absolute z-50 opacity-50 -bottom-9 -right-9 md:-bottom-18 md:-right-18 w-24 h-24 md:w-40 md:h-40 lg:w-48 lg:h-48">
           <img
             src={kananBawah}
             alt="Ornamen"

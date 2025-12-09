@@ -1,3 +1,4 @@
+import { motion } from "motion/react";
 import Bg from "/src/mempelai/bg.webp";
 import corner from "/src/dekor/10003.webp";
 import { TombolBuka } from "./Tombolbuka";
@@ -6,12 +7,71 @@ const Pembuka = () => {
   const namaPria = "Sopian";
   const namaWanita = "Yuyun";
 
+  // Animation variants untuk dekorasi sudut
+  const dekorVariants = {
+    hidden: { opacity: 0, scale: 0.5 },
+    visible: {
+      opacity: 1,
+      scale: 1,
+      transition: {
+        duration: 0.8,
+        ease: "easeOut",
+      },
+    },
+  };
+
+  // Variants untuk setiap sudut dengan arah berbeda
+  const topLeftVariants = {
+    hidden: { opacity: 0, x: 50, y: 50 },
+    visible: {
+      opacity: 1,
+      x: 0,
+      y: 0,
+      transition: { duration: 0.8, delay: 0.2, ease: "easeOut" },
+    },
+  };
+
+  const topRightVariants = {
+    hidden: { opacity: 0, x: 50, y: 50 },
+    visible: {
+      opacity: 1,
+      x: 0,
+      y: 0,
+      transition: { duration: 0.8, delay: 0.4, ease: "easeOut" },
+    },
+  };
+
+  const bottomLeftVariants = {
+    hidden: { opacity: 0, x: 50, y: 50 },
+    visible: {
+      opacity: 1,
+      x: 0,
+      y: 0,
+      transition: { duration: 0.8, delay: 0.6, ease: "easeOut" },
+    },
+  };
+
+  const bottomRightVariants = {
+    hidden: { opacity: 0, x: 50, y: 50 },
+    visible: {
+      opacity: 1,
+      x: 0,
+      y: 0,
+      transition: { duration: 0.8, delay: 0.8, ease: "easeOut" },
+    },
+  };
+
   return (
     <>
       {/* ===== COVER / HERO SECTION ===== */}
       <section
         id="cover"
-        className="relative z-50 h-svh min-h-[600px] flex flex-col items-center justify-center bg-linear-to-b from-cream via-cream to-cream-dark overflow-hidden"
+        className="relative z-50 flex flex-col items-center justify-center bg-linear-to-b from-cream via-cream to-cream-dark overflow-hidden"
+        style={{
+          height: "100vh",
+          height: "100dvh", // fallback untuk mobile
+          minHeight: "-webkit-fill-available",
+        }}
       >
         {/* Background dengan fixed position agar tidak resize saat scroll di mobile */}
         <div
@@ -48,42 +108,101 @@ const Pembuka = () => {
               "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E\")",
           }}
         ></div>
-        {/* Decorative Ornaments */}
+        {/* Decorative Ornaments with Framer Motion */}
         {/* Top Left Corner */}
-        <div className="absolute z-50 top-0 left-0 w-18 h-18 md:w-32 md:h-32">
-          <img
+        <motion.div
+          className="absolute z-50 top-0 left-0 w-18 h-18 md:w-32 md:h-32"
+          variants={topLeftVariants}
+          initial="hidden"
+          animate="visible"
+        >
+          <motion.img
             src={corner}
             alt="Ornamen"
             className="w-full h-full object-contain"
+            animate={{
+              rotate: [0, 2, -2, 0],
+              scale: [1, 1.02, 1],
+            }}
+            transition={{
+              duration: 4,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
           />
-        </div>
+        </motion.div>
 
         {/* Top Right Corner */}
-        <div className="absolute -scale-x-100 z-50 top-0 right-0 w-18 h-18 md:w-32 md:h-32">
-          <img
+        <motion.div
+          className="absolute -scale-x-100 z-50 top-0 right-0 w-18 h-18 md:w-32 md:h-32"
+          variants={topRightVariants}
+          initial="hidden"
+          animate="visible"
+        >
+          <motion.img
             src={corner}
             alt="Ornamen"
             className="w-full h-full object-contain"
+            animate={{
+              rotate: [0, -2, 2, 0],
+              scale: [1, 1.02, 1],
+            }}
+            transition={{
+              duration: 4,
+              repeat: Infinity,
+              ease: "easeInOut",
+              delay: 0.5,
+            }}
           />
-        </div>
+        </motion.div>
 
         {/* Bottom Left Corner */}
-        <div className="absolute -scale-y-100 z-50 bottom-0 left-0 w-18 h-18 md:w-32 md:h-32">
-          <img
+        <motion.div
+          className="absolute -scale-y-100 z-50 bottom-0 left-0 w-18 h-18 md:w-32 md:h-32"
+          variants={bottomLeftVariants}
+          initial="hidden"
+          animate="visible"
+        >
+          <motion.img
             src={corner}
             alt="Ornamen"
             className="w-full h-full object-contain"
+            animate={{
+              rotate: [0, -2, 2, 0],
+              scale: [1, 1.02, 1],
+            }}
+            transition={{
+              duration: 4,
+              repeat: Infinity,
+              ease: "easeInOut",
+              delay: 1,
+            }}
           />
-        </div>
+        </motion.div>
 
         {/* Bottom Right Corner */}
-        <div className="absolute -scale-x-100 -scale-y-100 z-50 bottom-0 right-0 w-18 h-18 md:w-32 md:h-32">
-          <img
+        <motion.div
+          className="absolute -scale-x-100 -scale-y-100 z-50 bottom-0 right-0 w-18 h-18 md:w-32 md:h-32"
+          variants={bottomRightVariants}
+          initial="hidden"
+          animate="visible"
+        >
+          <motion.img
             src={corner}
             alt="Ornamen"
             className="w-full h-full object-contain"
+            animate={{
+              rotate: [0, 2, -2, 0],
+              scale: [1, 1.02, 1],
+            }}
+            transition={{
+              duration: 4,
+              repeat: Infinity,
+              ease: "easeInOut",
+              delay: 1.5,
+            }}
           />
-        </div>
+        </motion.div>
 
         {/* Subtle Pattern Overlay */}
         <div
@@ -99,7 +218,12 @@ const Pembuka = () => {
           The Wedding Of
         </p>
         {/* Main Content - Using flex-1 to fill available space */}
-        <div className="absolute bottom-5 z-30 flex flex-col items-center justify-center text-center px-4 py-6 sm:py-8 w-full max-w-lg mx-auto animate-fade-in-up flex-1">
+        <div
+          className="absolute bottom-0 z-30 flex flex-col items-center justify-center text-center px-4 py-6 sm:py-8 w-full max-w-lg mx-auto animate-fade-in-up"
+          style={{
+            paddingBottom: "max(20px, env(safe-area-inset-bottom))",
+          }}
+        >
           {/* Names */}
           <div className="mb-2 sm:mb-4 mt-4 sm:mt-2 bg-black/50 backdrop-blur-lg px-6 sm:px-8 py-3 sm:py-4 rounded-full">
             <h1

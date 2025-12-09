@@ -3,6 +3,7 @@ import Acara from "./undangan/Acara";
 import OurStorySection from "./undangan/Story";
 import GallerySection from "./undangan/Gallery";
 import RsvpSection from "./undangan/RsvpSection";
+import Hadiah from "./undangan/Hadiah";
 import { UndanganProvider, MusicControl } from "./undangan/Tombolbuka";
 
 const Undangan = () => {
@@ -13,6 +14,7 @@ const Undangan = () => {
       <OurStorySection />
       <GallerySection />
       <RsvpSection />
+      <Hadiah />
       <MusicControl />
     </UndanganProvider>
   );

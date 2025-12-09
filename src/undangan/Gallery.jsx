@@ -392,22 +392,19 @@ const GallerySection = () => {
   return (
     <>
       <section className="relative py-16 sm:py-20 md:py-24 lg:py-28 overflow-hidden">
-        {/* Background */}
-        <div className="absolute inset-0 bg-linear-to-b from-cream via-white to-cream"></div>
-
-        {/* Decorative background orbs */}
-        <div className="absolute top-20 right-10 w-72 h-72 bg-rose/5 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-20 left-10 w-80 h-80 bg-gold/5 rounded-full blur-3xl"></div>
-        <div className="absolute top-1/2 left-1/3 w-64 h-64 bg-sage/5 rounded-full blur-3xl"></div>
-
-        {/* Subtle pattern */}
+        {/* Combined Background - Single layer untuk mengurangi repaint di Android */}
         <div
-          className="absolute inset-0 opacity-[0.02]"
+          className="absolute inset-0 pointer-events-none"
           style={{
-            backgroundImage: "radial-gradient(#8B9D83 1px, transparent 1px)",
-            backgroundSize: "24px 24px",
+            background: `
+              linear-gradient(to bottom, #fdf8f3, #ffffff 50%, #fdf8f3),
+              radial-gradient(ellipse at 90% 20%, rgba(201,169,166,0.08) 0%, transparent 40%),
+              radial-gradient(ellipse at 10% 80%, rgba(201,185,150,0.08) 0%, transparent 40%),
+              radial-gradient(ellipse at 33% 50%, rgba(139,157,131,0.05) 0%, transparent 40%)
+            `,
+            willChange: "transform",
           }}
-        ></div>
+        />
 
         <div className="relative w-full">
           {/* Section Title */}

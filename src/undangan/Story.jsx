@@ -324,22 +324,19 @@ const TimelineItem = ({ data, index, isLast }) => {
 const OurStorySection = () => {
   return (
     <section className="relative py-16 sm:py-20 md:py-24 lg:py-28 overflow-hidden">
-      {/* Background with subtle linear */}
-      <div className="absolute inset-0 bg-linear-to-b from-cream via-sage-light/30 to-cream"></div>
-
-      {/* Decorative background elements */}
-      <div className="absolute top-20 left-10 w-64 h-64 bg-rose/5 rounded-full blur-3xl"></div>
-      <div className="absolute bottom-20 right-10 w-80 h-80 bg-gold/5 rounded-full blur-3xl"></div>
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-sage/5 rounded-full blur-3xl"></div>
-
-      {/* Subtle pattern overlay */}
+      {/* Combined Background - Single layer untuk mengurangi repaint di Android */}
       <div
-        className="absolute inset-0 opacity-[0.02]"
+        className="absolute inset-0 pointer-events-none"
         style={{
-          backgroundImage: "radial-linear(#8B9D83 1px, transparent 1px)",
-          backgroundSize: "32px 32px",
+          background: `
+            linear-gradient(to bottom, #fdf8f3, rgba(139,157,131,0.3) 50%, #fdf8f3),
+            radial-gradient(ellipse at 10% 20%, rgba(201,169,166,0.08) 0%, transparent 40%),
+            radial-gradient(ellipse at 90% 80%, rgba(201,185,150,0.08) 0%, transparent 40%),
+            radial-gradient(ellipse at 50% 50%, rgba(139,157,131,0.05) 0%, transparent 50%)
+          `,
+          willChange: "transform",
         }}
-      ></div>
+      />
 
       <div className="relative w-full">
         {/* Section Title */}

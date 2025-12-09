@@ -71,21 +71,23 @@ const Acara = () => {
           src={data.foto}
           alt={`Foto ${data.nama}`}
           className="absolute inset-0 w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-110"
+          style={{ willChange: "transform" }}
         />
 
-        {/* Gradient Overlays */}
-        {/* Dark gradient from bottom */}
-        <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/30 to-transparent"></div>
-
-        {/* Subtle color tint overlay */}
+        {/* Combined Gradient Overlay - Mengurangi repaint di Android */}
         <div
-          className={`absolute inset-0 ${
-            isWanita ? "bg-rose/10" : "bg-sage/10"
-          } mix-blend-overlay`}
-        ></div>
-
-        {/* Top vignette for depth */}
-        <div className="absolute inset-0 bg-linear-to-b from-black/50 via-transparent to-transparent"></div>
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            background: `
+              linear-gradient(to top, rgba(0,0,0,0.8), rgba(0,0,0,0.3) 50%, transparent),
+              linear-gradient(to bottom, rgba(0,0,0,0.5), transparent 40%),
+              linear-gradient(135deg, ${
+                isWanita ? "rgba(201,169,166,0.1)" : "rgba(139,157,131,0.1)"
+              }, transparent)
+            `,
+            willChange: "transform",
+          }}
+        />
 
         {/* Decorative corner frame elements */}
         <div className="absolute top-3 left-3 sm:top-4 sm:left-4 w-8 h-8 sm:w-10 sm:h-10 border-l-2 border-t-2 border-white/30 rounded-tl-lg"></div>
@@ -157,14 +159,7 @@ const Acara = () => {
       id="acara"
       className="relative min-h-screen flex flex-col items-center justify-center bg-linear-to-b from-cream via-cream to-cream-dark overflow-hidden py-12 sm:py-16 md:py-20"
     >
-      {/* Background Pattern */}
-      <div
-        className="absolute inset-0 opacity-[0.02]"
-        style={{
-          backgroundImage: "radial-gradient(#8B9D83 1px, transparent 1px)",
-          backgroundSize: "20px 20px",
-        }}
-      ></div>
+      {/* Background Pattern - dihapus untuk mengurangi repaint */}
       {/* Left Decorative Element */}
       <motion.div
         className="absolute left-0 top-60 z-0"

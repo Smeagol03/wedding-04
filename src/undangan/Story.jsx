@@ -179,7 +179,7 @@ const TimelineItem = ({ data, index, isLast }) => {
         }`}
       >
         {/* Left Content / Spacer */}
-        <div className={`col-span-4 ${isEven ? "order-1" : "order-3"}`}>
+        <div className="col-span-4">
           {isEven ? (
             <div
               className={`flex flex-col ${
@@ -243,7 +243,7 @@ const TimelineItem = ({ data, index, isLast }) => {
         </div>
 
         {/* Center Timeline */}
-        <div className="col-span-1 order-2 flex flex-col items-center relative">
+        <div className="col-span-1 flex flex-col items-center relative">
           {/* Connecting line to previous */}
           {index > 0 && (
             <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 w-0.5 h-16 lg:h-20 bg-linear-to-t from-gold/40 via-rose/30 to-gold/40"></div>
@@ -277,7 +277,7 @@ const TimelineItem = ({ data, index, isLast }) => {
         </div>
 
         {/* Right Content / Spacer */}
-        <div className={`col-span-4 ${isEven ? "order-3" : "order-1"}`}>
+        <div className="col-span-4">
           {!isEven ? (
             <div className="flex flex-col items-start text-left">
               {/* Year with decorative line */}

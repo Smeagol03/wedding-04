@@ -5,6 +5,8 @@ import GallerySection from "./undangan/Gallery";
 import RsvpSection from "./undangan/RsvpSection";
 import Hadiah from "./undangan/Hadiah";
 import Komentar from "./undangan/Komentar";
+import Penutup from "./undangan/Penutup";
+import Footer from "./undangan/Footer";
 import { UndanganProvider, MusicControl } from "./undangan/Tombolbuka";
 
 const Undangan = () => {
@@ -17,6 +19,8 @@ const Undangan = () => {
       <RsvpSection />
       <Hadiah />
       <Komentar />
+      <Penutup />
+      <Footer />
       <MusicControl />
     </UndanganProvider>
   );

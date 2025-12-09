@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { database, ref, push, onValue } from "./firebase";
-import couplePhoto from "/src/mempelai/bg.webp";
+import couplePhoto from "/src/mempelai/8.jpg";
 
 const Komentar = () => {
   const [formData, setFormData] = useState({

@@ -1,6 +1,6 @@
 import { motion } from "motion/react";
 import { useEffect } from "react";
-import Bg from "/src/mempelai/bg.webp";
+import Bg from "/src/mempelai/bg.jpg";
 import corner from "/src/dekor/10003.webp";
 import { TombolBuka } from "./Tombolbuka";
 

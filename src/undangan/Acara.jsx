@@ -1,8 +1,9 @@
 import Hitung from "./Hitung";
 import Detail from "./detail";
-import wanita from "/src/mempelai/003-2.webp";
-import pria from "/src/mempelai/003-1.webp";
+import wanita from "/src/mempelai/1.jpg";
+import pria from "/src/mempelai/2.jpg";
 import dekorImage from "/src/dekor/10010.webp";
+import dekorImage2 from "/src/dekor/10012.webp";
 import { motion } from "motion/react";
 
 const Acara = () => {
@@ -27,8 +28,9 @@ const Acara = () => {
   const dekorAcaraVariants = {
     animate: {
       rotate: [0, 3, 0, -3, 0],
+      scale: [1, 1.015, 1, 1.015, 1],
       transition: {
-        duration: 6,
+        duration: 8,
         repeat: Infinity,
         ease: "easeInOut",
       },
@@ -159,7 +161,6 @@ const Acara = () => {
       id="acara"
       className="relative min-h-screen flex flex-col items-center justify-center bg-linear-to-b from-cream via-cream to-cream-dark overflow-hidden py-12 sm:py-16 md:py-20"
     >
-      {/* Background Pattern - dihapus untuk mengurangi repaint */}
       {/* Left Decorative Element */}
       <motion.div
         className="absolute left-0 top-60 z-0"
@@ -184,6 +185,31 @@ const Acara = () => {
           className="w-auto object-cover scale-x-[-1] h-36 sm:h-48 md:h-64 lg:h-80 xl:h-96 opacity-80"
         />
       </motion.div>
+
+      {/* dekor 2 */}
+      <motion.div
+        className="absolute rotate-20 -left-5 top-[52%] z-100"
+        variants={dekorAcaraVariants}
+        animate="animate"
+      >
+        <img
+          src={dekorImage2}
+          alt="Decorative element"
+          className="w-auto object-cover h-36 sm:h-48 md:h-64 lg:h-80 xl:h-96 opacity-80"
+        />
+      </motion.div>
+      <motion.div
+        className="absolute -rotate-20 -right-5 top-[52%] z-100"
+        variants={dekorAcaraVariants}
+        animate="animate"
+      >
+        <img
+          src={dekorImage2}
+          alt="Decorative element"
+          className="w-auto object-cover scale-x-[-1] h-36 sm:h-48 md:h-64 lg:h-80 xl:h-96 opacity-80"
+        />
+      </motion.div>
+
       {/* Hitung Mundur Section */}
       <motion.div
         className="relative z-10 w-full mb-10 sm:mb-12 md:mb-16 lg:mb-20"

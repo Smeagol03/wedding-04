@@ -1,5 +1,5 @@
 import React from "react";
-import penutupCouple from "/src/mempelai/bg.webp";
+import penutupCouple from "/src/mempelai/7.jpg";
 
 // --- KONFIGURASI PENUTUP ---
 // Ganti dengan data Anda

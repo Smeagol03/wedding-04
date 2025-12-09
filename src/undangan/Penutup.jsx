@@ -1,8 +1,8 @@
 import React from "react";
+import penutupCouple from "/src/mempelai/bg.webp";
 
 // --- KONFIGURASI PENUTUP ---
 // Ganti dengan data Anda
-const couplePhoto = "/src/mempelai/bg.webp";
 const namaPria = "Sopian";
 const namaWanita = "Yuyun";
 const tanggalAcara = "25 Januari 2025";
@@ -116,7 +116,7 @@ const Penutup = () => {
                 {/* Photo container */}
                 <div className="relative w-full h-full rounded-full overflow-hidden border-4 border-white shadow-xl">
                   <img
-                    src={couplePhoto}
+                    src={penutupCouple}
                     alt="Foto Pasangan"
                     className="w-full h-full object-cover"
                   />

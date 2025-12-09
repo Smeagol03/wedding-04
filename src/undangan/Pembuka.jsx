@@ -68,8 +68,7 @@ const Pembuka = () => {
         id="cover"
         className="relative z-50 flex flex-col items-center justify-center bg-linear-to-b from-cream via-cream to-cream-dark overflow-hidden"
         style={{
-          height: "100vh",
-          height: "100dvh", // fallback untuk mobile
+          height: "100dvh", // Use 100dvh for modern browsers, 100vh is a less precise fallback
           minHeight: "-webkit-fill-available",
         }}
       >

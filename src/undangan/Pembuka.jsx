@@ -1,4 +1,4 @@
-import Bg from "https://picsum.photos/200";
+import Bg from "/src/mempelai/bg.webp";
 import corner from "/src/dekor/10003.webp";
 import { TombolBuka } from "./Tombolbuka";
 
@@ -11,13 +11,18 @@ const Pembuka = () => {
       {/* ===== COVER / HERO SECTION ===== */}
       <section
         id="cover"
-        className="relative z-50 h-dvh flex flex-col items-center justify-center bg-linear-to-b from-cream via-cream to-cream-dark overflow-hidden"
+        className="relative z-50 h-svh min-h-[600px] flex flex-col items-center justify-center bg-linear-to-b from-cream via-cream to-cream-dark overflow-hidden"
       >
-        <img
-          src={Bg}
-          alt=""
-          className="absolute inset-0 h-full w-full z-0 object-top object-cover"
-        />
+        {/* Background dengan fixed position agar tidak resize saat scroll di mobile */}
+        <div
+          className="absolute inset-0 z-0"
+          style={{
+            backgroundImage: `url(${Bg})`,
+            backgroundSize: "cover",
+            backgroundPosition: "top center",
+            backgroundAttachment: "scroll",
+          }}
+        ></div>
 
         {/* Aesthetic Overlay - Multiple layers */}
         {/* Layer 1: Gradient vertikal - gelap di atas dan bawah */}

@@ -2,7 +2,7 @@ import React from "react";
 
 // --- KONFIGURASI PENUTUP ---
 // Ganti dengan data Anda
-const couplePhoto = "https://picsum.photos/200";
+const couplePhoto = "/src/mempelai/001.webp";
 const namaPria = "Sopian";
 const namaWanita = "Yuyun";
 const tanggalAcara = "25 Januari 2025";

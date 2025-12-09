@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { database, ref, push, onValue } from "./firebase";
 
 // Foto placeholder - ganti dengan foto Anda
-const couplePhoto = "/src/mempelai/bg.webp";
+const couplePhoto = "https://picsum.photos/200";
 
 const Komentar = () => {
   const [formData, setFormData] = useState({

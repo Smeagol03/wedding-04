@@ -1,4 +1,4 @@
-import Bg from "/src/mempelai/bg.webp";
+import Bg from "https://picsum.photos/200";
 import corner from "/src/dekor/10003.webp";
 import { TombolBuka } from "./Tombolbuka";
 

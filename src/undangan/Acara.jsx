@@ -2,6 +2,8 @@ import Hitung from "./Hitung";
 import Detail from "./detail";
 import wanita from "/src/mempelai/003-2.webp";
 import pria from "/src/mempelai/003-1.webp";
+import dekorImage from "/src/dekor/10010.webp";
+import { motion } from "motion/react";
 
 const Acara = () => {
   // Data Mempelai - sesuaikan dengan data yang benar
@@ -21,8 +23,44 @@ const Acara = () => {
     foto: wanita,
   };
 
+  // Animation variants for waving decoration
+  const dekorAcaraVariants = {
+    animate: {
+      rotate: [0, 3, 0, -3, 0],
+      transition: {
+        duration: 6,
+        repeat: Infinity,
+        ease: "easeInOut",
+      },
+    },
+  };
+
+  // Variants for scroll animations
+  const fadeInUp = {
+    hidden: { opacity: 0, y: 50 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.8, ease: "easeOut" },
+    },
+  };
+
+  const staggerContainer = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.3,
+        delayChildren: 0.2,
+      },
+    },
+  };
+
   const MempelaiCard = ({ data, isWanita = false }) => (
-    <div className="group relative w-full max-w-[300px] sm:max-w-[340px] md:max-w-[360px] lg:max-w-[400px] xl:max-w-[420px]">
+    <motion.div
+      variants={fadeInUp}
+      className="group relative w-full max-w-[300px] sm:max-w-[340px] md:max-w-[360px] lg:max-w-[400px] xl:max-w-[420px]"
+    >
       {/* Decorative background glow */}
       <div className="absolute -inset-2 sm:-inset-3 bg-linear-to-br from-rose/15 via-gold/10 to-sage/15 rounded-2xl sm:rounded-3xl blur-lg opacity-0 group-hover:opacity-100 transition-all duration-500"></div>
 
@@ -47,7 +85,7 @@ const Acara = () => {
         ></div>
 
         {/* Top vignette for depth */}
-        <div className="absolute inset-0 bg-linear-to-b from-black/20 via-transparent to-transparent"></div>
+        <div className="absolute inset-0 bg-linear-to-b from-black/50 via-transparent to-transparent"></div>
 
         {/* Decorative corner frame elements */}
         <div className="absolute top-3 left-3 sm:top-4 sm:left-4 w-8 h-8 sm:w-10 sm:h-10 border-l-2 border-t-2 border-white/30 rounded-tl-lg"></div>
@@ -111,7 +149,7 @@ const Acara = () => {
         <div className="w-1.5 sm:w-2 h-1.5 sm:h-2 rounded-full bg-gold/50 group-hover:bg-rose/60 transition-colors duration-300"></div>
         <span className="block w-6 sm:w-8 h-px bg-linear-to-l from-transparent to-gold/40"></span>
       </div>
-    </div>
+    </motion.div>
   );
 
   return (
@@ -127,12 +165,48 @@ const Acara = () => {
           backgroundSize: "20px 20px",
         }}
       ></div>
+      {/* Left Decorative Element */}
+      <motion.div
+        className="absolute left-0 top-60 z-0"
+        variants={dekorAcaraVariants}
+        animate="animate"
+      >
+        <img
+          src={dekorImage}
+          alt="Decorative element"
+          className="w-auto object-cover h-36 sm:h-48 md:h-64 lg:h-80 xl:h-96 opacity-80"
+        />
+      </motion.div>
+      {/* Right Decorative Element */}
+      <motion.div
+        className="absolute right-0 top-60 z-0"
+        variants={dekorAcaraVariants}
+        animate="animate"
+      >
+        <img
+          src={dekorImage}
+          alt="Decorative element"
+          className="w-auto object-cover scale-x-[-1] h-36 sm:h-48 md:h-64 lg:h-80 xl:h-96 opacity-80"
+        />
+      </motion.div>
       {/* Hitung Mundur Section */}
-      <div className="relative z-10 w-full mb-10 sm:mb-12 md:mb-16 lg:mb-20">
+      <motion.div
+        className="relative z-10 w-full mb-10 sm:mb-12 md:mb-16 lg:mb-20"
+        variants={fadeInUp}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-100px" }}
+      >
         <Hitung />
-      </div>
+      </motion.div>
       {/* Section Title */}
-      <div className="relative z-10 text-center mb-8 sm:mb-10 md:mb-12 lg:mb-16 px-4">
+      <motion.div
+        className="relative z-10 text-center mb-8 sm:mb-10 md:mb-12 lg:mb-16 px-4"
+        variants={fadeInUp}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-100px" }}
+      >
         {/* Decorative line */}
         <div className="flex items-center justify-center gap-2 sm:gap-3 mb-3 sm:mb-4">
           <span className="block w-10 sm:w-12 md:w-16 h-px bg-linear-to-r from-transparent to-rose/40"></span>
@@ -152,16 +226,24 @@ const Acara = () => {
           Dengan memohon rahmat dan ridho Allah SWT, kami bermaksud
           menyelenggarakan pernikahan putra-putri kami
         </p>
-      </div>
-
+      </motion.div>
       {/* Mempelai Cards */}
-      <div className="relative z-10 w-full max-w-6xl mx-auto px-4 sm:px-6 md:px-8">
+      <motion.div
+        className="relative z-10 w-full max-w-6xl mx-auto px-4 sm:px-6 md:px-8"
+        variants={staggerContainer}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-100px" }}
+      >
         <div className="flex flex-col md:flex-row items-center justify-center gap-6 sm:gap-8 md:gap-10 lg:gap-16 xl:gap-20">
           {/* Mempelai Pria */}
           <MempelaiCard data={mempelaiPria} />
 
           {/* Separator / & symbol */}
-          <div className="flex flex-row md:flex-col items-center justify-center gap-2 sm:gap-3 py-2 md:py-0">
+          <motion.div
+            variants={fadeInUp}
+            className="flex flex-row md:flex-col items-center justify-center gap-2 sm:gap-3 py-2 md:py-0"
+          >
             <span className="block w-8 sm:w-10 md:w-px md:h-8 lg:h-10 bg-rose/30"></span>
             <div className="relative">
               <div className="absolute -inset-2 sm:-inset-3 bg-linear-to-br from-rose/10 to-gold/10 rounded-full blur-sm"></div>
@@ -172,15 +254,20 @@ const Acara = () => {
               </div>
             </div>
             <span className="block w-8 sm:w-10 md:w-px md:h-8 lg:h-10 bg-rose/30"></span>
-          </div>
+          </motion.div>
 
           {/* Mempelai Wanita */}
           <MempelaiCard data={mempelaiWanita} isWanita />
         </div>
-      </div>
-
+      </motion.div>
       {/* Decorative bottom ornament */}
-      <div className="relative z-10 flex items-center justify-center gap-2 my-8 sm:my-10 md:my-12 lg:my-16">
+      <motion.div
+        className="relative z-10 flex items-center justify-center gap-2 my-8 sm:my-10 md:my-12 lg:my-16"
+        variants={fadeInUp}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-50px" }}
+      >
         <span className="block w-12 sm:w-16 md:w-20 h-px bg-linear-to-r from-transparent to-gold/30"></span>
         <div className="flex items-center gap-1.5 sm:gap-2">
           <div className="w-1 sm:w-1.5 h-1 sm:h-1.5 rounded-full bg-rose/40"></div>
@@ -190,11 +277,15 @@ const Acara = () => {
           <div className="w-1 sm:w-1.5 h-1 sm:h-1.5 rounded-full bg-rose/40"></div>
         </div>
         <span className="block w-12 sm:w-16 md:w-20 h-px bg-linear-to-l from-transparent to-gold/30"></span>
-      </div>
-
-      <div>
+      </motion.div>
+      <motion.div
+        variants={fadeInUp}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-50px" }}
+      >
         <Detail />
-      </div>
+      </motion.div>
     </section>
   );
 };

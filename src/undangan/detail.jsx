@@ -1,5 +1,3 @@
-import React from "react";
-
 const Detail = () => {
   // Data Acara - sesuaikan dengan data yang benar
   const acaraAkad = {

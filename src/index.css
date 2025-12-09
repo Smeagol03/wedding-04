@@ -104,6 +104,13 @@
 /* Base */
 html {
   scroll-behavior: smooth;
+  /* CSS variable untuk stable viewport height - diset sekali saat load */
+  --vh: 1svh;
+}
+
+/* Utility class untuk full viewport height yang stabil (tidak berubah saat scroll) */
+.vh-fill {
+  height: calc(var(--vh, 1svh) * 100);
 }
 
 body {

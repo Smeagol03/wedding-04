@@ -1,4 +1,5 @@
 import { motion } from "motion/react";
+import { useEffect } from "react";
 import Bg from "/src/mempelai/bg.webp";
 import corner from "/src/dekor/10003.webp";
 import { TombolBuka } from "./Tombolbuka";
@@ -61,52 +62,44 @@ const Pembuka = () => {
     },
   };
 
+  // Set --vh sekali saat mount untuk menghindari layout shift
+  useEffect(() => {
+    const setVh = () => {
+      const vh = window.innerHeight * 0.01;
+      document.documentElement.style.setProperty("--vh", `${vh}px`);
+    };
+    setVh();
+    // Tidak perlu listen resize - ini intentional untuk stability
+  }, []);
+
   return (
     <>
       {/* ===== COVER / HERO SECTION ===== */}
       <section
         id="cover"
-        className="relative z-50 flex flex-col items-center justify-center bg-linear-to-b from-cream via-cream to-cream-dark overflow-hidden"
-        style={{
-          height: "100dvh", // Use 100dvh for modern browsers, 100vh is a less precise fallback
-          minHeight: "-webkit-fill-available",
-        }}
+        className="vh-fill relative z-50 flex flex-col items-center justify-center bg-cream overflow-hidden"
       >
-        {/* Background dengan fixed position agar tidak resize saat scroll di mobile */}
+        {/* Background dengan img untuk menghindari repaint di Android */}
+        <img
+          src={Bg}
+          alt=""
+          aria-hidden="true"
+          className="absolute inset-0 w-full h-full object-cover object-top z-0"
+          style={{ willChange: "transform" }}
+        />
+
+        {/* Combined Overlay - Semua layer digabung jadi 1 div untuk mengurangi repaint */}
         <div
-          className="absolute inset-0 z-0"
+          className="absolute inset-0 z-10 pointer-events-none"
           style={{
-            backgroundImage: `url(${Bg})`,
-            backgroundSize: "cover",
-            backgroundPosition: "top center",
-            backgroundAttachment: "scroll",
+            background: `
+              linear-gradient(to bottom, transparent, rgba(0,0,0,0.5) 50%, rgba(0,0,0,1)),
+              radial-gradient(ellipse at center, transparent 30%, rgba(0,0,0,0.4) 100%),
+              linear-gradient(to bottom right, rgba(180,131,141,0.1), transparent, rgba(253,248,243,0.2))
+            `,
+            willChange: "transform",
           }}
-        ></div>
-
-        {/* Aesthetic Overlay - Multiple layers */}
-        {/* Layer 1: Gradient vertikal - gelap di atas dan bawah */}
-        <div className="absolute inset-0 z-10 bg-linear-to-b from-transparent via-black/50 to-black"></div>
-
-        {/* Layer 2: Radial vignette - gelap di pinggir */}
-        <div
-          className="absolute inset-0 z-10"
-          style={{
-            background:
-              "radial-gradient(ellipse at center, transparent 30%, rgba(0,0,0,0.4) 100%)",
-          }}
-        ></div>
-
-        {/* Layer 3: Tint warna cream/rose untuk nuansa romantis */}
-        <div className="absolute inset-0 z-10 bg-linear-to-br from-rose-gold/10 via-transparent to-cream/20 mix-blend-overlay"></div>
-
-        {/* Layer 4: Subtle noise/grain texture effect */}
-        <div
-          className="absolute inset-0 z-10 opacity-[0.03]"
-          style={{
-            backgroundImage:
-              "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E\")",
-          }}
-        ></div>
+        />
         {/* Decorative Ornaments with Framer Motion */}
         {/* Top Left Corner */}
         <motion.div
@@ -202,15 +195,6 @@ const Pembuka = () => {
             }}
           />
         </motion.div>
-
-        {/* Subtle Pattern Overlay */}
-        <div
-          className="absolute inset-0 opacity-[0.03]"
-          style={{
-            backgroundImage: "radial-linear(#8B9D83 1px, transparent 1px)",
-            backgroundSize: "24px 24px",
-          }}
-        ></div>
 
         {/* Pre-title */}
         <p className="absolute top-10 z-30 font-sans text-[10px] sm:text-xs md:text-sm tracking-[0.25em] uppercase text-white/90 animate-fade-in drop-shadow-md">

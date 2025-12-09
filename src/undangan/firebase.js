@@ -4,6 +4,7 @@ import {
   getDatabase,
   ref,
   push,
+  onValue,
 } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-database.js";
 
 // Your web app's Firebase configuration
@@ -24,4 +25,4 @@ const app = initializeApp(firebaseConfig);
 // Initialize Realtime Database
 const database = getDatabase(app);
 
-export { database, ref, push };
+export { database, ref, push, onValue };

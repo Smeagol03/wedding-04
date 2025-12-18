@@ -234,7 +234,7 @@ const Acara = () => {
           <div className="w-1.5 sm:w-2 h-1.5 sm:h-2 rounded-full bg-rose/40 animate-pulse-soft"></div>
           <span className="block w-10 sm:w-12 md:w-16 h-px bg-linear-to-l from-transparent to-rose/40"></span>
         </div>
-
+        {/* tes komentar */}
         <p className="font-sans text-[10px] sm:text-xs md:text-sm tracking-[0.2em] sm:tracking-[0.3em] uppercase text-sage mb-1 sm:mb-2">
           Bismillahirrahmanirrahim
         </p>

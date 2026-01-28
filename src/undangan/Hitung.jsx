@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 
 const Hitung = () => {
   // Tanggal acara - sesuaikan dengan tanggal pernikahan
-  const tanggalAcara = new Date("2025-12-28T08:00:00").getTime();
+  const tanggalAcara = new Date("2026-02-01T08:30:00").getTime();
 
   const [waktuTersisa, setWaktuTersisa] = useState({
     hari: 0,
@@ -26,7 +26,7 @@ const Hitung = () => {
 
       const hari = Math.floor(selisih / (1000 * 60 * 60 * 24));
       const jam = Math.floor(
-        (selisih % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+        (selisih % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60),
       );
       const menit = Math.floor((selisih % (1000 * 60 * 60)) / (1000 * 60));
       const detik = Math.floor((selisih % (1000 * 60)) / 1000);

@@ -1,7 +1,6 @@
 import Hitung from "./Hitung";
 import Detail from "./detail";
-import wanita from "/src/mempelai/1.jpg";
-import pria from "/src/mempelai/2.jpg";
+import Couple from "/src/mempelai/3.jpg";
 import dekorImage from "/src/dekor/10010.webp";
 import dekorImage2 from "/src/dekor/10012.webp";
 import { motion } from "motion/react";
@@ -9,19 +8,19 @@ import { motion } from "motion/react";
 const Acara = () => {
   // Data Mempelai - sesuaikan dengan data yang benar
   const mempelaiPria = {
-    nama: "Sopian Sauri",
-    namaAyah: "Bapak Ahmad Sudrajat",
-    namaIbu: "Ibu Siti Aminah",
+    nama: "Edikurniawan",
+    namaAyah: "Bapak Daeng Abdul Mu'in",
+    namaIbu: "Ibu Hayaki",
     anakKe: "Putra pertama dari",
-    foto: pria,
+    alamat: "Geres baret kel geres kec labuhan haji",
   };
 
   const mempelaiWanita = {
-    nama: "Yuyun Yuningsih",
-    namaAyah: "Bapak Dedi Kusnadi",
-    namaIbu: "Ibu Rina Marlina",
+    nama: "Noviana",
+    namaAyah: "Bapak Napiah",
+    namaIbu: "Ibu Aspiah",
     anakKe: "Putri kedua dari",
-    foto: wanita,
+    alamat: "karang sari kel suryawangi kec labuhan haji",
   };
 
   // Animation variants for waving decoration
@@ -58,100 +57,70 @@ const Acara = () => {
     },
   };
 
-  const MempelaiCard = ({ data, isWanita = false }) => (
+  const MempelaiInfo = ({ data, isWanita = false }) => (
     <motion.div
       variants={fadeInUp}
-      className="group relative w-full max-w-[300px] sm:max-w-[340px] md:max-w-[360px] lg:max-w-[400px] xl:max-w-[420px]"
+      className={`flex flex-col ${
+        isWanita ? "items-center md:items-end" : "items-center md:items-start"
+      } text-center ${isWanita ? "md:text-right" : "md:text-left"} space-y-4`}
     >
-      {/* Decorative background glow */}
-      <div className="absolute -inset-2 sm:-inset-3 bg-linear-to-br from-rose/15 via-gold/10 to-sage/15 rounded-2xl sm:rounded-3xl blur-lg opacity-0 group-hover:opacity-100 transition-all duration-500"></div>
-
-      {/* Main Card with Full Photo Background */}
-      <div className="relative w-full aspect-3/4 rounded-2xl sm:rounded-3xl overflow-hidden shadow-xl group-hover:shadow-2xl transition-all duration-500">
-        {/* Full Background Photo */}
-        <img
-          src={data.foto}
-          alt={`Foto ${data.nama}`}
-          className="absolute inset-0 w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-110"
-          style={{ willChange: "transform" }}
-        />
-
-        {/* Combined Gradient Overlay - Mengurangi repaint di Android */}
+      <div className="relative">
+        <h3 className="font-display text-3xl sm:text-4xl md:text-5xl text-brown drop-shadow-sm">
+          {data.nama}
+        </h3>
         <div
-          className="absolute inset-0 pointer-events-none"
-          style={{
-            background: `
-              linear-gradient(to top, rgba(0,0,0,0.8), rgba(0,0,0,0.3) 50%, transparent),
-              linear-gradient(to bottom, rgba(0,0,0,0.5), transparent 40%),
-              linear-gradient(135deg, ${
-                isWanita ? "rgba(201,169,166,0.1)" : "rgba(139,157,131,0.1)"
-              }, transparent)
-            `,
-            willChange: "transform",
-          }}
-        />
-
-        {/* Decorative corner frame elements */}
-        <div className="absolute top-3 left-3 sm:top-4 sm:left-4 w-8 h-8 sm:w-10 sm:h-10 border-l-2 border-t-2 border-white/30 rounded-tl-lg"></div>
-        <div className="absolute top-3 right-3 sm:top-4 sm:right-4 w-8 h-8 sm:w-10 sm:h-10 border-r-2 border-t-2 border-white/30 rounded-tr-lg"></div>
-
-        {/* Content Overlay at Bottom */}
-        <div className="absolute inset-x-0 -bottom-2 p-4 sm:p-5 md:p-6">
-          {/* Glassmorphism container */}
-          <div className="relative bg-white/15 backdrop-blur-xs border border-white/20 rounded-xl sm:rounded-2xl p-4 sm:p-5 md:p-6 shadow-lg">
-            {/* Subtle inner glow */}
-            <div className="absolute inset-0 bg-linear-to-br from-white/10 via-transparent to-transparent rounded-xl sm:rounded-2xl"></div>
-
-            {/* Name */}
-            <h3 className="relative font-serif text-xl sm:text-2xl md:text-3xl lg:text-4xl text-white text-center leading-tight mb-2 sm:mb-3 drop-shadow-lg">
-              {data.nama}
-            </h3>
-
-            {/* Decorative line */}
-            <div className="relative flex items-center justify-center gap-2 mb-2 sm:mb-3">
-              <span className="block w-8 sm:w-10 md:w-12 h-px bg-linear-to-r from-transparent to-white/50"></span>
-              <div className="w-1.5 sm:w-2 h-1.5 sm:h-2 rounded-full bg-gold/70 animate-pulse-soft"></div>
-              <span className="block w-8 sm:w-10 md:w-12 h-px bg-linear-to-l from-transparent to-white/50"></span>
-            </div>
-
-            {/* Anak ke */}
-            <p className="relative font-sans text-[9px] sm:text-[10px] md:text-xs tracking-wider uppercase text-white/80 text-center mb-1.5 sm:mb-2">
-              {data.anakKe}
-            </p>
-
-            {/* Parents names */}
-            <div className="relative text-center space-y-0.5">
-              <p className="font-serif text-xs sm:text-sm md:text-base text-white/90 italic drop-shadow">
-                {data.namaAyah}
-              </p>
-              <p className="font-sans text-[9px] sm:text-[10px] text-white/60">
-                &
-              </p>
-              <p className="font-serif text-xs sm:text-sm md:text-base text-white/90 italic drop-shadow">
-                {data.namaIbu}
-              </p>
-            </div>
-          </div>
-        </div>
-
-        {/* Top label badge */}
-        <div className="absolute top-3 left-1/2 -translate-x-1/2 sm:top-4">
-          <div className="bg-white/20 backdrop-blur-sm border border-white/30 rounded-full px-3 py-1 sm:px-4 sm:py-1.5">
-            <p className="font-sans text-[8px] sm:text-[9px] md:text-[10px] tracking-[0.15em] uppercase text-white/90">
-              {isWanita ? "Mempelai Wanita" : "Mempelai Pria"}
-            </p>
-          </div>
-        </div>
-
-        {/* Hover shine effect */}
-        <div className="absolute inset-0 bg-linear-to-tr from-transparent via-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+          className={`h-1 w-20 bg-linear-to-r ${
+            isWanita
+              ? "from-gold/60 to-transparent"
+              : "from-transparent to-gold/60"
+          } mt-2 hidden md:block ${isWanita ? "ml-auto" : "mr-auto"}`}
+        ></div>
       </div>
 
-      {/* Bottom decorative element */}
-      <div className="hidden sm:flex items-center justify-center gap-2 mt-3 sm:mt-4">
-        <span className="block w-6 sm:w-8 h-px bg-linear-to-r from-transparent to-gold/40"></span>
-        <div className="w-1.5 sm:w-2 h-1.5 sm:h-2 rounded-full bg-gold/50 group-hover:bg-rose/60 transition-colors duration-300"></div>
-        <span className="block w-6 sm:w-8 h-px bg-linear-to-l from-transparent to-gold/40"></span>
+      <div className="space-y-1">
+        <p className="font-sans text-[10px] sm:text-xs tracking-[0.2em] uppercase text-sage-dark font-semibold">
+          {data.anakKe}
+        </p>
+        <div className="space-y-0.5">
+          <p className="font-serif text-base sm:text-lg md:text-xl text-brown-dark italic font-medium">
+            {data.namaAyah}
+          </p>
+          <p className="font-sans text-[10px] text-sage">dan</p>
+          <p className="font-serif text-base sm:text-lg md:text-xl text-brown-dark italic font-medium">
+            {data.namaIbu}
+          </p>
+        </div>
+      </div>
+
+      <div
+        className={`flex items-start gap-2 ${
+          isWanita
+            ? "justify-center md:justify-end"
+            : "justify-center md:justify-start"
+        }`}
+      >
+        <svg
+          className="w-4 h-4 text-gold mt-1 shrink-0"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
+            d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+          />
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
+            d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+          />
+        </svg>
+        <p className="font-sans text-[10px] sm:text-xs text-sage-dark/80 italic max-w-[180px]">
+          {data.alamat}
+        </p>
       </div>
     </motion.div>
   );
@@ -159,126 +128,146 @@ const Acara = () => {
   return (
     <section
       id="acara"
-      className="relative min-h-screen flex flex-col items-center justify-center bg-linear-to-b from-cream via-cream to-cream-dark overflow-hidden py-12 sm:py-16 md:py-20"
+      className="relative min-h-screen flex flex-col items-center justify-center bg-luxury-gradient overflow-hidden py-16 md:py-24"
     >
-      {/* Left Decorative Element */}
+      {/* Decorative Ornaments */}
       <motion.div
-        className="absolute left-0 top-60 z-0"
+        className="absolute -left-10 top-20 z-0"
         variants={dekorAcaraVariants}
         animate="animate"
       >
         <img
           src={dekorImage}
-          alt="Decorative element"
-          className="w-auto object-cover h-36 sm:h-48 md:h-64 lg:h-80 xl:h-96 opacity-80"
+          alt=""
+          className="h-64 md:h-96 w-auto object-contain"
         />
       </motion.div>
-      {/* Right Decorative Element */}
       <motion.div
-        className="absolute right-0 top-60 z-0"
+        className="absolute -right-10 top-20 z-0 scale-x-[-1]"
         variants={dekorAcaraVariants}
         animate="animate"
       >
         <img
           src={dekorImage}
-          alt="Decorative element"
-          className="w-auto object-cover scale-x-[-1] h-36 sm:h-48 md:h-64 lg:h-80 xl:h-96 opacity-80"
+          alt=""
+          className="h-64 md:h-96 w-auto object-contain"
         />
       </motion.div>
-
-      {/* dekor 2 */}
       <motion.div
-        className="absolute rotate-20 -left-5 top-[52%] z-100"
+        className="absolute -right-22 bottom-20 z-0 scale-x-[-1]"
         variants={dekorAcaraVariants}
         animate="animate"
       >
         <img
           src={dekorImage2}
-          alt="Decorative element"
-          className="w-auto object-cover h-36 sm:h-48 md:h-64 lg:h-80 xl:h-96 opacity-80"
+          alt=""
+          className="h-64 md:h-96 w-auto object-contain"
         />
       </motion.div>
       <motion.div
-        className="absolute -rotate-20 -right-5 top-[52%] z-100"
+        className="absolute -left-22 bottom-20 z-0"
         variants={dekorAcaraVariants}
         animate="animate"
       >
         <img
           src={dekorImage2}
-          alt="Decorative element"
-          className="w-auto object-cover scale-x-[-1] h-36 sm:h-48 md:h-64 lg:h-80 xl:h-96 opacity-80"
+          alt=""
+          className="h-64 md:h-96 w-auto object-contain"
         />
       </motion.div>
 
-      {/* Hitung Mundur Section */}
+      {/* Countdown Section */}
       <motion.div
-        className="relative z-10 w-full mb-10 sm:mb-12 md:mb-16 lg:mb-20"
+        className="relative z-10 w-full mb-16 md:mb-24"
         variants={fadeInUp}
         initial="hidden"
         whileInView="visible"
-        viewport={{ once: true, margin: "-100px" }}
+        viewport={{ once: true }}
       >
         <Hitung />
       </motion.div>
-      {/* Section Title */}
+
+      {/* Section Header */}
       <motion.div
-        className="relative z-10 text-center mb-8 sm:mb-10 md:mb-12 lg:mb-16 px-4"
+        className="relative z-10 text-center mb-16 px-4"
         variants={fadeInUp}
         initial="hidden"
         whileInView="visible"
-        viewport={{ once: true, margin: "-100px" }}
+        viewport={{ once: true }}
       >
-        {/* Decorative line */}
-        <div className="flex items-center justify-center gap-2 sm:gap-3 mb-3 sm:mb-4">
-          <span className="block w-10 sm:w-12 md:w-16 h-px bg-linear-to-r from-transparent to-rose/40"></span>
-          <div className="w-1.5 sm:w-2 h-1.5 sm:h-2 rounded-full bg-rose/40 animate-pulse-soft"></div>
-          <span className="block w-10 sm:w-12 md:w-16 h-px bg-linear-to-l from-transparent to-rose/40"></span>
+        <div className="flex items-center justify-center gap-4 mb-4">
+          <span className="w-12 h-px bg-linear-to-r from-transparent to-gold"></span>
+          <span className="font-serif text-gold italic text-lg sm:text-xl">
+            Ar-Rum: 21
+          </span>
+          <span className="w-12 h-px bg-linear-to-l from-transparent to-gold"></span>
         </div>
-        {/* tes komentar */}
-        <p className="font-sans text-[10px] sm:text-xs md:text-sm tracking-[0.2em] sm:tracking-[0.3em] uppercase text-sage mb-1 sm:mb-2">
-          Bismillahirrahmanirrahim
-        </p>
 
-        <h2 className="font-serif text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-brown mb-2 sm:mb-3">
-          Mempelai
+        <h2 className="font-display text-4xl md:text-6xl text-brown mb-6">
+          Mempelai Berbahagia
         </h2>
 
-        <p className="font-sans text-xs sm:text-sm md:text-base text-sage-dark max-w-md mx-auto leading-relaxed">
-          Dengan memohon rahmat dan ridho Allah SWT, kami bermaksud
-          menyelenggarakan pernikahan putra-putri kami
+        <p className="font-sans text-xs sm:text-sm md:text-base text-sage-dark max-w-2xl mx-auto leading-relaxed italic opacity-90">
+          "Dan di antara tanda-tanda kekuasaan-Nya ialah Dia menciptakan untukmu
+          isteri-isteri dari jenismu sendiri, supaya kamu cenderung dan merasa
+          tenteram kepadanya, dan dijadikan-Nya diantaramu rasa kasih dan
+          sayang."
         </p>
       </motion.div>
-      {/* Mempelai Cards */}
+
+      {/* Main Layout: Couple Photo & Info */}
       <motion.div
-        className="relative z-10 w-full max-w-6xl mx-auto px-4 sm:px-6 md:px-8"
+        className="relative z-10 w-full max-w-6xl mx-auto px-6"
         variants={staggerContainer}
         initial="hidden"
         whileInView="visible"
-        viewport={{ once: true, margin: "-100px" }}
+        viewport={{ once: true }}
       >
-        <div className="flex flex-col md:flex-row items-center justify-center gap-6 sm:gap-8 md:gap-10 lg:gap-16 xl:gap-20">
-          {/* Mempelai Pria */}
-          <MempelaiCard data={mempelaiPria} />
+        <div className="flex flex-col md:flex-row items-center justify-center gap-12 md:gap-8 lg:gap-16">
+          {/* Mempelai Wanita (Left on Desktop) */}
+          <div className="order-2 md:order-1 flex-1">
+            <MempelaiInfo data={mempelaiWanita} isWanita />
+          </div>
 
-          {/* Separator / & symbol */}
+          {/* Center Couple Photo */}
           <motion.div
             variants={fadeInUp}
-            className="flex flex-row md:flex-col items-center justify-center gap-2 sm:gap-3 py-2 md:py-0"
+            className="order-1 md:order-2 relative group"
           >
-            <span className="block w-8 sm:w-10 md:w-px md:h-8 lg:h-10 bg-rose/30"></span>
-            <div className="relative">
-              <div className="absolute -inset-2 sm:-inset-3 bg-linear-to-br from-rose/10 to-gold/10 rounded-full blur-sm"></div>
-              <div className="relative w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 lg:w-16 lg:h-16 rounded-full bg-white/70 backdrop-blur-sm border border-rose/30 flex items-center justify-center shadow-md">
-                <span className="font-serif text-xl sm:text-2xl md:text-3xl lg:text-4xl text-rose-gold italic">
-                  &
-                </span>
-              </div>
+            {/* Background Frames */}
+            <div className="absolute inset-0 bg-gold/10 rotate-3 rounded-full scale-105 transition-transform group-hover:rotate-6"></div>
+            <div className="absolute inset-0 bg-rose/10 -rotate-3 rounded-full scale-105 transition-transform group-hover:-rotate-6"></div>
+
+            {/* Photo Container */}
+            <div className="relative w-64 h-80 sm:w-72 sm:h-96 md:w-80 md:h-[450px] lg:w-96 lg:h-[550px] rounded-full overflow-hidden border-8 border-white shadow-[0_20px_50px_rgba(0,0,0,0.2)]">
+              <img
+                src={Couple}
+                alt="Couple"
+                className="w-full h-full object-cover object-center transition-transform duration-1000 group-hover:scale-110"
+              />
+              {/* Luxury Gradient Overlay */}
+              <div className="absolute inset-0 bg-linear-to-t from-black/40 via-transparent to-transparent"></div>
+
+              {/* Decorative Frame Line */}
+              <div className="absolute inset-4 rounded-full border border-white/30"></div>
             </div>
-            <span className="block w-8 sm:w-10 md:w-px md:h-8 lg:h-10 bg-rose/30"></span>
+
+            {/* Floating Ornaments around photo */}
+            <motion.div
+              animate={{ y: [0, 10, 0] }}
+              transition={{ duration: 4, repeat: Infinity }}
+              className="absolute -bottom-8 left-1/2 -translate-x-1/2 w-16 h-16 md:w-24 md:h-24 bg-white/10 backdrop-blur-md rounded-full border border-gold/20 flex items-center justify-center"
+            >
+              <span className="font-serif text-black text-2xl md:text-3xl">
+                &
+              </span>
+            </motion.div>
           </motion.div>
 
-          {/* Mempelai Wanita */}
-          <MempelaiCard data={mempelaiWanita} isWanita />
+          {/* Mempelai Pria (Right on Desktop) */}
+          <div className="order-3 flex-1">
+            <MempelaiInfo data={mempelaiPria} />
+          </div>
         </div>
       </motion.div>
       {/* Decorative bottom ornament */}

@@ -1,30 +1,33 @@
-@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=Montserrat:wght@300;400;500;600&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500&family=Montserrat:wght@100;200;300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap");
 @import "tailwindcss";
 
 @theme {
   /* Fonts */
   --font-serif: "Cormorant Garamond", serif;
+  --font-display: "Playfair Display", serif;
   --font-sans: "Montserrat", sans-serif;
 
-  /* Colors - Romantic Palette */
+  /* Colors - Luxury Romantic Palette */
   --color-cream: #fdf8f3;
   --color-cream-dark: #f5ede4;
   --color-rose: #c9a9a6;
   --color-rose-gold: #b4838d;
+  --color-rose-gold-light: #d4a5af;
   --color-sage: #8b9d83;
   --color-sage-dark: #6b7d63;
   --color-gold: #c9b896;
+  --color-gold-light: #e2d1a8;
   --color-gold-dark: #a89872;
   --color-brown: #5d4e42;
+  --color-brown-dark: #3d332c;
 
   /* Animations */
   --animate-fade-in: fadeIn 1s ease-out forwards;
   --animate-fade-in-up: fadeInUp 0.8s ease-out forwards;
   --animate-float: float 6s ease-in-out infinite;
-  --animate-pulse-soft: pulseSoft 3s ease-in-out infinite;
-  --animate-bounce-slow: bounceSlow 2s ease-in-out infinite;
-  --animate-ping-slow: pingSlow 2s cubic-bezier(0, 0, 0.2, 1) infinite;
-  --animate-shimmer: shimmer 1.5s infinite;
+  --animate-pulse-soft: pulseSoft 4s ease-in-out infinite;
+  --animate-bounce-slow: bounceSlow 3s ease-in-out infinite;
+  --animate-spin-slow: spin 12s linear infinite;
 
   @keyframes fadeIn {
     from {
@@ -38,7 +41,7 @@
   @keyframes fadeInUp {
     from {
       opacity: 0;
-      transform: translateY(30px);
+      transform: translateY(20px);
     }
     to {
       opacity: 1;
@@ -52,17 +55,19 @@
       transform: translateY(0) rotate(0deg);
     }
     50% {
-      transform: translateY(-10px) rotate(2deg);
+      transform: translateY(-15px) rotate(1deg);
     }
   }
 
   @keyframes pulseSoft {
     0%,
     100% {
-      opacity: 0.6;
+      opacity: 0.8;
+      transform: scale(1);
     }
     50% {
       opacity: 1;
+      transform: scale(1.02);
     }
   }
 
@@ -72,31 +77,7 @@
       transform: translateY(0);
     }
     50% {
-      transform: translateY(-4px);
-    }
-  }
-
-  @keyframes pingSlow {
-    0% {
-      transform: scale(1);
-      opacity: 0.5;
-    }
-    50% {
-      transform: scale(1.15);
-      opacity: 0.3;
-    }
-    100% {
-      transform: scale(1);
-      opacity: 0.5;
-    }
-  }
-
-  @keyframes shimmer {
-    0% {
-      transform: translateX(-100%);
-    }
-    100% {
-      transform: translateX(100%);
+      transform: translateY(-8px);
     }
   }
 }
@@ -104,11 +85,9 @@
 /* Base */
 html {
   scroll-behavior: smooth;
-  /* CSS variable untuk stable viewport height - diset sekali saat load */
   --vh: 1svh;
 }
 
-/* Utility class untuk full viewport height yang stabil (tidak berubah saat scroll) */
 .vh-fill {
   height: calc(var(--vh, 1svh) * 100);
 }
@@ -123,21 +102,54 @@ h3,
 h4,
 h5,
 h6 {
-  @apply font-serif font-normal;
+  @apply font-serif font-medium tracking-wide;
 }
 
-/* Utility for decorative placeholders */
-.placeholder-ornament {
-  @apply bg-cream-dark/50 border-2 border-dashed border-rose/40 flex items-center justify-center text-rose/60 text-xs font-sans;
+/* Luxury Utilities */
+.glass {
+  @apply bg-white/20 backdrop-blur-md border border-white/30 shadow-xl;
+}
+
+.glass-dark {
+  @apply bg-black/30 backdrop-blur-md border border-white/10 shadow-2xl;
+}
+
+.text-gradient-gold {
+  @apply bg-clip-text text-transparent bg-linear-to-r from-gold via-gold-light to-gold-dark;
+}
+
+.bg-luxury-gradient {
+  background: linear-gradient(
+    135deg,
+    var(--color-cream) 0%,
+    var(--color-cream-dark) 100%
+  );
+}
+
+.border-gold {
+  @apply border border-gold/40;
 }
 
 /* Custom scrollbar */
 ::-webkit-scrollbar {
-  width: 6px;
+  width: 4px;
 }
 ::-webkit-scrollbar-track {
   @apply bg-cream;
 }
 ::-webkit-scrollbar-thumb {
-  @apply bg-rose/50 rounded-full;
+  @apply bg-rose-gold/30 rounded-full hover:bg-rose-gold/50 transition-colors;
+}
+
+/* Interactive elements */
+.btn-primary {
+  @apply glass flex items-center justify-center gap-2 px-8 py-3 rounded-full 
+         text-brown font-medium tracking-[2px] uppercase text-xs
+         transition-all duration-500 hover:bg-white/40 hover:scale-105 active:scale-95;
+}
+
+.btn-luxury {
+  @apply bg-brown text-cream-dark flex items-center justify-center gap-2 px-8 py-3 rounded-full 
+         font-medium tracking-[2px] uppercase text-xs
+         shadow-lg transition-all duration-500 hover:bg-brown-dark hover:shadow-xl hover:scale-105 active:scale-95;
 }

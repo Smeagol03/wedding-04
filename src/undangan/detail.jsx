@@ -2,21 +2,21 @@ const Detail = () => {
   // Data Acara - sesuaikan dengan data yang benar
   const acaraAkad = {
     judul: "Akad Nikah",
-    tanggal: "Minggu, 28 Desember 2025",
-    waktu: "08:00 - 10:00 WIB",
-    lokasi: "Masjid Al-Ikhlas",
-    alamat: "Jl. Raya Sukabumi No. 123, Kec. Cisaat, Kab. Sukabumi, Jawa Barat",
-    mapUrl: "https://maps.google.com/?q=Masjid+Al-Ikhlas+Sukabumi",
+    tanggal: "Minggu, 01 Februari 2026",
+    waktu: "08:30 WITA - Selesai",
+    lokasi: "Kediaman Mempelai Wanita",
+    alamat: "Karang sari kel. suryawangi kec. labuhan haji",
+    mapUrl: "https://maps.google.com/?q=Suryawangi+Labuhan+Haji",
     icon: "🕌",
   };
 
   const acaraResepsi = {
     judul: "Resepsi Pernikahan",
-    tanggal: "Minggu, 28 Desember 2025",
-    waktu: "11:00 - 14:00 WIB",
-    lokasi: "Gedung Serbaguna Cisaat",
-    alamat: "Jl. Raya Sukabumi No. 456, Kec. Cisaat, Kab. Sukabumi, Jawa Barat",
-    mapUrl: "https://maps.google.com/?q=Gedung+Serbaguna+Cisaat",
+    tanggal: "Minggu, 01 Februari 2026",
+    waktu: "11:00 WITA - Selesai",
+    lokasi: "Kediaman Mempelai Wanita",
+    alamat: "Karang sari kel. suryawangi kec. labuhan haji",
+    mapUrl: "https://maps.google.com/?q=Suryawangi+Labuhan+Haji",
     icon: "💒",
   };
 
@@ -206,7 +206,8 @@ const Detail = () => {
           {/* Akad Nikah */}
           <AcaraCard data={acaraAkad} />
 
-          {/* Separator */}
+          {/* Resepsi - Sementara dinonaktifkan sesuai permintaan */}
+          {/* 
           <div className="flex flex-row md:flex-col items-center justify-center gap-2 py-2 md:py-0">
             <span className="block w-8 sm:w-10 md:w-px md:h-16 lg:h-20 bg-gold/30"></span>
             <div className="w-3 h-3 sm:w-4 sm:h-4 rounded-full border border-gold/40 flex items-center justify-center">
@@ -215,8 +216,8 @@ const Detail = () => {
             <span className="block w-8 sm:w-10 md:w-px md:h-16 lg:h-20 bg-gold/30"></span>
           </div>
 
-          {/* Resepsi */}
-          <AcaraCard data={acaraResepsi} />
+          <AcaraCard data={acaraResepsi} /> 
+          */}
         </div>
       </div>
 

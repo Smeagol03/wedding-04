@@ -1,6 +1,5 @@
 import Pembuka from "./undangan/Pembuka";
 import Acara from "./undangan/Acara";
-import OurStorySection from "./undangan/Story";
 import GallerySection from "./undangan/Gallery";
 import RsvpSection from "./undangan/RsvpSection";
 import Hadiah from "./undangan/Hadiah";
@@ -14,7 +13,6 @@ const Undangan = () => {
     <UndanganProvider>
       <Pembuka />
       <Acara />
-      <OurStorySection />
       <GallerySection />
       <RsvpSection />
       <Hadiah />

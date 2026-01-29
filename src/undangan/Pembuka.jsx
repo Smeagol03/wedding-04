@@ -1,7 +1,6 @@
 import { motion, useScroll, useTransform } from "motion/react";
 import { useEffect, useRef, useMemo } from "react";
-import Bg from "/src/mempelai/bg.jpg";
-import corner from "/src/dekor/10003.webp";
+import Bg from "/src/mempelai/3.jpg";
 import { TombolBuka } from "./Tombolbuka";
 import { fadeIn, staggerContainer } from "./utils/variants";
 
@@ -119,44 +118,10 @@ const DecorativeDivider = ({ className = "" }) => (
   </div>
 );
 
-// Countdown Preview
-const CountdownPreview = ({ weddingDate }) => {
-  const formatDate = (date) => {
-    const options = { day: "numeric", month: "long", year: "numeric" };
-    return new Date(date).toLocaleDateString("id-ID", options);
-  };
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 2.5, duration: 0.8 }}
-      className="mt-6 text-center"
-    >
-      <p className="font-sans text-[9px] md:text-[10px] tracking-[0.3em] uppercase text-white/50 mb-1">
-        Save The Date
-      </p>
-      <p className="font-serif text-sm md:text-base text-gold-light italic">
-        {formatDate(weddingDate)}
-      </p>
-    </motion.div>
-  );
-};
-
 const Pembuka = () => {
-  const namaPria = "Edikurniawan";
+  const namaPria = "Edi kurniawan";
   const namaWanita = "Noviana";
-  const weddingDate = "2026-02-01"; // Tanggal pernikahan
   const sectionRef = useRef(null);
-
-  // Parallax for ornaments
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start start", "end start"],
-  });
-
-  const ornamentY1 = useTransform(scrollYProgress, [0, 1], [0, -50]);
-  const ornamentY2 = useTransform(scrollYProgress, [0, 1], [0, -30]);
 
   // Set --vh sekali saat mount untuk menghindari layout shift
   useEffect(() => {
@@ -173,7 +138,7 @@ const Pembuka = () => {
       <section
         ref={sectionRef}
         id="cover"
-        className="vh-fill relative z-50 flex flex-col items-center justify-center bg-cream overflow-hidden"
+        className="vh-fill relative z-50 flex flex-col items-center justify-end bg-cream overflow-hidden"
       >
         {/* Background with subtle zoom animation */}
         <motion.div
@@ -186,17 +151,17 @@ const Pembuka = () => {
             src={Bg}
             alt=""
             aria-hidden="true"
-            className="w-full h-full object-cover object-top md:object-[center_38%]"
+            className="w-full h-full object-cover object-center"
           />
         </motion.div>
 
-        {/* Combined Overlay - Luxury approach */}
+        {/* Combined Overlay - Enhanced bottom vignette for text legibility */}
         <div
           className="absolute inset-0 z-10 pointer-events-none"
           style={{
             background: `
-              linear-gradient(to bottom, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.4) 50%, rgba(0,0,0,0.85) 100%),
-              radial-gradient(circle at center, transparent 20%, rgba(0,0,0,0.5) 100%)
+              linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.3) 40%, rgba(0,0,0,0.8) 100%),
+              radial-gradient(circle at 50% 30%, transparent 20%, rgba(0,0,0,0.4) 100%)
             `,
           }}
         />
@@ -204,166 +169,71 @@ const Pembuka = () => {
         {/* Floating Particles */}
         <FloatingParticles />
 
-        {/* Decorative Ornaments with Parallax */}
-        <div className="absolute inset-0 z-20 overflow-hidden pointer-events-none">
-          {/* Top Left Corner */}
-          <motion.img
-            src={corner}
-            initial={{ opacity: 0, x: -50, y: -50 }}
-            animate={{ opacity: 0.9, x: 0, y: 0 }}
-            transition={{ duration: 1, delay: 0.3 }}
-            style={{ y: ornamentY1 }}
-            className="absolute top-0 left-0 w-28 h-28 md:w-44 md:h-44 object-contain"
-          />
-          {/* Top Right Corner */}
-          <motion.img
-            src={corner}
-            initial={{ opacity: 0, x: 50, y: -50 }}
-            animate={{ opacity: 0.9, x: 0, y: 0 }}
-            transition={{ duration: 1, delay: 0.5 }}
-            style={{ y: ornamentY1 }}
-            className="absolute top-0 right-0 w-28 h-28 md:w-44 md:h-44 object-contain -scale-x-100"
-          />
-          {/* Bottom Left Corner */}
-          <motion.img
-            src={corner}
-            initial={{ opacity: 0, x: -50, y: 50 }}
-            animate={{ opacity: 0.9, x: 0, y: 0 }}
-            transition={{ duration: 1, delay: 0.7 }}
-            style={{ y: ornamentY2 }}
-            className="absolute bottom-0 left-0 w-28 h-28 md:w-44 md:h-44 object-contain -scale-y-100"
-          />
-          {/* Bottom Right Corner */}
-          <motion.img
-            src={corner}
-            initial={{ opacity: 0, x: 50, y: 50 }}
-            animate={{ opacity: 0.9, x: 0, y: 0 }}
-            transition={{ duration: 1, delay: 0.9 }}
-            style={{ y: ornamentY2 }}
-            className="absolute bottom-0 right-0 w-28 h-28 md:w-44 md:h-44 object-contain -scale-x-100 -scale-y-100"
-          />
-        </div>
-
-        {/* Main Content */}
+        {/* Main Content - Shifted to bottom */}
         <motion.div
           variants={staggerContainer(0.15, 0.3)}
           initial="hidden"
           animate="show"
-          className="relative z-30 flex flex-col items-center justify-center text-center px-6 w-full max-w-2xl mx-auto"
+          className="relative z-30 flex flex-col items-center justify-end text-center px-6 w-full max-w-2xl mx-auto pb-10 md:pb-16"
         >
           {/* Pre-title */}
-          <motion.p
-            variants={fadeIn("up", 0)}
-            className="font-sans text-[10px] sm:text-xs md:text-sm tracking-[0.5em] uppercase text-gold-light/90 mb-4 drop-shadow-lg"
-          >
-            The Wedding Of
-          </motion.p>
-
-          {/* Decorative Line Top */}
-          <DecorativeDivider className="mb-6" />
+          <motion.div variants={fadeIn("up", 0)} className="mb-2">
+            <p className="font-sans text-[9px] md:text-xs tracking-[0.5em] uppercase text-gold-light/90 drop-shadow-lg">
+              The Wedding Of
+            </p>
+          </motion.div>
 
           {/* Names Container with Staggered Letters */}
-          <div className="mb-4 md:mb-6 relative">
-            {/* Glow backdrop */}
-            <div className="absolute inset-0 bg-black/30 blur-3xl -z-10 rounded-full scale-150"></div>
-
+          <div className="mb-6 md:mb-8 relative">
             <h1 className="flex flex-col items-center">
               <AnimatedName
                 name={namaPria}
-                className="font-display text-4xl sm:text-5xl md:text-7xl text-white tracking-tight drop-shadow-xl"
+                className="font-display text-2xl md:text-4xl text-white tracking-tight drop-shadow-2xl"
                 delay={0.5}
               />
               <motion.span
                 initial={{ opacity: 0, scale: 0 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 1.2, duration: 0.5, type: "spring" }}
-                className="relative my-3"
+                className="relative my-1 md:my-1.5"
               >
-                <motion.span
-                  animate={{ rotate: [0, 5, -5, 0], scale: [1, 1.1, 1] }}
-                  transition={{
-                    duration: 4,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                  }}
-                  className="font-serif text-3xl sm:text-4xl md:text-5xl text-gold italic inline-block"
-                >
+                <span className="font-serif text-xl md:text-2xl text-gold italic inline-block">
                   &
-                </motion.span>
-                {/* Glow around & */}
-                <div className="absolute inset-0 bg-gold/20 blur-xl rounded-full -z-10 scale-150"></div>
+                </span>
               </motion.span>
               <AnimatedName
                 name={namaWanita}
-                className="font-display text-4xl sm:text-5xl md:text-7xl text-white tracking-tight drop-shadow-xl"
+                className="font-display text-2xl md:text-4xl text-white tracking-tight drop-shadow-2xl"
                 delay={1.4}
               />
             </h1>
           </div>
 
-          {/* Decorative Line Bottom */}
-          <DecorativeDivider className="mb-6" />
-
           {/* Guest Label & Button Card */}
           <motion.div
-            initial={{ opacity: 0, y: 50, scale: 0.9 }}
+            initial={{ opacity: 0, y: 30, scale: 0.98 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            transition={{ delay: 2.2, duration: 0.8, type: "spring" }}
-            className="glass rounded-2xl md:rounded-3xl p-6 md:p-8 w-full max-w-sm mx-auto border border-gold/20 shadow-2xl relative overflow-hidden"
+            transition={{ delay: 2.2, duration: 0.8 }}
+            className="glass rounded-2xl p-5 md:p-8 w-full max-w-sm mx-auto border border-white/10 shadow-2xl relative overflow-hidden"
           >
-            {/* Animated border glow */}
-            <motion.div
-              animate={{
-                boxShadow: [
-                  "0 0 20px rgba(201,184,150,0.1)",
-                  "0 0 40px rgba(201,184,150,0.2)",
-                  "0 0 20px rgba(201,184,150,0.1)",
-                ],
-              }}
-              transition={{ duration: 3, repeat: Infinity }}
-              className="absolute inset-0 rounded-2xl md:rounded-3xl"
-            />
+            <div className="relative z-10 flex flex-col items-center">
+              <p className="font-sans font-medium text-[8px] md:text-[9px] tracking-[0.3em] uppercase text-white/40 mb-2">
+                Kepada Yth. Bapak/Ibu/Saudara/i
+              </p>
 
-            {/* Shimmer Effect */}
-            <motion.div
-              animate={{ x: ["-100%", "200%"] }}
-              transition={{ duration: 3, repeat: Infinity, repeatDelay: 2 }}
-              className="absolute inset-0 bg-linear-to-r from-transparent via-white/10 to-transparent"
-            />
+              {/* Guest Name - Elegant Display */}
+              <div className="mb-6 w-full">
+                <h2 className="font-display font-medium text-xl md:text-2xl text-white italic">
+                  Nama Tamu
+                </h2>
+                <div className="h-px w-16 bg-linear-to-r from-transparent via-gold/30 to-transparent mx-auto mt-1"></div>
+              </div>
 
-            <p className="font-sans font-semibold text-[10px] md:text-xs tracking-[0.25em] uppercase text-white/60 mb-2">
-              Kepada Yth.
-            </p>
-            <p className="font-serif text-base md:text-lg text-white/90 mb-3">
-              Bapak/Ibu/Saudara/i
-            </p>
-
-            {/* Guest Name - Elegant Display */}
-            <div className="relative inline-block px-6 py-3 mb-6 w-full">
-              <div className="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-gold/50 to-transparent"></div>
-              <div className="absolute inset-x-0 bottom-0 h-px bg-linear-to-r from-transparent via-gold/50 to-transparent"></div>
-              <h2 className="font-display font-bold text-xl md:text-2xl text-white italic">
-                Nama Tamu
-              </h2>
+              {/* Enhanced Button */}
+              <div className="w-full">
+                <TombolBuka className="w-full justify-center scale-90 md:scale-100" />
+              </div>
             </div>
-
-            {/* Enhanced Button with Glow */}
-            <motion.div
-              animate={{
-                boxShadow: [
-                  "0 0 20px rgba(93,78,66,0.3)",
-                  "0 0 35px rgba(93,78,66,0.5)",
-                  "0 0 20px rgba(93,78,66,0.3)",
-                ],
-              }}
-              transition={{ duration: 2, repeat: Infinity }}
-              className="rounded-full"
-            >
-              <TombolBuka className="w-full justify-center" />
-            </motion.div>
-
-            {/* Countdown Preview */}
-            <CountdownPreview weddingDate={weddingDate} />
           </motion.div>
         </motion.div>
 

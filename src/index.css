@@ -143,7 +143,8 @@ h6 {
 
 /* Interactive elements */
 .btn-primary {
-  @apply glass flex items-center justify-center gap-2 px-8 py-3 rounded-full 
+  @apply bg-white/20 backdrop-blur-md border border-white/30 shadow-xl
+         flex items-center justify-center gap-2 px-8 py-3 rounded-full 
          text-brown font-medium tracking-[2px] uppercase text-xs
          transition-all duration-500 hover:bg-white/40 hover:scale-105 active:scale-95;
 }

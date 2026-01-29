@@ -99,25 +99,6 @@ const Acara = () => {
             : "justify-center md:justify-start"
         }`}
       >
-        <svg
-          className="w-4 h-4 text-gold mt-1 shrink-0"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-            d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-          />
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-            d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-          />
-        </svg>
         <p className="font-sans text-[10px] sm:text-xs text-sage-dark/80 italic max-w-[180px]">
           {data.alamat}
         </p>
@@ -224,15 +205,15 @@ const Acara = () => {
         viewport={{ once: true }}
       >
         <div className="flex flex-col md:flex-row items-center justify-center gap-12 md:gap-8 lg:gap-16">
-          {/* Mempelai Wanita (Left on Desktop) */}
-          <div className="order-2 md:order-1 flex-1">
-            <MempelaiInfo data={mempelaiWanita} isWanita />
+          {/* Mempelai Pria - Top on Mobile, Right on Desktop */}
+          <div className="order-1 md:order-3 flex-1">
+            <MempelaiInfo data={mempelaiPria} />
           </div>
 
-          {/* Center Couple Photo */}
+          {/* Center Couple Photo - Middle on Mobile & Desktop */}
           <motion.div
             variants={fadeInUp}
-            className="order-1 md:order-2 relative group"
+            className="order-2 md:order-2 relative group"
           >
             {/* Background Frames */}
             <div className="absolute inset-0 bg-gold/10 rotate-3 rounded-full scale-105 transition-transform group-hover:rotate-6"></div>
@@ -264,9 +245,9 @@ const Acara = () => {
             </motion.div>
           </motion.div>
 
-          {/* Mempelai Pria (Right on Desktop) */}
-          <div className="order-3 flex-1">
-            <MempelaiInfo data={mempelaiPria} />
+          {/* Mempelai Wanita - Bottom on Mobile, Left on Desktop */}
+          <div className="order-3 md:order-1 flex-1">
+            <MempelaiInfo data={mempelaiWanita} isWanita />
           </div>
         </div>
       </motion.div>

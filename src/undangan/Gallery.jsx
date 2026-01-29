@@ -5,7 +5,7 @@ const galleryItems = [
   {
     id: 1,
     type: "photo",
-    src: "https://picsum.photos/200/300",
+    src: "/src/mempelai/1.jpg",
     alt: "Pre-wedding romantic moment",
     caption: "Moment Romantis",
     size: "normal", // tall, wide, normal
@@ -13,7 +13,7 @@ const galleryItems = [
   {
     id: 2,
     type: "photo",
-    src: "https://picsum.photos/200/300",
+    src: "/src/mempelai/2.jpg",
     alt: "Pre-wedding romantic moment",
     caption: "Moment Romantis",
     size: "tall", // tall, wide, normal
@@ -21,7 +21,7 @@ const galleryItems = [
   {
     id: 3,
     type: "photo",
-    src: "https://picsum.photos/200/300",
+    src: "/src/mempelai/3.jpg",
     alt: "Pre-wedding romantic moment",
     caption: "Moment Romantis",
     size: "tall", // tall, wide, normal
@@ -29,7 +29,7 @@ const galleryItems = [
   {
     id: 4,
     type: "photo",
-    src: "https://picsum.photos/200/300",
+    src: "/src/mempelai/4.jpg",
     alt: "Pre-wedding romantic moment",
     caption: "Moment Romantis",
     size: "normal", // tall, wide, normal
@@ -37,7 +37,7 @@ const galleryItems = [
   {
     id: 5,
     type: "photo",
-    src: "https://picsum.photos/200/300",
+    src: "/src/mempelai/5.jpg",
     alt: "Pre-wedding romantic moment",
     caption: "Moment Romantis",
     size: "normal", // tall, wide, normal
@@ -45,7 +45,55 @@ const galleryItems = [
   {
     id: 6,
     type: "photo",
-    src: "https://picsum.photos/200/300",
+    src: "/src/mempelai/6.jpg",
+    alt: "Pre-wedding romantic moment",
+    caption: "Moment Romantis",
+    size: "normal", // tall, wide, normal
+  },
+  {
+    id: 7,
+    type: "photo",
+    src: "/src/mempelai/7.jpg",
+    alt: "Pre-wedding romantic moment",
+    caption: "Moment Romantis",
+    size: "normal", // tall, wide, normal
+  },
+  {
+    id: 8,
+    type: "photo",
+    src: "/src/mempelai/8.jpg",
+    alt: "Pre-wedding romantic moment",
+    caption: "Moment Romantis",
+    size: "normal", // tall, wide, normal
+  },
+  {
+    id: 9,
+    type: "photo",
+    src: "/src/mempelai/9.jpg",
+    alt: "Pre-wedding romantic moment",
+    caption: "Moment Romantis",
+    size: "normal", // tall, wide, normal
+  },
+  {
+    id: 10,
+    type: "photo",
+    src: "/src/mempelai/10.jpg",
+    alt: "Pre-wedding romantic moment",
+    caption: "Moment Romantis",
+    size: "normal", // tall, wide, normal
+  },
+  {
+    id: 11,
+    type: "photo",
+    src: "/src/mempelai/11.jpg",
+    alt: "Pre-wedding romantic moment",
+    caption: "Moment Romantis",
+    size: "normal", // tall, wide, normal
+  },
+  {
+    id: 12,
+    type: "photo",
+    src: "/src/mempelai/12.jpg",
     alt: "Pre-wedding romantic moment",
     caption: "Moment Romantis",
     size: "normal", // tall, wide, normal
@@ -149,7 +197,7 @@ const GalleryItem = ({ item, index, onClick }) => {
       {
         rootMargin: "100px", // Start loading 100px before entering viewport
         threshold: 0.1,
-      }
+      },
     );
 
     if (containerRef.current) {
@@ -160,13 +208,7 @@ const GalleryItem = ({ item, index, onClick }) => {
   }, []);
 
   // Dynamic grid sizing based on item size
-  const sizeClasses = {
-    normal: "col-span-1 row-span-1",
-    tall: "col-span-1 row-span-2",
-    wide: "col-span-1 sm:col-span-2 row-span-1",
-  };
-
-  const gridClass = sizeClasses[item.size] || sizeClasses.normal;
+  const gridClass = "break-inside-avoid mb-4 sm:mb-5 md:mb-6";
 
   // Staggered animation delay
   const animationDelay = `${index * 100}ms`;
@@ -188,7 +230,7 @@ const GalleryItem = ({ item, index, onClick }) => {
       onClick={() => onClick(item)}
     >
       {/* Image/Thumbnail Container */}
-      <div className="relative w-full h-full min-h-[200px] sm:min-h-[240px] md:min-h-[280px]">
+      <div className="relative w-full h-auto">
         {/* Skeleton Loading Placeholder with Shimmer */}
         <div
           className={`absolute inset-0 bg-cream-dark transition-opacity duration-500 ${
@@ -255,7 +297,7 @@ const GalleryItem = ({ item, index, onClick }) => {
             alt={item.alt || item.title}
             onLoad={handleImageLoad}
             onError={handleImageError}
-            className={`absolute inset-0 w-full h-full object-cover transition-all duration-700 group-hover:scale-110 ${
+            className={`w-full h-auto block transition-all duration-700 group-hover:scale-110 ${
               isLoaded
                 ? "opacity-100 blur-0 scale-100"
                 : "opacity-0 blur-sm scale-105"
@@ -437,7 +479,7 @@ const GallerySection = () => {
 
           {/* Masonry Grid Gallery */}
           <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 md:gap-6 auto-rows-[200px] sm:auto-rows-[240px] md:auto-rows-[280px]">
+            <div className="columns-1 sm:columns-2 lg:columns-3 gap-4 sm:gap-5 md:gap-6">
               {galleryItems.map((item, index) => (
                 <GalleryItem
                   loading="lazy"

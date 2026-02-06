@@ -1,11 +1,23 @@
 import React, { useState, useEffect, useRef } from "react";
 
-// --- Data Dummy Galeri (Menggunakan placeholder images) ---
+import jpg1 from "../mempelai/1.jpg";
+import jpg2 from "../mempelai/2.jpg";
+import jpg3 from "../mempelai/3.jpg";
+import jpg4 from "../mempelai/4.jpg";
+import jpg5 from "../mempelai/5.jpg";
+import jpg6 from "../mempelai/6.jpg";
+import jpg7 from "../mempelai/7.jpg";
+import jpg8 from "../mempelai/8.jpg";
+import jpg9 from "../mempelai/9.jpg";
+import jpg10 from "../mempelai/10.jpg";
+import jpg11 from "../mempelai/11.jpg";
+import jpg12 from "../mempelai/12.jpg";
+
 const galleryItems = [
   {
     id: 1,
     type: "photo",
-    src: "/src/mempelai/1.jpg",
+    src: jpg1,
     alt: "Pre-wedding romantic moment",
     caption: "Moment Romantis",
     size: "normal", // tall, wide, normal
@@ -13,7 +25,7 @@ const galleryItems = [
   {
     id: 2,
     type: "photo",
-    src: "/src/mempelai/2.jpg",
+    src: jpg2,
     alt: "Pre-wedding romantic moment",
     caption: "Moment Romantis",
     size: "tall", // tall, wide, normal
@@ -21,7 +33,7 @@ const galleryItems = [
   {
     id: 3,
     type: "photo",
-    src: "/src/mempelai/3.jpg",
+    src: jpg3,
     alt: "Pre-wedding romantic moment",
     caption: "Moment Romantis",
     size: "tall", // tall, wide, normal
@@ -29,7 +41,7 @@ const galleryItems = [
   {
     id: 4,
     type: "photo",
-    src: "/src/mempelai/4.jpg",
+    src: jpg4,
     alt: "Pre-wedding romantic moment",
     caption: "Moment Romantis",
     size: "normal", // tall, wide, normal
@@ -37,7 +49,7 @@ const galleryItems = [
   {
     id: 5,
     type: "photo",
-    src: "/src/mempelai/5.jpg",
+    src: jpg5,
     alt: "Pre-wedding romantic moment",
     caption: "Moment Romantis",
     size: "normal", // tall, wide, normal
@@ -45,7 +57,7 @@ const galleryItems = [
   {
     id: 6,
     type: "photo",
-    src: "/src/mempelai/6.jpg",
+    src: jpg6,
     alt: "Pre-wedding romantic moment",
     caption: "Moment Romantis",
     size: "normal", // tall, wide, normal
@@ -53,7 +65,7 @@ const galleryItems = [
   {
     id: 7,
     type: "photo",
-    src: "/src/mempelai/7.jpg",
+    src: jpg7,
     alt: "Pre-wedding romantic moment",
     caption: "Moment Romantis",
     size: "normal", // tall, wide, normal
@@ -61,7 +73,7 @@ const galleryItems = [
   {
     id: 8,
     type: "photo",
-    src: "/src/mempelai/8.jpg",
+    src: jpg8,
     alt: "Pre-wedding romantic moment",
     caption: "Moment Romantis",
     size: "normal", // tall, wide, normal
@@ -69,7 +81,7 @@ const galleryItems = [
   {
     id: 9,
     type: "photo",
-    src: "/src/mempelai/9.jpg",
+    src: jpg9,
     alt: "Pre-wedding romantic moment",
     caption: "Moment Romantis",
     size: "normal", // tall, wide, normal
@@ -77,7 +89,7 @@ const galleryItems = [
   {
     id: 10,
     type: "photo",
-    src: "/src/mempelai/10.jpg",
+    src: jpg10,
     alt: "Pre-wedding romantic moment",
     caption: "Moment Romantis",
     size: "normal", // tall, wide, normal
@@ -85,7 +97,7 @@ const galleryItems = [
   {
     id: 11,
     type: "photo",
-    src: "/src/mempelai/11.jpg",
+    src: jpg11,
     alt: "Pre-wedding romantic moment",
     caption: "Moment Romantis",
     size: "normal", // tall, wide, normal
@@ -93,7 +105,7 @@ const galleryItems = [
   {
     id: 12,
     type: "photo",
-    src: "/src/mempelai/12.jpg",
+    src: jpg12,
     alt: "Pre-wedding romantic moment",
     caption: "Moment Romantis",
     size: "normal", // tall, wide, normal

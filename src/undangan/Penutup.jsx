@@ -1,5 +1,5 @@
 import React from "react";
-import penutupCouple from "/src/mempelai/7.jpg";
+import penutupCouple from "/src/mempelai/7.webp";
 
 // --- KONFIGURASI PENUTUP ---
 // Ganti dengan data Anda
@@ -118,6 +118,7 @@ const Penutup = () => {
                   <img
                     src={penutupCouple}
                     alt="Foto Pasangan"
+                    loading="lazy"
                     className="w-full h-full object-cover"
                   />
                 </div>

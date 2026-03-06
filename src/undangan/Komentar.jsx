@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { database, ref, push, onValue } from "./firebase";
-import couplePhoto from "/src/mempelai/8.jpg";
+import couplePhoto from "/src/mempelai/8.webp";
 
 const Komentar = () => {
   const [formData, setFormData] = useState({
@@ -151,6 +151,7 @@ const Komentar = () => {
                     <img
                       src={couplePhoto}
                       alt="Foto Pasangan"
+                      loading="lazy"
                       className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
                     />
                     {/* Overlay gradient */}

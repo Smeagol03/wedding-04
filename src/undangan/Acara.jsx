@@ -1,6 +1,6 @@
 import Hitung from "./Hitung";
 import Detail from "./detail";
-import Couple from "/src/mempelai/3.jpg";
+import Couple from "/src/mempelai/3.webp";
 import dekorImage from "/src/dekor/10010.webp";
 import dekorImage2 from "/src/dekor/10012.webp";
 import { motion } from "motion/react";
@@ -120,6 +120,7 @@ const Acara = () => {
         <img
           src={dekorImage}
           alt=""
+          loading="lazy"
           className="h-64 md:h-96 w-auto object-contain"
         />
       </motion.div>
@@ -131,6 +132,7 @@ const Acara = () => {
         <img
           src={dekorImage}
           alt=""
+          loading="lazy"
           className="h-64 md:h-96 w-auto object-contain"
         />
       </motion.div>
@@ -142,6 +144,7 @@ const Acara = () => {
         <img
           src={dekorImage2}
           alt=""
+          loading="lazy"
           className="h-64 md:h-96 w-auto object-contain"
         />
       </motion.div>
@@ -153,6 +156,7 @@ const Acara = () => {
         <img
           src={dekorImage2}
           alt=""
+          loading="lazy"
           className="h-64 md:h-96 w-auto object-contain"
         />
       </motion.div>
@@ -224,6 +228,7 @@ const Acara = () => {
               <img
                 src={Couple}
                 alt="Couple"
+                loading="lazy"
                 className="w-full h-full object-cover object-center transition-transform duration-1000 group-hover:scale-110"
               />
               {/* Luxury Gradient Overlay */}

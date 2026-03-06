@@ -1,6 +1,6 @@
 import { motion, useScroll, useTransform } from "motion/react";
 import { useEffect, useRef, useMemo } from "react";
-import Bg from "/src/mempelai/3.jpg";
+import Bg from "/src/mempelai/3.webp";
 import { TombolBuka } from "./Tombolbuka";
 import { fadeIn, staggerContainer } from "./utils/variants";
 

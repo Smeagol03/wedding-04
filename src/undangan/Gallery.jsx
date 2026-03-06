@@ -1,17 +1,17 @@
 import React, { useState, useEffect, useRef } from "react";
 
-import jpg1 from "../mempelai/1.jpg";
-import jpg2 from "../mempelai/2.jpg";
-import jpg3 from "../mempelai/3.jpg";
-import jpg4 from "../mempelai/4.jpg";
-import jpg5 from "../mempelai/5.jpg";
-import jpg6 from "../mempelai/6.jpg";
-import jpg7 from "../mempelai/7.jpg";
-import jpg8 from "../mempelai/8.jpg";
-import jpg9 from "../mempelai/9.jpg";
-import jpg10 from "../mempelai/10.jpg";
-import jpg11 from "../mempelai/11.jpg";
-import jpg12 from "../mempelai/12.jpg";
+import jpg1 from "../mempelai/1.webp";
+import jpg2 from "../mempelai/2.webp";
+import jpg3 from "../mempelai/3.webp";
+import jpg4 from "../mempelai/4.webp";
+import jpg5 from "../mempelai/5.webp";
+import jpg6 from "../mempelai/6.webp";
+import jpg7 from "../mempelai/7.webp";
+import jpg8 from "../mempelai/8.webp";
+import jpg9 from "../mempelai/9.webp";
+import jpg10 from "../mempelai/10.webp";
+import jpg11 from "../mempelai/11.webp";
+import jpg12 from "../mempelai/12.webp";
 
 const galleryItems = [
   {
@@ -309,6 +309,7 @@ const GalleryItem = ({ item, index, onClick }) => {
             alt={item.alt || item.title}
             onLoad={handleImageLoad}
             onError={handleImageError}
+            loading="lazy"
             className={`w-full h-auto block transition-all duration-700 group-hover:scale-110 ${
               isLoaded
                 ? "opacity-100 blur-0 scale-100"

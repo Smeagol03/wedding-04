@@ -1,11 +1,24 @@
 import React, { useState, useEffect, useRef } from "react";
+import { motion } from "motion/react";
 
-// --- Data Dummy Galeri (Menggunakan placeholder images) ---
+import jpg1 from "../mempelai/1.webp";
+import jpg2 from "../mempelai/2.webp";
+import jpg3 from "../mempelai/3.webp";
+import jpg4 from "../mempelai/4.webp";
+import jpg5 from "../mempelai/5.webp";
+import jpg6 from "../mempelai/6.webp";
+import jpg7 from "../mempelai/7.webp";
+import jpg8 from "../mempelai/8.webp";
+import jpg9 from "../mempelai/9.webp";
+import jpg10 from "../mempelai/10.webp";
+import jpg11 from "../mempelai/11.webp";
+import jpg12 from "../mempelai/12.webp";
+
 const galleryItems = [
   {
     id: 1,
     type: "photo",
-    src: "https://picsum.photos/200/300",
+    src: jpg1,
     alt: "Pre-wedding romantic moment",
     caption: "Moment Romantis",
     size: "normal", // tall, wide, normal
@@ -13,7 +26,7 @@ const galleryItems = [
   {
     id: 2,
     type: "photo",
-    src: "https://picsum.photos/200/300",
+    src: jpg2,
     alt: "Pre-wedding romantic moment",
     caption: "Moment Romantis",
     size: "tall", // tall, wide, normal
@@ -21,7 +34,7 @@ const galleryItems = [
   {
     id: 3,
     type: "photo",
-    src: "https://picsum.photos/200/300",
+    src: jpg3,
     alt: "Pre-wedding romantic moment",
     caption: "Moment Romantis",
     size: "tall", // tall, wide, normal
@@ -29,7 +42,7 @@ const galleryItems = [
   {
     id: 4,
     type: "photo",
-    src: "https://picsum.photos/200/300",
+    src: jpg4,
     alt: "Pre-wedding romantic moment",
     caption: "Moment Romantis",
     size: "normal", // tall, wide, normal
@@ -37,7 +50,7 @@ const galleryItems = [
   {
     id: 5,
     type: "photo",
-    src: "https://picsum.photos/200/300",
+    src: jpg5,
     alt: "Pre-wedding romantic moment",
     caption: "Moment Romantis",
     size: "normal", // tall, wide, normal
@@ -45,7 +58,55 @@ const galleryItems = [
   {
     id: 6,
     type: "photo",
-    src: "https://picsum.photos/200/300",
+    src: jpg6,
+    alt: "Pre-wedding romantic moment",
+    caption: "Moment Romantis",
+    size: "normal", // tall, wide, normal
+  },
+  {
+    id: 7,
+    type: "photo",
+    src: jpg7,
+    alt: "Pre-wedding romantic moment",
+    caption: "Moment Romantis",
+    size: "normal", // tall, wide, normal
+  },
+  {
+    id: 8,
+    type: "photo",
+    src: jpg8,
+    alt: "Pre-wedding romantic moment",
+    caption: "Moment Romantis",
+    size: "normal", // tall, wide, normal
+  },
+  {
+    id: 9,
+    type: "photo",
+    src: jpg9,
+    alt: "Pre-wedding romantic moment",
+    caption: "Moment Romantis",
+    size: "normal", // tall, wide, normal
+  },
+  {
+    id: 10,
+    type: "photo",
+    src: jpg10,
+    alt: "Pre-wedding romantic moment",
+    caption: "Moment Romantis",
+    size: "normal", // tall, wide, normal
+  },
+  {
+    id: 11,
+    type: "photo",
+    src: jpg11,
+    alt: "Pre-wedding romantic moment",
+    caption: "Moment Romantis",
+    size: "normal", // tall, wide, normal
+  },
+  {
+    id: 12,
+    type: "photo",
+    src: jpg12,
     alt: "Pre-wedding romantic moment",
     caption: "Moment Romantis",
     size: "normal", // tall, wide, normal
@@ -63,42 +124,106 @@ const galleryItems = [
   //   },
 ];
 
-// --- Lightbox Modal Component ---
-const LightboxModal = ({ item, isOpen, onClose }) => {
+// --- Premium Lightbox Modal Component ---
+const LightboxModal = ({ items = [], currentIndex = 0, isOpen, onClose, onNavigate }) => {
+  const [touchStart, setTouchStart] = useState(null);
+  const [touchEnd, setTouchEnd] = useState(null);
+
+  const item = items[currentIndex];
+  const totalItems = items.length;
+
+  // Keyboard navigation
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleKey = (e) => {
+      if (e.key === "Escape") onClose();
+      if (e.key === "ArrowRight" && currentIndex < totalItems - 1) onNavigate(currentIndex + 1);
+      if (e.key === "ArrowLeft" && currentIndex > 0) onNavigate(currentIndex - 1);
+    };
+    window.addEventListener("keydown", handleKey);
+    // Lock body scroll
+    document.body.style.overflow = "hidden";
+    return () => {
+      window.removeEventListener("keydown", handleKey);
+      document.body.style.overflow = "auto";
+    };
+  }, [isOpen, currentIndex, totalItems, onClose, onNavigate]);
+
+  // Swipe gesture handlers
+  const minSwipeDistance = 50;
+  const onTouchStart = (e) => {
+    setTouchEnd(null);
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+  const onTouchMove = (e) => setTouchEnd(e.targetTouches[0].clientX);
+  const onTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+    const distance = touchStart - touchEnd;
+    if (Math.abs(distance) > minSwipeDistance) {
+      if (distance > 0 && currentIndex < totalItems - 1) onNavigate(currentIndex + 1);
+      if (distance < 0 && currentIndex > 0) onNavigate(currentIndex - 1);
+    }
+  };
+
   if (!isOpen || !item) return null;
 
+  const NavButton = ({ direction, onClick, disabled }) => (
+    <button
+      onClick={(e) => { e.stopPropagation(); onClick(); }}
+      disabled={disabled}
+      className={`absolute top-1/2 -translate-y-1/2 ${direction === "prev" ? "left-2 sm:left-4" : "right-2 sm:right-4"} z-20 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-white transition-all duration-300 ${disabled ? "opacity-20 cursor-not-allowed" : "hover:bg-white/25 hover:scale-110 active:scale-95"}`}
+    >
+      <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d={direction === "prev" ? "M15 19l-7-7 7-7" : "M9 5l7 7-7 7"} />
+      </svg>
+    </button>
+  );
+
   return (
-    <div
+    <motion.div
       className="fixed inset-0 z-9999 flex items-center justify-center p-4 sm:p-6 md:p-8"
       onClick={onClose}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.3 }}
     >
       {/* Backdrop */}
-      <div className="absolute inset-0 bg-black/90 backdrop-blur-sm"></div>
+      <div className="absolute inset-0 bg-black/92 backdrop-blur-sm"></div>
 
       {/* Close button */}
       <button
         onClick={onClose}
-        className="absolute top-4 right-4 sm:top-6 sm:right-6 z-10 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center text-white hover:bg-white/20 transition-all duration-300"
+        className="absolute top-4 right-4 sm:top-6 sm:right-6 z-20 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center text-white hover:bg-white/20 transition-all duration-300"
       >
-        <svg
-          className="w-5 h-5 sm:w-6 sm:h-6"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-            d="M6 18L18 6M6 6l12 12"
-          />
+        <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
         </svg>
       </button>
 
-      {/* Content */}
-      <div
+      {/* Position indicator */}
+      <div className="absolute top-4 left-4 sm:top-6 sm:left-6 z-20 px-3 py-1.5 rounded-full bg-white/10 backdrop-blur-sm border border-white/20">
+        <span className="font-sans text-xs sm:text-sm text-white/80 tracking-wider">
+          {currentIndex + 1} / {totalItems}
+        </span>
+      </div>
+
+      {/* Navigation buttons */}
+      <NavButton direction="prev" onClick={() => onNavigate(currentIndex - 1)} disabled={currentIndex === 0} />
+      <NavButton direction="next" onClick={() => onNavigate(currentIndex + 1)} disabled={currentIndex === totalItems - 1} />
+
+      {/* Content with swipe support */}
+      <motion.div
+        key={currentIndex}
         className="relative z-10 w-full max-w-5xl max-h-[85vh]"
         onClick={(e) => e.stopPropagation()}
+        onTouchStart={onTouchStart}
+        onTouchMove={onTouchMove}
+        onTouchEnd={onTouchEnd}
+        initial={{ opacity: 0, scale: 0.92 }}
+        animate={{ opacity: 1, scale: 1 }}
+        exit={{ opacity: 0, scale: 0.92 }}
+        transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
       >
         {item.type === "photo" ? (
           <div className="relative">
@@ -106,6 +231,7 @@ const LightboxModal = ({ item, isOpen, onClose }) => {
               src={item.src}
               alt={item.alt}
               className="w-full h-auto max-h-[80vh] object-contain rounded-lg sm:rounded-2xl shadow-2xl"
+              draggable={false}
             />
             {/* Caption */}
             <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-6 bg-linear-to-t from-black/70 to-transparent rounded-b-lg sm:rounded-b-2xl">
@@ -125,10 +251,25 @@ const LightboxModal = ({ item, isOpen, onClose }) => {
             />
           </div>
         )}
+      </motion.div>
+
+      {/* Dot indicators for mobile */}
+      <div className="absolute bottom-4 sm:bottom-6 left-1/2 -translate-x-1/2 z-20 flex items-center gap-1.5 sm:hidden">
+        {items.slice(Math.max(0, currentIndex - 3), Math.min(totalItems, currentIndex + 4)).map((_, i) => {
+          const realIndex = Math.max(0, currentIndex - 3) + i;
+          return (
+            <button
+              key={realIndex}
+              onClick={(e) => { e.stopPropagation(); onNavigate(realIndex); }}
+              className={`rounded-full transition-all duration-300 ${realIndex === currentIndex ? "w-6 h-2 bg-white" : "w-2 h-2 bg-white/40"}`}
+            />
+          );
+        })}
       </div>
-    </div>
+    </motion.div>
   );
 };
+
 
 // --- Gallery Item Component with Optimized Lazy Loading ---
 const GalleryItem = ({ item, index, onClick }) => {
@@ -149,7 +290,7 @@ const GalleryItem = ({ item, index, onClick }) => {
       {
         rootMargin: "100px", // Start loading 100px before entering viewport
         threshold: 0.1,
-      }
+      },
     );
 
     if (containerRef.current) {
@@ -160,13 +301,7 @@ const GalleryItem = ({ item, index, onClick }) => {
   }, []);
 
   // Dynamic grid sizing based on item size
-  const sizeClasses = {
-    normal: "col-span-1 row-span-1",
-    tall: "col-span-1 row-span-2",
-    wide: "col-span-1 sm:col-span-2 row-span-1",
-  };
-
-  const gridClass = sizeClasses[item.size] || sizeClasses.normal;
+  const gridClass = "break-inside-avoid mb-4 sm:mb-5 md:mb-6";
 
   // Staggered animation delay
   const animationDelay = `${index * 100}ms`;
@@ -181,14 +316,18 @@ const GalleryItem = ({ item, index, onClick }) => {
   };
 
   return (
-    <div
+    <motion.div
       ref={containerRef}
       className={`group relative overflow-hidden rounded-xl sm:rounded-2xl cursor-pointer ${gridClass}`}
       style={{ animationDelay }}
       onClick={() => onClick(item)}
+      initial={{ opacity: 0, y: 40, scale: 0.95 }}
+      whileInView={{ opacity: 1, y: 0, scale: 1 }}
+      viewport={{ once: true, margin: "-30px" }}
+      transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1], delay: (index % 3) * 0.1 }}
     >
       {/* Image/Thumbnail Container */}
-      <div className="relative w-full h-full min-h-[200px] sm:min-h-[240px] md:min-h-[280px]">
+      <div className="relative w-full h-auto min-h-[200px] sm:min-h-[250px] md:min-h-[300px]">
         {/* Skeleton Loading Placeholder with Shimmer */}
         <div
           className={`absolute inset-0 bg-cream-dark transition-opacity duration-500 ${
@@ -255,7 +394,8 @@ const GalleryItem = ({ item, index, onClick }) => {
             alt={item.alt || item.title}
             onLoad={handleImageLoad}
             onError={handleImageError}
-            className={`absolute inset-0 w-full h-full object-cover transition-all duration-700 group-hover:scale-110 ${
+            loading="lazy"
+            className={`w-full h-auto block transition-all duration-700 group-hover:scale-110 ${
               isLoaded
                 ? "opacity-100 blur-0 scale-100"
                 : "opacity-0 blur-sm scale-105"
@@ -370,23 +510,29 @@ const GalleryItem = ({ item, index, onClick }) => {
 
       {/* Outer glow on hover */}
       <div className="absolute -inset-0.5 bg-linear-to-br from-rose/30 via-gold/20 to-sage/30 rounded-xl sm:rounded-2xl blur opacity-0 group-hover:opacity-60 transition-opacity duration-500 -z-10"></div>
-    </div>
+    </motion.div>
   );
 };
 
 // --- Main Gallery Section Component ---
 const GallerySection = () => {
-  const [selectedItem, setSelectedItem] = useState(null);
+  const [currentIndex, setCurrentIndex] = useState(0);
   const [lightboxOpen, setLightboxOpen] = useState(false);
 
   const handleItemClick = (item) => {
-    setSelectedItem(item);
+    const index = galleryItems.findIndex((g) => g.id === item.id);
+    setCurrentIndex(index >= 0 ? index : 0);
     setLightboxOpen(true);
   };
 
   const closeLightbox = () => {
     setLightboxOpen(false);
-    setSelectedItem(null);
+  };
+
+  const navigateLightbox = (newIndex) => {
+    if (newIndex >= 0 && newIndex < galleryItems.length) {
+      setCurrentIndex(newIndex);
+    }
   };
 
   return (
@@ -402,13 +548,18 @@ const GallerySection = () => {
               radial-gradient(ellipse at 10% 80%, rgba(201,185,150,0.08) 0%, transparent 40%),
               radial-gradient(ellipse at 33% 50%, rgba(139,157,131,0.05) 0%, transparent 40%)
             `,
-            willChange: "transform",
           }}
         />
 
         <div className="relative w-full">
           {/* Section Title */}
-          <div className="text-center mb-12 sm:mb-16 md:mb-20 px-4">
+          <motion.div
+            className="text-center mb-12 sm:mb-16 md:mb-20 px-4"
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+          >
             {/* Pre-title with decorative elements */}
             <div className="flex items-center justify-center gap-3 sm:gap-4 mb-3 sm:mb-4">
               <span className="block w-8 sm:w-12 md:w-16 h-px bg-linear-to-r from-transparent via-gold/50 to-gold/50"></span>
@@ -433,11 +584,11 @@ const GallerySection = () => {
               </div>
               <span className="block w-10 sm:w-14 md:w-20 h-px bg-linear-to-l from-transparent to-rose/40"></span>
             </div>
-          </div>
+          </motion.div>
 
           {/* Masonry Grid Gallery */}
           <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 md:gap-6 auto-rows-[200px] sm:auto-rows-[240px] md:auto-rows-[280px]">
+            <div className="columns-1 sm:columns-2 lg:columns-3 gap-4 sm:gap-5 md:gap-6">
               {galleryItems.map((item, index) => (
                 <GalleryItem
                   loading="lazy"
@@ -512,9 +663,11 @@ const GallerySection = () => {
 
       {/* Lightbox Modal */}
       <LightboxModal
-        item={selectedItem}
+        items={galleryItems}
+        currentIndex={currentIndex}
         isOpen={lightboxOpen}
         onClose={closeLightbox}
+        onNavigate={navigateLightbox}
       />
     </>
   );

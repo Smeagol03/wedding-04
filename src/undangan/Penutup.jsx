@@ -1,10 +1,12 @@
-import React from "react";
-import penutupCouple from "/src/mempelai/7.jpg";
+import { motion } from "motion/react";
+import penutupCouple from "/src/mempelai/7.webp";
+import dekorKiri from "/src/dekor/kiri.webp";
+import dekorKanan from "/src/dekor/kanan.webp";
 
 // --- KONFIGURASI PENUTUP ---
 // Ganti dengan data Anda
-const namaPria = "Sopian";
-const namaWanita = "Yuyun";
+const namaPria = "Nama";
+const namaWanita = "Nama";
 const tanggalAcara = "25 Januari 2025";
 
 const closingQuote = {
@@ -18,7 +20,7 @@ const thankYouMessage =
 const closingMessage =
   "Atas kehadiran dan doa restunya, kami mengucapkan terima kasih.";
 
-const hashtag = "#SopianYuyun2025";
+const hashtag = "#Mempelai2026";
 
 const Penutup = () => {
   return (
@@ -36,15 +38,23 @@ const Penutup = () => {
         }}
       />
 
-      {/* ========================================== */}
-      {/* PLACEHOLDER DEKORASI - KIRI ATAS */}
-      {/* Contoh: <img src="/path/ke/bunga.png" className="absolute top-10 left-10 w-32 h-32 opacity-30" /> */}
-      {/* ========================================== */}
-
-      {/* ========================================== */}
-      {/* PLACEHOLDER DEKORASI - KANAN ATAS */}
-      {/* Contoh: <img src="/path/ke/bunga.png" className="absolute top-10 right-10 w-32 h-32 opacity-30 scale-x-[-1]" /> */}
-      {/* ========================================== */}
+      {/* Decorative corner images */}
+      <motion.img
+        src={dekorKiri}
+        alt=""
+        loading="lazy"
+        className="absolute top-10 left-0 sm:left-4 w-20 sm:w-28 md:w-36 opacity-25 pointer-events-none"
+        animate={{ y: [0, -8, 0], rotate: [0, 3, 0] }}
+        transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
+      />
+      <motion.img
+        src={dekorKanan}
+        alt=""
+        loading="lazy"
+        className="absolute top-10 right-0 sm:right-4 w-20 sm:w-28 md:w-36 opacity-25 pointer-events-none"
+        animate={{ y: [0, -6, 0], rotate: [0, -3, 0] }}
+        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+      />
 
       {/* Floating decorative hearts */}
       <div className="absolute top-[15%] left-[10%] text-rose/20 text-3xl sm:text-4xl animate-float">
@@ -109,7 +119,7 @@ const Penutup = () => {
               </div>
 
               {/* Photo Frame */}
-              <div className="relative w-40 h-40 sm:w-48 sm:h-48 md:w-56 md:h-56 lg:w-64 lg:h-64 mx-auto mb-8 sm:mb-10">
+              <div className="relative w-64 h-64 sm:w-72 sm:h-72 md:w-80 md:h-80 lg:w-96 lg:h-96 mx-auto mb-8 sm:mb-10">
                 {/* Photo glow */}
                 <div className="absolute -inset-3 bg-linear-to-br from-rose/20 via-gold/15 to-sage/20 rounded-full blur-lg"></div>
 
@@ -118,6 +128,7 @@ const Penutup = () => {
                   <img
                     src={penutupCouple}
                     alt="Foto Pasangan"
+                    loading="lazy"
                     className="w-full h-full object-cover"
                   />
                 </div>
@@ -188,15 +199,7 @@ const Penutup = () => {
           </div>
         </div>
 
-        {/* ========================================== */}
-        {/* PLACEHOLDER DEKORASI - KIRI BAWAH */}
-        {/* Contoh: <img src="/path/ke/bunga.png" className="absolute bottom-10 left-10 w-24 h-24 opacity-20" /> */}
-        {/* ========================================== */}
 
-        {/* ========================================== */}
-        {/* PLACEHOLDER DEKORASI - KANAN BAWAH */}
-        {/* Contoh: <img src="/path/ke/bunga.png" className="absolute bottom-10 right-10 w-24 h-24 opacity-20 scale-x-[-1]" /> */}
-        {/* ========================================== */}
       </div>
 
       {/* Footer credits */}

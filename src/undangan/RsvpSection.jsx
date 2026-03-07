@@ -1,7 +1,15 @@
 import React, { useState } from "react";
 import { database, ref, push } from "./firebase";
+import { motion } from "motion/react";
 
-// --- Komponen Utama RSVP ---
+import atasImg from "../dekor/atas.webp";
+import bgImage from "../mempelai/1.webp";
+
+const fadeInUp = {
+  hidden: { opacity: 0, y: 50 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } },
+};
+
 const RsvpSection = () => {
   const [formData, setFormData] = useState({
     name: "",
@@ -10,7 +18,7 @@ const RsvpSection = () => {
     message: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submissionStatus, setSubmissionStatus] = useState(null); // 'success' atau 'error'
+  const [submissionStatus, setSubmissionStatus] = useState(null);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -26,7 +34,6 @@ const RsvpSection = () => {
     setSubmissionStatus(null);
 
     try {
-      // Simpan ke Firebase Realtime Database
       const rsvpRef = ref(database, "rsvp");
       await push(rsvpRef, {
         name: formData.name,
@@ -47,90 +54,101 @@ const RsvpSection = () => {
   };
 
   return (
-    <section className="relative py-16 sm:py-20 md:py-24 lg:py-28 overflow-hidden">
-      {/* Combined Background - Single layer untuk mengurangi repaint di Android */}
+    <section className="relative py-20 sm:py-24 md:py-32 lg:py-40 overflow-hidden">
+      {/* Background Image with Fixed Parallax Effect */}
+      <div 
+        className="absolute inset-0 w-full h-full bg-cover bg-center bg-fixed z-0"
+        style={{ backgroundImage: `url(${bgImage})` }}
+      >
+        {/* Light Overlay to ensure brown text remains readable */}
+        <div className="absolute inset-0 bg-black/35 md:bg-black/25"></div>
+      </div>
+
+      {/* Premium Background Blends */}
       <div
-        className="absolute inset-0 pointer-events-none"
+        className="absolute inset-0 pointer-events-none z-0"
         style={{
           background: `
-            linear-gradient(to bottom, rgba(139,157,131,0.5), #fdf8f3 50%, rgba(139,157,131,0.3)),
-            radial-gradient(ellipse at 10% 20%, rgba(201,169,166,0.08) 0%, transparent 40%),
-            radial-gradient(ellipse at 90% 80%, rgba(201,185,150,0.08) 0%, transparent 40%),
-            radial-gradient(ellipse at 50% 50%, rgba(139,157,131,0.05) 0%, transparent 50%)
+            radial-gradient(circle at top center, rgba(201,169,166,0.15) 0%, transparent 40%),
+            radial-gradient(ellipse at bottom left, rgba(139,157,131,0.15) 0%, transparent 50%),
+            radial-gradient(ellipse at bottom right, rgba(201,185,150,0.15) 0%, transparent 50%)
           `,
-          willChange: "transform",
         }}
       />
+      
+      {/* Delicate Grid Pattern for Texture */}
+      <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGQ9Ik0wIDBMMDAgNDAiIHN0cm9rZT0icmdiYSgyMDEsIDE4NSLCAxNTAsIDAuMikiIHN0cm9rZS13aWR0aD0iMC41IiBmaWxsPSJub25lIi8+CjxwYXRoIGQ9Ik0wIDBMNDAgMCIgc3Ryb2tlPSJyZ2JhKDIwMSwgMTg1LCAxNTAsIDAuMikiIHN0cm9rZS13aWR0aD0iMC41IiBmaWxsPSJub25lIi8+Cjwvc3ZnPg==')] z-0"></div>
 
-      {/* ========================================== */}
-      {/* PLACEHOLDER DEKORASI - KIRI ATAS */}
-      {/* Ganti dengan gambar/ikon dekoratif Anda */}
-      {/* Contoh: <img src="/path/ke/bunga-kiri.png" className="absolute top-10 left-10 w-32 h-32 opacity-30" /> */}
-      {/* ========================================== */}
+      {/* Elegant Header/Footer Decorations using full-width images */}
+      <motion.img 
+        src={atasImg} 
+        alt="" 
+        loading="lazy"
+        initial={{ opacity: 0, y: -50 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 1.5, ease: "easeOut" }}
+        className="absolute top-0 left-0 w-full object-cover opacity-80 mix-blend-multiply pointer-events-none z-10" 
+      />
+      
+      <motion.img 
+        src={atasImg} 
+        alt="" 
+        loading="lazy"
+        initial={{ opacity: 0, y: 50 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 1.5, ease: "easeOut" }}
+        className="absolute bottom-0 left-0 w-full object-cover rotate-180 opacity-80 mix-blend-multiply pointer-events-none z-10" 
+      />
 
-      {/* ========================================== */}
-      {/* PLACEHOLDER DEKORASI - KANAN ATAS */}
-      {/* Ganti dengan gambar/ikon dekoratif Anda */}
-      {/* Contoh: <img src="/path/ke/bunga-kanan.png" className="absolute top-10 right-10 w-32 h-32 opacity-30" /> */}
-      {/* ========================================== */}
-
-      <div className="relative w-full">
-        {/* Section Title */}
-        <div className="text-center mb-12 sm:mb-14 md:mb-16 px-4">
-          {/* Pre-title with decorative elements */}
-          <div className="flex items-center justify-center gap-3 sm:gap-4 mb-3 sm:mb-4">
-            <span className="block w-8 sm:w-12 md:w-16 h-px bg-linear-to-r from-transparent via-gold/50 to-gold/50"></span>
-            <p className="font-sans text-[10px] sm:text-xs md:text-sm tracking-[0.2em] sm:tracking-[0.3em] uppercase text-sage">
-              Konfirmasi Kehadiran
-            </p>
-            <span className="block w-8 sm:w-12 md:w-16 h-px bg-linear-to-l from-transparent via-gold/50 to-gold/50"></span>
+      <div className="relative z-20 w-full">
+        {/* Section Header */}
+        <motion.div 
+          className="text-center mb-10 md:mb-16 px-4"
+          variants={fadeInUp}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+        >
+          <div className="flex items-center justify-center gap-4 mb-4">
+            <span className="w-16 md:w-24 h-px bg-linear-to-r from-transparent to-gold"></span>
+            <span className="font-sans text-[10px] md:text-xs tracking-[0.3em] uppercase text-white font-medium">
+              Kehadiran Anda
+            </span>
+            <span className="w-16 md:w-24 h-px bg-linear-to-l from-transparent to-gold"></span>
           </div>
 
-          {/* Main Title */}
-          <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-brown mb-4 sm:mb-5">
-            RSVP
+          <h2 className="font-display text-4xl md:text-5xl lg:text-6xl text-white mb-6">
+            Reservasi
           </h2>
 
-          {/* Decorative element under title */}
-          <div className="flex items-center justify-center gap-2 sm:gap-3 mb-4 sm:mb-6">
-            <span className="block w-10 sm:w-14 md:w-20 h-px bg-linear-to-r from-transparent to-rose/40"></span>
-            <div className="flex items-center gap-1.5 sm:gap-2">
-              <div className="w-1.5 sm:w-2 h-1.5 sm:h-2 rounded-full bg-gold/40"></div>
-              <div className="w-2 sm:w-2.5 h-2 sm:h-2.5 rounded-full bg-rose/50"></div>
-              <div className="w-1.5 sm:w-2 h-1.5 sm:h-2 rounded-full bg-gold/40"></div>
-            </div>
-            <span className="block w-10 sm:w-14 md:w-20 h-px bg-linear-to-l from-transparent to-rose/40"></span>
-          </div>
-
-          <p className="font-sans text-xs sm:text-sm md:text-base text-sage-dark max-w-xl mx-auto leading-relaxed">
-            Mohon konfirmasi kehadiran Anda selambat-lambatnya satu minggu
-            sebelum acara. Kehadiran Anda adalah kebahagiaan kami.
+          <p className="font-sans text-xs sm:text-sm md:text-base text-white/90 max-w-lg mx-auto leading-relaxed italic opacity-90">
+            Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir untuk memberikan doa restu.
           </p>
-        </div>
+        </motion.div>
 
-        {/* Form Container */}
-        <div className="max-w-xl mx-auto px-4 sm:px-6 md:px-8">
-          {/* Form Card with Glassmorphism */}
+        {/* Premium Form Card */}
+        <motion.div 
+          className="max-w-xl mx-auto px-5"
+          variants={fadeInUp}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+        >
           <div className="relative group">
-            {/* Outer glow effect */}
-            <div className="absolute -inset-2 sm:-inset-3 bg-linear-to-br from-rose/10 via-gold/5 to-sage/10 rounded-2xl sm:rounded-3xl blur-lg opacity-0 group-hover:opacity-100 transition-all duration-500"></div>
+            {/* Elegant Golden Glow */}
+            <div className="absolute -inset-1 bg-linear-to-br from-gold/30 via-transparent to-rose/30 rounded-3xl blur-xl opacity-50 group-hover:opacity-80 transition-opacity duration-700"></div>
 
             <form
               onSubmit={handleSubmit}
-              className="relative bg-white/80 backdrop-blur-sm border border-rose/20 p-6 sm:p-8 md:p-10 rounded-2xl sm:rounded-3xl shadow-xl group-hover:shadow-2xl transition-all duration-300"
+              className="relative bg-white/10 backdrop-blur-md border border-white/20 p-8 md:p-12 rounded-4xl shadow-[0_20px_40px_-15px_rgba(0,0,0,0.3)] transition-all"
             >
-              {/* Decorative corner accents */}
-              <div className="absolute top-0 right-0 w-20 h-20 bg-linear-to-bl from-gold/10 to-transparent rounded-tr-2xl sm:rounded-tr-3xl"></div>
-              <div className="absolute bottom-0 left-0 w-20 h-20 bg-linear-to-tr from-rose/10 to-transparent rounded-bl-2xl sm:rounded-bl-3xl"></div>
+              {/* Subtle inner border */}
+              <div className="absolute inset-3 border border-gold/20 rounded-[1.25rem] pointer-events-none"></div>
 
-              {/* Input Nama */}
-              <div className="relative mb-6">
-                <label
-                  htmlFor="name"
-                  className="block text-sm font-sans font-medium text-brown mb-2"
-                >
-                  Nama Anda <span className="text-rose">*</span>
-                </label>
+              {/* Name Field */}
+              <div className="relative mb-8 z-10">
                 <input
                   type="text"
                   id="name"
@@ -138,241 +156,148 @@ const RsvpSection = () => {
                   value={formData.name}
                   onChange={handleChange}
                   required
-                  className="w-full px-4 py-3 bg-white/70 border border-sage/30 rounded-xl text-brown placeholder-sage/50 focus:border-gold focus:ring-2 focus:ring-gold/20 transition-all duration-200 focus:outline-none"
+                  className="peer w-full bg-transparent border-b border-white/40 py-3 text-white placeholder-transparent focus:border-gold focus:outline-none transition-colors"
                   placeholder="Nama Lengkap"
                 />
+                <label
+                  htmlFor="name"
+                  className="absolute left-0 -top-3.5 text-xs font-sans text-white/80 tracking-wider transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-white/60 peer-placeholder-shown:top-3 peer-focus:-top-3.5 peer-focus:text-xs peer-focus:text-gold uppercase"
+                >
+                  Nama Tamu
+                </label>
               </div>
 
-              {/* Pilihan Kehadiran & Jumlah Tamu */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                {/* Pilihan Kehadiran */}
+              {/* Attendance and Guests Fields */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8 z-10 relative">
                 <div className="relative">
-                  <label
-                    htmlFor="attendance"
-                    className="block text-sm font-sans font-medium text-brown mb-2"
-                  >
-                    Konfirmasi Kehadiran <span className="text-rose">*</span>
-                  </label>
                   <select
                     id="attendance"
                     name="attendance"
                     value={formData.attendance}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-3 bg-white/70 border border-sage/30 rounded-xl text-brown focus:border-gold focus:ring-2 focus:ring-gold/20 transition-all duration-200 focus:outline-none appearance-none cursor-pointer"
+                    className="w-full bg-transparent border-b border-white/40 py-3 text-white focus:border-gold focus:outline-none transition-colors appearance-none cursor-pointer"
                   >
-                    <option value="Hadir">Ya, saya akan Hadir</option>
-                    <option value="Tidak Hadir">
-                      Maaf, saya Tidak Bisa Hadir
-                    </option>
+                    <option value="Hadir" className="bg-cream text-brown">Ya, saya akan Hadir</option>
+                    <option value="Tidak Hadir" className="bg-cream text-brown">Maaf, Tidak Bisa Hadir</option>
                   </select>
-                  {/* Custom dropdown arrow */}
-                  <div className="absolute right-4 top-[42px] pointer-events-none">
-                    <svg
-                      className="w-4 h-4 text-sage"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M19 9l-7 7-7-7"
-                      />
+                  <label htmlFor="attendance" className="absolute left-0 -top-3.5 text-xs font-sans text-white/80 tracking-wider uppercase">
+                    Kehadiran
+                  </label>
+                  <div className="absolute right-0 top-4 pointer-events-none text-white/60">
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M19 9l-7 7-7-7" />
                     </svg>
                   </div>
                 </div>
 
-                {/* Jumlah Tamu */}
                 <div className="relative">
-                  <label
-                    htmlFor="guests"
-                    className="block text-sm font-sans font-medium text-brown mb-2"
-                  >
-                    Jumlah Tamu <span className="text-rose">*</span>
-                  </label>
-                  <input
-                    type="number"
+                  <select
                     id="guests"
                     name="guests"
                     value={formData.guests}
                     onChange={handleChange}
-                    min="1"
-                    max="5"
                     required
-                    className="w-full px-4 py-3 bg-white/70 border border-sage/30 rounded-xl text-brown focus:border-gold focus:ring-2 focus:ring-gold/20 transition-all duration-200 focus:outline-none"
-                  />
-                  <p className="mt-1 text-xs text-sage/70">
-                    Termasuk Anda (max. 5 orang)
-                  </p>
+                    className="w-full bg-transparent border-b border-white/40 py-3 text-white focus:border-gold focus:outline-none transition-colors appearance-none cursor-pointer"
+                  >
+                    {[1, 2, 3, 4, 5].map(num => (
+                      <option key={num} value={num} className="bg-cream text-brown">{num} Orang</option>
+                    ))}
+                  </select>
+                  <label htmlFor="guests" className="absolute left-0 -top-3.5 text-xs font-sans text-white/80 tracking-wider uppercase">
+                    Jumlah Tamu
+                  </label>
+                  <div className="absolute right-0 top-4 pointer-events-none text-white/60">
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </div>
                 </div>
               </div>
 
-              {/* Pesan/Doa */}
-              <div className="relative mb-8">
-                <label
-                  htmlFor="message"
-                  className="block text-sm font-sans font-medium text-brown mb-2"
-                >
-                  Pesan / Doa Terbaik{" "}
-                  <span className="text-sage/60">(Opsional)</span>
-                </label>
+              {/* Message Field */}
+              <div className="relative mb-10 z-10">
                 <textarea
                   id="message"
                   name="message"
                   value={formData.message}
                   onChange={handleChange}
-                  rows="4"
-                  className="w-full px-4 py-3 bg-white/70 border border-sage/30 rounded-xl text-brown placeholder-sage/50 focus:border-gold focus:ring-2 focus:ring-gold/20 transition-all duration-200 focus:outline-none resize-none"
-                  placeholder="Tuliskan ucapan atau doa terbaik Anda di sini..."
+                  rows="3"
+                  className="peer w-full bg-transparent border-b border-white/40 py-3 text-white placeholder-transparent focus:border-gold focus:outline-none transition-colors resize-none"
+                  placeholder="Pesan, harapan, atau doa"
                 ></textarea>
+                <label
+                  htmlFor="message"
+                  className="absolute left-0 -top-3.5 text-xs font-sans text-white/80 tracking-wider transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-white/60 peer-placeholder-shown:top-3 peer-focus:-top-3.5 peer-focus:text-xs peer-focus:text-gold uppercase"
+                >
+                  Pesan & Doa
+                </label>
               </div>
 
-              {/* Tombol Submit */}
-              <button
-                type="submit"
-                disabled={isSubmitting}
-                className={`relative w-full py-3.5 sm:py-4 px-6 rounded-xl font-sans text-sm font-semibold uppercase tracking-wider transition-all duration-300 overflow-hidden ${
-                  isSubmitting
-                    ? "bg-sage/50 text-white cursor-not-allowed"
-                    : "bg-linear-to-r from-brown via-brown to-brown/90 text-white hover:shadow-lg hover:shadow-brown/20 hover:-translate-y-0.5 focus:outline-none focus:ring-4 focus:ring-gold/30"
-                }`}
-              >
-                {/* Button glow effect */}
-                <div className="absolute inset-0 bg-linear-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
-
-                <span className="relative flex items-center justify-center gap-2">
+              {/* Submit Button */}
+              <div className="text-center z-10 relative">
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className={`
+                    relative inline-flex items-center justify-center gap-3 px-10 py-4 overflow-hidden rounded-full font-sans text-xs tracking-[2px] font-medium uppercase transition-all duration-500
+                    ${isSubmitting 
+                      ? "bg-sage/40 text-white cursor-not-allowed" 
+                      : "bg-brown text-white hover:bg-brown-dark shadow-[0_10px_20px_rgba(93,78,66,0.3)] hover:shadow-[0_15px_25px_rgba(93,78,66,0.4)] hover:-translate-y-1"}
+                  `}
+                >
                   {isSubmitting ? (
-                    <>
-                      {/* Loading spinner */}
-                      <svg
-                        className="animate-spin h-5 w-5"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                      >
-                        <circle
-                          className="opacity-25"
-                          cx="12"
-                          cy="12"
-                          r="10"
-                          stroke="currentColor"
-                          strokeWidth="4"
-                        ></circle>
-                        <path
-                          className="opacity-75"
-                          fill="currentColor"
-                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                        ></path>
+                    <span className="flex items-center gap-2">
+                       <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                       </svg>
-                      Mengirim...
-                    </>
+                      Menyimpan...
+                    </span>
                   ) : (
                     <>
-                      <svg
-                        className="w-5 h-5"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="2"
-                          d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
-                        />
+                      <span>Kirim Konfirmasi</span>
+                      <svg className="w-4 h-4 translate-x-0 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
                       </svg>
-                      Kirim Konfirmasi
                     </>
                   )}
-                </span>
-              </button>
+                </button>
+              </div>
 
-              {/* Status Messages */}
-              {submissionStatus === "success" && (
-                <div className="mt-6 relative overflow-hidden">
-                  <div className="absolute inset-0 bg-linear-to-r from-green-500/10 to-emerald-500/10 rounded-xl blur-sm"></div>
-                  <div className="relative flex items-center gap-3 p-4 bg-green-50/80 backdrop-blur-sm border border-green-200/50 rounded-xl">
-                    <div className="shrink-0 w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
-                      <svg
-                        className="w-5 h-5 text-green-600"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="2"
-                          d="M5 13l4 4L19 7"
-                        />
-                      </svg>
-                    </div>
-                    <div>
-                      <p className="font-sans text-sm font-medium text-green-800">
-                        Konfirmasi Berhasil Terkirim!
-                      </p>
-                      <p className="font-sans text-xs text-green-600/80">
-                        Terima kasih telah mengkonfirmasi kehadiran Anda.
-                      </p>
-                    </div>
+              {/* Success/Error Feedback */}
+              <motion.div 
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: submissionStatus ? 1 : 0, height: submissionStatus ? 'auto' : 0 }}
+                className="overflow-hidden mt-6"
+              >
+                {submissionStatus === "success" && (
+                  <div className="bg-white/10 border border-white/20 text-white p-4 rounded-xl text-center flex items-center justify-center gap-3">
+                    <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <span className="font-sans text-sm font-medium">Terima kasih atas konfirmasinya.</span>
                   </div>
-                </div>
-              )}
+                )}
 
-              {submissionStatus === "error" && (
-                <div className="mt-6 relative overflow-hidden">
-                  <div className="absolute inset-0 bg-linear-to-r from-red-500/10 to-rose-500/10 rounded-xl blur-sm"></div>
-                  <div className="relative flex items-center gap-3 p-4 bg-red-50/80 backdrop-blur-sm border border-red-200/50 rounded-xl">
-                    <div className="shrink-0 w-10 h-10 bg-red-100 rounded-full flex items-center justify-center">
-                      <svg
-                        className="w-5 h-5 text-red-600"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="2"
-                          d="M6 18L18 6M6 6l12 12"
-                        />
-                      </svg>
-                    </div>
-                    <div>
-                      <p className="font-sans text-sm font-medium text-red-800">
-                        Gagal Mengirim Konfirmasi
-                      </p>
-                      <p className="font-sans text-xs text-red-600/80">
-                        Terjadi kesalahan. Mohon coba lagi nanti.
-                      </p>
-                    </div>
+                {submissionStatus === "error" && (
+                  <div className="bg-red-500/10 border border-red-500/20 text-red-800 p-4 rounded-xl text-center flex items-center justify-center gap-3">
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <span className="font-sans text-sm font-medium">Terjadi kesalahan, mohon coba kembali.</span>
                   </div>
-                </div>
-              )}
+                )}
+              </motion.div>
             </form>
           </div>
-        </div>
+        </motion.div>
 
-        {/* ========================================== */}
-        {/* PLACEHOLDER DEKORASI - KIRI BAWAH */}
-        {/* Ganti dengan gambar/ikon dekoratif Anda */}
-        {/* Contoh: <img src="/path/ke/daun-kiri.png" className="absolute bottom-10 left-10 w-24 h-24 opacity-20" /> */}
-        {/* ========================================== */}
-
-        {/* ========================================== */}
-        {/* PLACEHOLDER DEKORASI - KANAN BAWAH */}
-        {/* Ganti dengan gambar/ikon dekoratif Anda */}
-        {/* Contoh: <img src="/path/ke/daun-kanan.png" className="absolute bottom-10 right-10 w-24 h-24 opacity-20" /> */}
-        {/* ========================================== */}
-
-        {/* Bottom decorative element */}
-        <div className="flex items-center justify-center gap-3 mt-12 sm:mt-16 md:mt-20">
-          <span className="block w-8 sm:w-12 h-px bg-linear-to-r from-transparent to-gold/40"></span>
-          <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-full bg-white/80 border border-gold/30 flex items-center justify-center shadow-md">
-            <span className="text-sm sm:text-base">💌</span>
-          </div>
-          <span className="block w-8 sm:w-12 h-px bg-linear-to-l from-transparent to-gold/40"></span>
+        {/* Elegant Bottom Divider */}
+        <div className="flex items-center justify-center gap-3 mt-16 md:mt-24 pointer-events-none">
+          <span className="block w-12 h-px bg-linear-to-r from-transparent to-gold/40"></span>
+          <div className="w-2.5 h-2.5 rotate-45 border border-gold/60"></div>
+          <span className="block w-12 h-px bg-linear-to-l from-transparent to-gold/40"></span>
         </div>
       </div>
     </section>

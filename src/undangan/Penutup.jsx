@@ -1,10 +1,9 @@
-import React from "react";
 import penutupCouple from "/src/mempelai/7.webp";
 
 // --- KONFIGURASI PENUTUP ---
 // Ganti dengan data Anda
-const namaPria = "Sopian";
-const namaWanita = "Yuyun";
+const namaPria = "Nama";
+const namaWanita = "Nama";
 const tanggalAcara = "25 Januari 2025";
 
 const closingQuote = {
@@ -109,7 +108,7 @@ const Penutup = () => {
               </div>
 
               {/* Photo Frame */}
-              <div className="relative w-40 h-40 sm:w-48 sm:h-48 md:w-56 md:h-56 lg:w-64 lg:h-64 mx-auto mb-8 sm:mb-10">
+              <div className="relative w-64 h-64 sm:w-72 sm:h-72 md:w-80 md:h-80 lg:w-96 lg:h-96 mx-auto mb-8 sm:mb-10">
                 {/* Photo glow */}
                 <div className="absolute -inset-3 bg-linear-to-br from-rose/20 via-gold/15 to-sage/20 rounded-full blur-lg"></div>
 

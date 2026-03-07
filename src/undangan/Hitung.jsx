@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 
 const Hitung = () => {
   // Tanggal acara - sesuaikan dengan tanggal pernikahan
-  const tanggalAcara = new Date("2026-02-01T08:30:00").getTime();
+  const tanggalAcara = new Date("2026-03-29T08:30:00").getTime();
 
   const [waktuTersisa, setWaktuTersisa] = useState({
     hari: 0,

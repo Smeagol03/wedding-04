@@ -84,7 +84,6 @@
 
 /* Base */
 html {
-  scroll-behavior: smooth;
   --vh: 1svh;
 }
 

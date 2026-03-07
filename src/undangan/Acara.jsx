@@ -8,19 +8,19 @@ import { motion } from "motion/react";
 const Acara = () => {
   // Data Mempelai - sesuaikan dengan data yang benar
   const mempelaiPria = {
-    nama: "Edikurniawan",
-    namaAyah: "Bapak Daeng Abdul Mu'in",
-    namaIbu: "Ibu Hayaki",
+    nama: "Mempelai Pria",
+    namaAyah: "Nama Ayah Pria",
+    namaIbu: "Nama Ibu Pria",
     anakKe: "Putra pertama dari",
-    alamat: "Geres baret kel geres kec labuhan haji",
+    alamat: "Alamat Mempelai Pria",
   };
 
   const mempelaiWanita = {
-    nama: "Noviana",
-    namaAyah: "Bapak Napiah",
-    namaIbu: "Ibu Aspiah",
+    nama: "Mempelai Wanita",
+    namaAyah: "Nama Ayah Wanita",
+    namaIbu: "Nama Ibu Wanita",
     anakKe: "Putri kedua dari",
-    alamat: "karang sari kel suryawangi kec labuhan haji",
+    alamat: "Alamat Mempelai Wanita",
   };
 
   // Animation variants for waving decoration

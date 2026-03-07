@@ -1,47 +1,148 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, memo, useCallback } from "react";
+import { motion, AnimatePresence } from "motion/react";
 import { database, ref, push, onValue } from "./firebase";
 import couplePhoto from "/src/mempelai/8.webp";
+import dekorKiri from "/src/dekor/kiri-bawah.webp";
+import dekorKanan from "/src/dekor/kanan-atas.webp";
 
+// ─── Constants (outside component = no re-creation) ───
+const ATTENDANCE_OPTIONS = {
+  hadir: { text: "Hadir", color: "bg-green-100 text-green-700 border-green-200", icon: "✓" },
+  tidak_hadir: { text: "Berhalangan", color: "bg-rose/10 text-rose border-rose/20", icon: "✕" },
+  ragu: { text: "Masih Ragu", color: "bg-yellow-100 text-yellow-700 border-yellow-200", icon: "?" },
+};
+
+const ATTENDANCE_KEYS = Object.keys(ATTENDANCE_OPTIONS);
+const MAX_COMMENT_LENGTH = 300;
+
+// ─── Utils ───
+const timeAgo = (date) => {
+  const seconds = Math.floor((new Date() - new Date(date)) / 1000);
+  if (seconds < 10) return "Baru saja";
+  if (seconds < 60) return Math.floor(seconds) + " detik lalu";
+  const minutes = seconds / 60;
+  if (minutes < 60) return Math.floor(minutes) + " menit lalu";
+  const hours = seconds / 3600;
+  if (hours < 24) return Math.floor(hours) + " jam lalu";
+  const days = seconds / 86400;
+  if (days < 30) return Math.floor(days) + " hari lalu";
+  const months = seconds / 2592000;
+  if (months < 12) return Math.floor(months) + " bulan lalu";
+  return Math.floor(seconds / 31536000) + " tahun lalu";
+};
+
+// ─── Memoized Comment Card (won't re-render when parent form state changes) ───
+const CommentCard = memo(({ comment, index }) => {
+  const statusConfig = ATTENDANCE_OPTIONS[comment.attendance] || ATTENDANCE_OPTIONS.hadir;
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: Math.min(index * 0.08, 0.8) }}
+      className="bg-white p-5 sm:p-6 border border-cream-dark hover:border-brown/20 shadow-sm hover:shadow-md transition-all duration-300 group"
+    >
+      <div className="flex items-start gap-4">
+        {/* Avatar Monogram */}
+        <div className="w-10 h-10 sm:w-12 sm:h-12 shrink-0 bg-brown text-cream rounded flex items-center justify-center font-serif text-xl shadow-inner uppercase">
+          {comment.name.charAt(0)}
+        </div>
+
+        <div className="flex-1 min-w-0">
+          {/* Header */}
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-2">
+            <h4 className="font-sans font-bold text-brown text-base truncate">
+              {comment.name}
+            </h4>
+            <div className="flex items-center gap-3 shrink-0">
+              <span className={`text-[9px] uppercase tracking-widest font-bold px-2 py-0.5 border rounded-full whitespace-nowrap ${statusConfig.color}`}>
+                {statusConfig.icon} {statusConfig.text}
+              </span>
+              <span className="font-mono text-[10px] text-brown/40 whitespace-nowrap">
+                {timeAgo(comment.timestamp)}
+              </span>
+            </div>
+          </div>
+
+          {/* Message */}
+          <div className="relative">
+            <span className="absolute -left-2 -top-1 font-serif text-3xl leading-none text-brown/10 pointer-events-none select-none">"</span>
+            <p className="font-sans text-sm text-brown/80 leading-relaxed font-medium relative z-10 p-1">
+              {comment.comment}
+            </p>
+          </div>
+        </div>
+      </div>
+    </motion.div>
+  );
+});
+CommentCard.displayName = "CommentCard";
+
+// ─── Memoized Comment Feed (isolates from form re-renders) ───
+const CommentFeed = memo(({ comments }) => (
+  <div className="flex-1 max-h-[600px] overflow-y-auto pr-2 sm:pr-4 space-y-4 custom-scrollbar">
+    {comments.length > 0 ? (
+      comments.map((comment, i) => (
+        <CommentCard key={comment.id} comment={comment} index={i} />
+      ))
+    ) : (
+      <div className="flex flex-col items-center justify-center h-64 border-2 border-dashed border-brown/20 rounded-2xl bg-white/50">
+        <span className="text-4xl mb-4 grayscale opacity-50 block">🕊️</span>
+        <p className="font-sans text-sm font-bold tracking-widest uppercase text-brown/50">
+          Buku tamu masih kosong
+        </p>
+        <p className="font-sans text-xs text-brown/40 mt-2">
+          Jadilah yang pertama mengukir doa.
+        </p>
+      </div>
+    )}
+  </div>
+));
+CommentFeed.displayName = "CommentFeed";
+
+// ─── Main Component ───
 const Komentar = () => {
   const [formData, setFormData] = useState({
     name: "",
     comment: "",
+    attendance: "hadir",
   });
   const [comments, setComments] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submissionStatus, setSubmissionStatus] = useState(null);
 
-  // Fetch comments from Firebase
+  // Firebase listener
   useEffect(() => {
     const commentsRef = ref(database, "comments");
     const unsubscribe = onValue(commentsRef, (snapshot) => {
       const data = snapshot.val();
       if (data) {
         const commentsList = Object.entries(data)
-          .map(([id, value]) => ({
-            id,
-            ...value,
-          }))
-          .reverse(); // Terbaru di atas
+          .map(([id, value]) => ({ id, ...value }))
+          .reverse();
         setComments(commentsList);
       } else {
         setComments([]);
       }
     });
-
     return () => unsubscribe();
   }, []);
 
-  const handleChange = (e) => {
+  // Stable callbacks (no re-creation per render)
+  const handleChange = useCallback((e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
+    if (name === "comment" && value.length > MAX_COMMENT_LENGTH) return;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  }, []);
 
-  const handleSubmit = async (e) => {
+  const handleAttendanceChange = useCallback((status) => {
+    setFormData((prev) => ({ ...prev, attendance: status }));
+  }, []);
+
+  const handleSubmit = useCallback(async (e) => {
     e.preventDefault();
+    if (!formData.name.trim() || !formData.comment.trim()) return;
+
     setIsSubmitting(true);
     setSubmissionStatus(null);
 
@@ -50,11 +151,11 @@ const Komentar = () => {
       await push(commentsRef, {
         name: formData.name,
         comment: formData.comment,
+        attendance: formData.attendance,
         timestamp: new Date().toISOString(),
       });
-
       setSubmissionStatus("success");
-      setFormData({ name: "", comment: "" });
+      setFormData({ name: "", comment: "", attendance: "hadir" });
       setTimeout(() => setSubmissionStatus(null), 3000);
     } catch (error) {
       console.error("Error submitting comment:", error);
@@ -62,345 +163,200 @@ const Komentar = () => {
     } finally {
       setIsSubmitting(false);
     }
-  };
+  }, [formData]);
 
-  // Format tanggal
-  const formatDate = (timestamp) => {
-    const date = new Date(timestamp);
-    return date.toLocaleDateString("id-ID", {
-      day: "numeric",
-      month: "long",
-      year: "numeric",
-    });
-  };
+  const charCount = formData.comment.length;
+  const isOverLimit = charCount > 280;
 
   return (
-    <section className="relative py-16 sm:py-20 md:py-24 lg:py-28 overflow-hidden">
-      {/* Combined Background - Single layer untuk mengurangi repaint di Android */}
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          background: `
-            linear-gradient(to bottom, #fdf8f3, rgba(201,169,166,0.05) 50%, #fdf8f3),
-            radial-gradient(ellipse at 10% 20%, rgba(201,169,166,0.08) 0%, transparent 40%),
-            radial-gradient(ellipse at 90% 80%, rgba(201,185,150,0.08) 0%, transparent 40%),
-            radial-gradient(ellipse at 33% 50%, rgba(139,157,131,0.05) 0%, transparent 40%)
-          `,
-          willChange: "transform",
-        }}
+    <section className="relative py-20 lg:py-32 bg-cream overflow-hidden">
+      {/* Decorative images */}
+      <img
+        src={dekorKanan}
+        alt=""
+        loading="lazy"
+        className="absolute top-0 right-0 w-32 md:w-56 opacity-10 pointer-events-none grayscale"
+      />
+      <img
+        src={dekorKiri}
+        alt=""
+        loading="lazy"
+        className="absolute bottom-0 left-0 w-32 md:w-56 opacity-10 pointer-events-none grayscale"
       />
 
-      {/* ========================================== */}
-      {/* PLACEHOLDER DEKORASI - KIRI ATAS */}
-      {/* Contoh: <img src="/path/ke/bunga.png" className="absolute top-10 left-10 w-32 h-32 opacity-30" /> */}
-      {/* ========================================== */}
+      <div className="relative w-full max-w-7xl mx-auto px-6 sm:px-10 lg:px-16">
 
-      {/* ========================================== */}
-      {/* PLACEHOLDER DEKORASI - KANAN ATAS */}
-      {/* Contoh: <img src="/path/ke/bunga.png" className="absolute top-10 right-10 w-32 h-32 opacity-30" /> */}
-      {/* ========================================== */}
-
-      <div className="relative w-full">
-        {/* Section Title */}
-        <div className="text-center mb-12 sm:mb-14 md:mb-16 px-4">
-          {/* Pre-title */}
-          <div className="flex items-center justify-center gap-3 sm:gap-4 mb-3 sm:mb-4">
-            <span className="block w-8 sm:w-12 md:w-16 h-px bg-linear-to-r from-transparent via-gold/50 to-gold/50"></span>
-            <p className="font-sans text-[10px] sm:text-xs md:text-sm tracking-[0.2em] sm:tracking-[0.3em] uppercase text-sage">
-              Ucapan & Doa
-            </p>
-            <span className="block w-8 sm:w-12 md:w-16 h-px bg-linear-to-l from-transparent via-gold/50 to-gold/50"></span>
-          </div>
-
-          {/* Main Title */}
-          <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-brown mb-4 sm:mb-5">
-            Kirim Ucapan
+        {/* Header */}
+        <motion.div
+          className="mb-16 md:mb-24"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+        >
+          <p className="font-sans text-xs sm:text-sm tracking-[0.4em] font-bold uppercase text-sage mb-4 border-l-[3px] border-sage pl-4">
+            Buku Tamu Digital
+          </p>
+          <h2 className="font-serif text-5xl sm:text-6xl md:text-7xl text-brown font-medium leading-[0.9] tracking-tight">
+            Ucapan &amp; <br />
+            <span className="text-rose-gold italic font-normal">Doa Restu</span>
           </h2>
+        </motion.div>
 
-          {/* Decorative element */}
-          <div className="flex items-center justify-center gap-2 sm:gap-3 mb-4 sm:mb-6">
-            <span className="block w-10 sm:w-14 md:w-20 h-px bg-linear-to-r from-transparent to-rose/40"></span>
-            <div className="flex items-center gap-1.5 sm:gap-2">
-              <div className="w-1.5 sm:w-2 h-1.5 sm:h-2 rounded-full bg-gold/40"></div>
-              <div className="w-2 sm:w-2.5 h-2 sm:h-2.5 rounded-full bg-rose/50"></div>
-              <div className="w-1.5 sm:w-2 h-1.5 sm:h-2 rounded-full bg-gold/40"></div>
-            </div>
-            <span className="block w-10 sm:w-14 md:w-20 h-px bg-linear-to-l from-transparent to-rose/40"></span>
-          </div>
-        </div>
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 lg:gap-16 items-start">
 
-        {/* Main Content */}
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 md:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-start">
-            {/* Left - Photo Section */}
-            <div className="order-2 lg:order-1">
-              <div className="relative group">
-                {/* Outer glow */}
-                <div className="absolute -inset-3 sm:-inset-4 bg-linear-to-br from-rose/15 via-gold/10 to-sage/15 rounded-3xl blur-lg opacity-60 group-hover:opacity-100 transition-all duration-500"></div>
+          {/* ─── LEFT: Form ─── */}
+          <div className="lg:col-span-2 order-2 lg:order-1">
+            <div className="bg-white border-t-[6px] border-brown shadow-sm p-8 sm:p-10 relative">
+              <h3 className="font-serif text-3xl text-brown font-medium mb-8">Tinggalkan Pesan</h3>
 
-                {/* Photo Frame */}
-                <div className="relative bg-white/80 backdrop-blur-sm border border-rose/20 rounded-2xl sm:rounded-3xl p-4 sm:p-5 shadow-xl">
-                  {/* Decorative corners */}
-                  <div className="absolute top-2 left-2 sm:top-3 sm:left-3 w-8 h-8 sm:w-10 sm:h-10 border-l-2 border-t-2 border-gold/40 rounded-tl-lg"></div>
-                  <div className="absolute top-2 right-2 sm:top-3 sm:right-3 w-8 h-8 sm:w-10 sm:h-10 border-r-2 border-t-2 border-gold/40 rounded-tr-lg"></div>
-                  <div className="absolute bottom-2 left-2 sm:bottom-3 sm:left-3 w-8 h-8 sm:w-10 sm:h-10 border-l-2 border-b-2 border-gold/40 rounded-bl-lg"></div>
-                  <div className="absolute bottom-2 right-2 sm:bottom-3 sm:right-3 w-8 h-8 sm:w-10 sm:h-10 border-r-2 border-b-2 border-gold/40 rounded-br-lg"></div>
+              <form onSubmit={handleSubmit} className="space-y-7">
 
-                  {/* Photo */}
-                  <div className="relative aspect-4/5 rounded-xl sm:rounded-2xl overflow-hidden">
-                    <img
-                      src={couplePhoto}
-                      alt="Foto Pasangan"
-                      loading="lazy"
-                      className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
-                    />
-                    {/* Overlay gradient */}
-                    <div className="absolute inset-0 bg-linear-to-t from-black/30 via-transparent to-transparent"></div>
-                  </div>
-
-                  {/* Caption */}
-                  <div className="text-center mt-4 sm:mt-5">
-                    <p className="font-serif text-lg sm:text-xl text-brown italic">
-                      "Terima kasih atas doa dan ucapannya"
-                    </p>
-                    <div className="flex items-center justify-center gap-2 mt-2">
-                      <span className="block w-8 h-px bg-rose/40"></span>
-                      <span className="text-rose">❤</span>
-                      <span className="block w-8 h-px bg-rose/40"></span>
-                    </div>
+                {/* Attendance Selector */}
+                <div>
+                  <label className="block text-[10px] sm:text-xs font-sans font-bold text-brown/50 uppercase tracking-widest mb-3">
+                    Konfirmasi Kehadiran
+                  </label>
+                  <div className="grid grid-cols-3 bg-cream rounded-lg p-1 gap-1">
+                    {ATTENDANCE_KEYS.map((status) => (
+                      <button
+                        key={status}
+                        type="button"
+                        onClick={() => handleAttendanceChange(status)}
+                        className={`py-3 text-[10px] sm:text-xs font-sans font-bold uppercase tracking-wider rounded-md transition-all duration-200 ${
+                          formData.attendance === status
+                            ? "bg-brown text-cream shadow-md"
+                            : "text-brown/50 hover:text-brown hover:bg-cream-dark"
+                        }`}
+                      >
+                        {ATTENDANCE_OPTIONS[status].icon} {ATTENDANCE_OPTIONS[status].text}
+                      </button>
+                    ))}
                   </div>
                 </div>
 
-                {/* Floating decorative elements */}
-                <div className="absolute -top-3 -right-3 sm:-top-4 sm:-right-4 w-12 h-12 sm:w-16 sm:h-16 bg-white/80 rounded-full shadow-lg flex items-center justify-center border border-rose/20">
-                  <span className="text-xl sm:text-2xl">💕</span>
+                {/* Name */}
+                <div>
+                  <label htmlFor="comment-name" className="block text-[10px] sm:text-xs font-sans font-bold text-brown/50 uppercase tracking-widest mb-2">
+                    Nama Pembawa Doa
+                  </label>
+                  <input
+                    type="text"
+                    id="comment-name"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleChange}
+                    required
+                    maxLength={50}
+                    autoComplete="name"
+                    className="w-full bg-transparent border-b-2 border-cream-dark focus:border-brown py-3 text-brown font-medium font-sans placeholder-brown/30 transition-colors outline-none"
+                    placeholder="Tulis nama lengkap Anda..."
+                  />
                 </div>
-                <div className="absolute -bottom-3 -left-3 sm:-bottom-4 sm:-left-4 w-10 h-10 sm:w-14 sm:h-14 bg-white/80 rounded-full shadow-lg flex items-center justify-center border border-gold/20">
-                  <span className="text-lg sm:text-xl">✨</span>
-                </div>
-              </div>
-            </div>
 
-            {/* Right - Comment Form & List */}
-            <div className="order-1 lg:order-2 space-y-6 sm:space-y-8">
-              {/* Comment Form */}
-              <div className="relative group">
-                <div className="absolute -inset-2 sm:-inset-3 bg-linear-to-br from-rose/10 via-gold/5 to-sage/10 rounded-2xl sm:rounded-3xl blur-lg opacity-0 group-hover:opacity-100 transition-all duration-500"></div>
-
-                <form
-                  onSubmit={handleSubmit}
-                  className="relative bg-white/80 backdrop-blur-sm border border-rose/20 p-5 sm:p-6 md:p-8 rounded-2xl sm:rounded-3xl shadow-xl"
-                >
-                  {/* Corner accents */}
-                  <div className="absolute top-0 right-0 w-16 h-16 bg-linear-to-bl from-gold/10 to-transparent rounded-tr-2xl sm:rounded-tr-3xl"></div>
-
-                  <h3 className="font-serif text-xl sm:text-2xl text-brown mb-4 sm:mb-5">
-                    Tulis Ucapan
-                  </h3>
-
-                  {/* Name Input */}
-                  <div className="mb-4">
-                    <label
-                      htmlFor="name"
-                      className="block text-sm font-sans font-medium text-brown mb-2"
-                    >
-                      Nama Anda <span className="text-rose">*</span>
+                {/* Message + Character Counter */}
+                <div>
+                  <div className="flex justify-between items-end mb-2">
+                    <label htmlFor="comment-text" className="block text-[10px] sm:text-xs font-sans font-bold text-brown/50 uppercase tracking-widest">
+                      Pesan Hangat
                     </label>
-                    <input
-                      type="text"
-                      id="name"
-                      name="name"
-                      value={formData.name}
-                      onChange={handleChange}
-                      required
-                      className="w-full px-4 py-3 bg-white/70 border border-sage/30 rounded-xl text-brown placeholder-sage/50 focus:border-gold focus:ring-2 focus:ring-gold/20 transition-all duration-200 focus:outline-none"
-                      placeholder="Nama Lengkap"
-                    />
-                  </div>
-
-                  {/* Comment Input */}
-                  <div className="mb-5">
-                    <label
-                      htmlFor="comment"
-                      className="block text-sm font-sans font-medium text-brown mb-2"
-                    >
-                      Ucapan / Doa <span className="text-rose">*</span>
-                    </label>
-                    <textarea
-                      id="comment"
-                      name="comment"
-                      value={formData.comment}
-                      onChange={handleChange}
-                      required
-                      rows="4"
-                      className="w-full px-4 py-3 bg-white/70 border border-sage/30 rounded-xl text-brown placeholder-sage/50 focus:border-gold focus:ring-2 focus:ring-gold/20 transition-all duration-200 focus:outline-none resize-none"
-                      placeholder="Tuliskan ucapan dan doa terbaik Anda..."
-                    ></textarea>
-                  </div>
-
-                  {/* Submit Button */}
-                  <button
-                    type="submit"
-                    disabled={isSubmitting}
-                    className={`relative w-full py-3 px-4 rounded-xl font-sans text-sm font-semibold uppercase tracking-wider transition-all duration-300 overflow-hidden ${
-                      isSubmitting
-                        ? "bg-sage/50 text-white cursor-not-allowed"
-                        : "bg-linear-to-r from-brown via-brown to-brown/90 text-white hover:shadow-lg hover:shadow-brown/20 hover:-translate-y-0.5 focus:outline-none focus:ring-4 focus:ring-gold/30"
-                    }`}
-                  >
-                    <span className="relative flex items-center justify-center gap-2">
-                      {isSubmitting ? (
-                        <>
-                          <svg
-                            className="animate-spin h-5 w-5"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                          >
-                            <circle
-                              className="opacity-25"
-                              cx="12"
-                              cy="12"
-                              r="10"
-                              stroke="currentColor"
-                              strokeWidth="4"
-                            ></circle>
-                            <path
-                              className="opacity-75"
-                              fill="currentColor"
-                              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                            ></path>
-                          </svg>
-                          Mengirim...
-                        </>
-                      ) : (
-                        <>
-                          <svg
-                            className="w-5 h-5"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth="2"
-                              d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
-                            />
-                          </svg>
-                          Kirim Ucapan
-                        </>
-                      )}
+                    <span className={`text-[10px] font-mono tabular-nums ${isOverLimit ? 'text-rose font-bold' : 'text-brown/35'}`}>
+                      {charCount}/{MAX_COMMENT_LENGTH}
                     </span>
-                  </button>
-
-                  {/* Success message */}
-                  {submissionStatus === "success" && (
-                    <div className="mt-4 flex items-center gap-2 p-3 bg-green-50/80 border border-green-200/50 rounded-lg">
-                      <svg
-                        className="w-5 h-5 text-green-600"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="2"
-                          d="M5 13l4 4L19 7"
-                        />
-                      </svg>
-                      <p className="text-sm text-green-700">
-                        Ucapan berhasil terkirim!
-                      </p>
-                    </div>
-                  )}
-                </form>
-              </div>
-
-              {/* Comments List */}
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <h3 className="font-serif text-lg sm:text-xl text-brown">
-                    Ucapan Tamu ({comments.length})
-                  </h3>
-                  <div className="flex items-center gap-1.5">
-                    <div className="w-1.5 h-1.5 rounded-full bg-rose/40"></div>
-                    <div className="w-2 h-2 rounded-full bg-gold/50"></div>
-                    <div className="w-1.5 h-1.5 rounded-full bg-rose/40"></div>
+                  </div>
+                  <textarea
+                    id="comment-text"
+                    name="comment"
+                    value={formData.comment}
+                    onChange={handleChange}
+                    required
+                    rows="4"
+                    className="w-full bg-cream/30 border border-cream-dark focus:border-brown p-4 rounded-xl text-brown font-medium font-sans placeholder-brown/30 transition-colors outline-none resize-none"
+                    placeholder="Semoga senantiasa dilimpahi kebahagiaan..."
+                  ></textarea>
+                  {/* Visual progress bar */}
+                  <div className="h-0.5 w-full bg-cream-dark rounded-full mt-1 overflow-hidden">
+                    <div
+                      className={`h-full transition-all duration-200 rounded-full ${isOverLimit ? 'bg-rose' : 'bg-sage/60'}`}
+                      style={{ width: `${Math.min((charCount / MAX_COMMENT_LENGTH) * 100, 100)}%` }}
+                    />
                   </div>
                 </div>
 
-                {/* Scrollable Comments Container */}
-                <div className="max-h-[400px] overflow-y-auto space-y-3 pr-2 scrollbar-thin scrollbar-thumb-rose/30 scrollbar-track-transparent">
-                  {comments.length > 0 ? (
-                    comments.map((comment) => (
-                      <div
-                        key={comment.id}
-                        className="group relative bg-white/60 backdrop-blur-sm border border-rose/10 rounded-xl p-4 shadow-sm hover:shadow-md hover:bg-white/80 transition-all duration-300"
-                      >
-                        {/* Comment Header */}
-                        <div className="flex items-start justify-between mb-2">
-                          <div className="flex items-center gap-3">
-                            {/* Avatar */}
-                            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-linear-to-br from-rose/20 to-gold/20 flex items-center justify-center shadow-sm">
-                              <span className="font-serif text-sm sm:text-base text-brown font-medium">
-                                {comment.name.charAt(0).toUpperCase()}
-                              </span>
-                            </div>
-                            <div>
-                              <p className="font-sans text-sm sm:text-base font-medium text-brown">
-                                {comment.name}
-                              </p>
-                              <p className="font-sans text-[10px] sm:text-xs text-sage/70">
-                                {formatDate(comment.timestamp)}
-                              </p>
-                            </div>
-                          </div>
-                          {/* Decorative heart */}
-                          <span className="text-rose/40 text-sm group-hover:text-rose/60 transition-colors">
-                            ❤
-                          </span>
-                        </div>
-
-                        {/* Comment Content */}
-                        <p className="font-sans text-sm text-sage-dark leading-relaxed pl-12 sm:pl-[52px]">
-                          {comment.comment}
-                        </p>
-                      </div>
-                    ))
-                  ) : (
-                    <div className="text-center py-8 text-sage/60">
-                      <span className="text-3xl mb-2 block">💬</span>
-                      <p className="font-sans text-sm">
-                        Belum ada ucapan. Jadilah yang pertama!
-                      </p>
-                    </div>
+                {/* Submit */}
+                <button
+                  type="submit"
+                  disabled={isSubmitting || !formData.name || !formData.comment}
+                  className="w-full py-5 font-sans text-xs sm:text-sm font-bold uppercase tracking-[0.2em] transition-all duration-300 focus:outline-none bg-brown text-cream hover:bg-brown-dark disabled:opacity-40 disabled:cursor-not-allowed group relative overflow-hidden"
+                >
+                  <span className="relative z-10">
+                    {isSubmitting ? "Mengirim..." : "Kirim Doa Restu →"}
+                  </span>
+                  {!isSubmitting && (
+                    <div className="absolute inset-0 bg-white/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out z-0" />
                   )}
-                </div>
+                </button>
+
+                {/* Status */}
+                <AnimatePresence>
+                  {submissionStatus === "success" && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -10 }}
+                      className="text-center p-4 bg-green-50 text-green-700 text-sm font-medium rounded-lg border border-green-100"
+                    >
+                      ✓ Pesan Anda mewarnai hari kami. Terima kasih!
+                    </motion.div>
+                  )}
+                  {submissionStatus === "error" && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -10 }}
+                      className="text-center p-4 bg-red-50 text-red-700 text-sm font-medium rounded-lg border border-red-100"
+                    >
+                      ✕ Terjadi kesalahan, silakan coba lagi.
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </form>
+            </div>
+
+            {/* Contextual Photo */}
+            <div className="relative hidden lg:block h-64 overflow-hidden shadow-lg mt-10 group">
+              <img src={couplePhoto} alt="Mempelai" loading="lazy" className="w-full h-full object-cover object-center grayscale group-hover:grayscale-0 transition-all duration-1000" />
+              <div className="absolute inset-0 border-4 border-white pointer-events-none" />
+              <div className="absolute bottom-4 right-4 bg-white/90 backdrop-blur-sm px-4 py-2 text-xs font-serif italic text-brown font-bold tracking-widest shadow-md">
+                #Mempelai2026
               </div>
             </div>
           </div>
-        </div>
 
-        {/* ========================================== */}
-        {/* PLACEHOLDER DEKORASI - KIRI BAWAH */}
-        {/* Contoh: <img src="/path/ke/bunga.png" className="absolute bottom-10 left-10 w-24 opacity-20" /> */}
-        {/* ========================================== */}
+          {/* ─── RIGHT: Live Feed ─── */}
+          <div className="lg:col-span-3 order-1 lg:order-2 flex flex-col h-full">
+            <div className="flex items-center justify-between border-b-2 border-brown/15 pb-4 mb-6">
+              <h3 className="font-sans text-sm tracking-widest font-bold uppercase text-brown">
+                Live Feed
+              </h3>
+              <div className="flex items-center gap-2 bg-cream-dark px-3 py-1.5 rounded-full">
+                <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+                <span className="text-xs font-mono font-bold text-brown/70 tabular-nums">{comments.length} Doa</span>
+              </div>
+            </div>
 
-        {/* ========================================== */}
-        {/* PLACEHOLDER DEKORASI - KANAN BAWAH */}
-        {/* Contoh: <img src="/path/ke/bunga.png" className="absolute bottom-10 right-10 w-24 opacity-20" /> */}
-        {/* ========================================== */}
-
-        {/* Bottom decorative element */}
-        <div className="flex items-center justify-center gap-3 mt-12 sm:mt-16 md:mt-20">
-          <span className="block w-8 sm:w-12 h-px bg-linear-to-r from-transparent to-gold/40"></span>
-          <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-full bg-white/80 border border-gold/30 flex items-center justify-center shadow-md">
-            <span className="text-sm sm:text-base">💬</span>
+            <CommentFeed comments={comments} />
           </div>
-          <span className="block w-8 sm:w-12 h-px bg-linear-to-l from-transparent to-gold/40"></span>
+
         </div>
       </div>
+
+      <style>{`
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #fdf8f3; border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #e8dccb; border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #c9b896; }
+      `}</style>
     </section>
   );
 };

@@ -1,7 +1,7 @@
-import { motion, useScroll, useTransform } from "motion/react";
-import { useEffect, useRef, useMemo } from "react";
+import { motion, useScroll, useTransform, AnimatePresence } from "motion/react";
+import { useEffect, useRef, useMemo, useState } from "react";
 import Bg from "/src/mempelai/3.webp";
-import { TombolBuka } from "./Tombolbuka";
+import { TombolBuka, useUndangan } from "./Tombolbuka";
 import { fadeIn, staggerContainer } from "./utils/variants";
 
 // Floating Particles Component
@@ -119,9 +119,20 @@ const DecorativeDivider = ({ className = "" }) => (
 );
 
 const Pembuka = () => {
-  const namaPria = "Edi kurniawan";
-  const namaWanita = "Noviana";
+  const namaPria = "Mempelai Pria";
+  const namaWanita = "Mempelai Wanita";
   const sectionRef = useRef(null);
+  const { isOpened } = useUndangan();
+
+  // Dynamic guest name from URL
+  const [guestName, setGuestName] = useState("Tamu Undangan");
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const nameFromUrl = params.get("to");
+    if (nameFromUrl) {
+      setGuestName(decodeURIComponent(nameFromUrl));
+    }
+  }, []);
 
   // Set --vh sekali saat mount untuk menghindari layout shift
   useEffect(() => {
@@ -135,11 +146,15 @@ const Pembuka = () => {
   return (
     <>
       {/* ===== COVER / HERO SECTION ===== */}
-      <section
-        ref={sectionRef}
-        id="cover"
-        className="vh-fill relative z-50 flex flex-col items-center justify-end bg-cream overflow-hidden"
-      >
+      <AnimatePresence>
+        {!isOpened && (
+          <motion.section
+            ref={sectionRef}
+            id="cover"
+            className="vh-fill fixed top-0 left-0 w-full z-100 flex flex-col items-center justify-end bg-cream overflow-hidden"
+            exit={{ opacity: 0, y: -60, scale: 0.95 }}
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          >
         {/* Background with subtle zoom animation */}
         <motion.div
           initial={{ scale: 1.15 }}
@@ -224,7 +239,7 @@ const Pembuka = () => {
               {/* Guest Name - Elegant Display */}
               <div className="mb-6 w-full">
                 <h2 className="font-display font-medium text-xl md:text-2xl text-white italic">
-                  Nama Tamu
+                  {guestName}
                 </h2>
                 <div className="h-px w-16 bg-linear-to-r from-transparent via-gold/30 to-transparent mx-auto mt-1"></div>
               </div>
@@ -278,7 +293,9 @@ const Pembuka = () => {
           }}
           className="absolute top-1/2 left-1/4 w-24 h-24 bg-gold/5 blur-2xl rounded-full"
         />
-      </section>
+        </motion.section>
+        )}
+      </AnimatePresence>
     </>
   );
 };

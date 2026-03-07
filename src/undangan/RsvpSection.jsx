@@ -1,9 +1,58 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import { database, ref, push } from "./firebase";
 import { motion } from "motion/react";
 
 import atasImg from "../dekor/atas.webp";
 import bgImage from "../mempelai/1.webp";
+
+// Confetti animation utility
+const triggerConfetti = () => {
+  const container = document.createElement("div");
+  container.style.cssText = "position:fixed;inset:0;z-index:99999;pointer-events:none;overflow:hidden;";
+  document.body.appendChild(container);
+
+  const colors = ["#c9a9a6", "#c9b996", "#8b9d83", "#5d4e42", "#d4a8a0", "#fdf8f3", "#FFD700"];
+
+  for (let i = 0; i < 40; i++) {
+    const piece = document.createElement("div");
+    const color = colors[Math.floor(Math.random() * colors.length)];
+    const left = Math.random() * 100;
+    const size = Math.random() * 8 + 4;
+    const delay = Math.random() * 0.5;
+    const duration = Math.random() * 2 + 2;
+    const rotation = Math.random() * 720 - 360;
+    const shape = Math.random() > 0.5 ? "50%" : `${Math.random() * 4}px`;
+
+    piece.style.cssText = `
+      position:absolute;
+      left:${left}%;
+      top:-10px;
+      width:${size}px;
+      height:${size * (Math.random() * 0.5 + 0.5)}px;
+      background:${color};
+      border-radius:${shape};
+      animation:confettiFall ${duration}s ease-out ${delay}s forwards;
+      transform:rotate(${rotation}deg);
+    `;
+    container.appendChild(piece);
+  }
+
+  // Add keyframes if not exists
+  if (!document.getElementById("confetti-keyframes")) {
+    const style = document.createElement("style");
+    style.id = "confetti-keyframes";
+    style.textContent = `
+      @keyframes confettiFall {
+        0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+        25% { opacity: 1; }
+        100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+      }
+    `;
+    document.head.appendChild(style);
+  }
+
+  setTimeout(() => container.remove(), 4000);
+};
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 50 },
@@ -45,6 +94,9 @@ const RsvpSection = () => {
 
       setSubmissionStatus("success");
       setFormData({ name: "", attendance: "Hadir", guests: 1, message: "" });
+      // Confetti + haptic on success
+      triggerConfetti();
+      if (navigator.vibrate) navigator.vibrate([50, 30, 50]);
     } catch (error) {
       console.error("Error submitting form:", error);
       setSubmissionStatus("error");

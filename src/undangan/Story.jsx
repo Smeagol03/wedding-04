@@ -1,4 +1,10 @@
 import React from "react";
+import { motion } from "motion/react";
+
+import storyImg1 from "/src/mempelai/4.webp";
+import storyImg2 from "/src/mempelai/5.webp";
+import storyImg3 from "/src/mempelai/6.webp";
+import storyImg4 from "/src/mempelai/7.webp";
 
 // --- Ikon untuk setiap milestone ---
 const storyIcons = {
@@ -73,6 +79,7 @@ const storyData = [
       "Kami pertama kali bertemu di acara sukarelawan kampus. Tidak ada yang menyangka dari tatapan singkat itu akan berlanjut ke sini.",
     icon: "meeting",
     emoji: "✨",
+    photo: storyImg1,
   },
   {
     year: "2021",
@@ -81,6 +88,7 @@ const storyData = [
       "Setelah dua tahun berteman, kami memberanikan diri untuk makan malam pertama kami di tempat favorit. Di sana, kami menyadari chemistry yang lebih dalam.",
     icon: "date",
     emoji: "💕",
+    photo: storyImg2,
   },
   {
     year: "2024",
@@ -89,6 +97,7 @@ const storyData = [
       'Tepat di hari jadi kami, di tempat kami pertama kali bertemu, ia mengucapkan janji dan melamar. Tentu saja jawabannya adalah "Ya!".',
     icon: "proposal",
     emoji: "💍",
+    photo: storyImg3,
   },
   {
     year: "2025",
@@ -97,6 +106,7 @@ const storyData = [
       "Dan kini, dengan penuh rasa syukur, kami siap memulai babak baru dalam hidup kami. Kami sangat menantikan kehadiran Anda.",
     icon: "wedding",
     emoji: "💒",
+    photo: storyImg4,
   },
 ];
 
@@ -105,9 +115,21 @@ const TimelineItem = ({ data, index, isLast }) => {
   const isEven = index % 2 === 0;
 
   return (
-    <li className="relative group">
+    <motion.li
+      className="relative group"
+      initial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
+      viewport={{ once: true, margin: "-50px" }}
+      transition={{ duration: 0.5 }}
+    >
       {/* Mobile Layout */}
-      <div className="md:hidden flex gap-4 sm:gap-6">
+      <motion.div
+        className="md:hidden flex gap-4 sm:gap-6"
+        initial={{ opacity: 0, x: -40 }}
+        whileInView={{ opacity: 1, x: 0 }}
+        viewport={{ once: true, margin: "-30px" }}
+        transition={{ duration: 0.7, ease: "easeOut" }}
+      >
         {/* Timeline Line & Dot */}
         <div className="relative flex flex-col items-center">
           {/* Animated Dot */}
@@ -167,16 +189,32 @@ const TimelineItem = ({ data, index, isLast }) => {
               <p className="font-sans text-xs sm:text-sm text-sage-dark leading-relaxed relative">
                 {data.description}
               </p>
+
+              {/* Story Photo */}
+              {data.photo && (
+                <div className="mt-3 rounded-lg sm:rounded-xl overflow-hidden shadow-md border border-rose/10">
+                  <img
+                    src={data.photo}
+                    alt={data.title}
+                    loading="lazy"
+                    className="w-full h-28 sm:h-36 object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                </div>
+              )}
             </div>
           </div>
         </div>
-      </div>
+      </motion.div>
 
       {/* Desktop Layout - Alternating sides */}
-      <div
+      <motion.div
         className={`hidden md:grid md:grid-cols-9 gap-4 lg:gap-6 items-center ${
           !isLast ? "pb-16 lg:pb-20" : ""
         }`}
+        initial={{ opacity: 0, x: isEven ? -50 : 50 }}
+        whileInView={{ opacity: 1, x: 0 }}
+        viewport={{ once: true, margin: "-50px" }}
+        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
       >
         {/* Left Content / Spacer */}
         <div className="col-span-4">
@@ -234,6 +272,13 @@ const TimelineItem = ({ data, index, isLast }) => {
                   <p className="font-sans text-sm text-sage-dark leading-relaxed relative">
                     {data.description}
                   </p>
+
+                  {/* Story Photo */}
+                  {data.photo && (
+                    <div className="mt-3 rounded-xl overflow-hidden shadow-md border border-rose/10">
+                      <img src={data.photo} alt={data.title} loading="lazy" className="w-full h-32 lg:h-40 object-cover group-hover:scale-105 transition-transform duration-500" />
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
@@ -308,6 +353,13 @@ const TimelineItem = ({ data, index, isLast }) => {
                   <p className="font-sans text-sm text-sage-dark leading-relaxed relative">
                     {data.description}
                   </p>
+
+                  {/* Story Photo */}
+                  {data.photo && (
+                    <div className="mt-3 rounded-xl overflow-hidden shadow-md border border-rose/10">
+                      <img src={data.photo} alt={data.title} loading="lazy" className="w-full h-32 lg:h-40 object-cover group-hover:scale-105 transition-transform duration-500" />
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
@@ -315,8 +367,8 @@ const TimelineItem = ({ data, index, isLast }) => {
             <div></div>
           )}
         </div>
-      </div>
-    </li>
+      </motion.div>
+    </motion.li>
   );
 };
 
@@ -334,13 +386,18 @@ const OurStorySection = () => {
             radial-gradient(ellipse at 90% 80%, rgba(201,185,150,0.08) 0%, transparent 40%),
             radial-gradient(ellipse at 50% 50%, rgba(139,157,131,0.05) 0%, transparent 50%)
           `,
-          willChange: "transform",
         }}
       />
 
       <div className="relative w-full">
         {/* Section Title */}
-        <div className="text-center mb-12 sm:mb-16 md:mb-20 px-4">
+        <motion.div
+          className="text-center mb-12 sm:mb-16 md:mb-20 px-4"
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+        >
           {/* Pre-title with decorative elements */}
           <div className="flex items-center justify-center gap-3 sm:gap-4 mb-3 sm:mb-4">
             <span className="block w-8 sm:w-12 md:w-16 h-px bg-linear-to-r from-transparent via-gold/50 to-gold/50"></span>
@@ -370,7 +427,7 @@ const OurStorySection = () => {
             Dari pertemuan yang tak terduga, hingga janji sehidup semati. Inilah
             babak-babak penting dalam kisah kami.
           </p>
-        </div>
+        </motion.div>
 
         {/* Timeline Container */}
         <div className="max-w-5xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12">

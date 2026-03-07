@@ -1,4 +1,53 @@
 import React, { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "motion/react";
+
+const CountdownItem = ({ value, label }) => (
+  <div className="group relative flex flex-col items-center w-full max-w-[80px] sm:max-w-[100px] md:max-w-[120px] lg:max-w-[140px]">
+    {/* Decorative ring background */}
+    <div className="absolute -inset-0.5 sm:-inset-1 bg-linear-to-br from-rose/20 via-gold/20 to-sage/20 rounded-xl sm:rounded-2xl blur-sm opacity-60 group-hover:opacity-100 transition-opacity duration-300"></div>
+
+    {/* Main card */}
+    <div className="relative w-full bg-white/70 backdrop-blur-md border border-rose/30 rounded-xl sm:rounded-2xl p-2 xs:p-3 sm:p-4 md:p-5 lg:p-6 shadow-lg transform transition-all duration-300 group-hover:scale-105 group-hover:shadow-xl text-center">
+      {/* Number with slide animation */}
+      <div className="relative inline-block overflow-hidden">
+        <AnimatePresence mode="popLayout">
+          <motion.span
+            key={value}
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: -20, opacity: 0 }}
+            transition={{ duration: 0.3, ease: "easeOut" }}
+            className="font-serif text-2xl xs:text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-semibold bg-linear-to-br from-rose-gold via-brown to-sage-dark bg-clip-text text-transparent leading-none block"
+          >
+            {String(value).padStart(2, "0")}
+          </motion.span>
+        </AnimatePresence>
+
+        {/* Animated sparkle - hidden on very small screens */}
+        <div className="hidden xs:block absolute -top-0.5 -right-0.5 sm:-top-1 sm:-right-1 w-1.5 sm:w-2 h-1.5 sm:h-2 bg-gold rounded-full animate-pulse-soft opacity-70"></div>
+      </div>
+
+      {/* Decorative line */}
+      <div className="w-full h-px bg-linear-to-r from-transparent via-rose/50 to-transparent my-1.5 sm:my-2 md:my-3"></div>
+
+      {/* Label */}
+      <span className="font-sans text-[8px] xs:text-[9px] sm:text-[10px] md:text-xs lg:text-sm tracking-[0.15em] sm:tracking-[0.2em] uppercase text-sage-dark">
+        {label}
+      </span>
+    </div>
+
+    {/* Bottom decorative dot - hidden on mobile for cleaner look */}
+    <div className="hidden sm:block w-1.5 h-1.5 rounded-full bg-gold/50 mt-2 sm:mt-3 group-hover:bg-gold transition-colors duration-300"></div>
+  </div>
+);
+
+const Separator = () => (
+  <div className="flex flex-col items-center justify-center gap-1 sm:gap-1.5 md:gap-2 px-0.5 sm:px-1 md:px-2 lg:px-3">
+    <div className="w-1 sm:w-1.5 h-1 sm:h-1.5 rounded-full bg-rose-gold animate-pulse-soft"></div>
+    <div className="w-0.5 sm:w-1 h-0.5 sm:h-1 rounded-full bg-rose/50"></div>
+    <div className="w-1 sm:w-1.5 h-1 sm:h-1.5 rounded-full bg-rose-gold animate-pulse-soft"></div>
+  </div>
+);
 
 const Hitung = () => {
   // Tanggal acara - sesuaikan dengan tanggal pernikahan
@@ -42,45 +91,6 @@ const Hitung = () => {
 
     return () => clearInterval(interval);
   }, [tanggalAcara]);
-
-  const CountdownItem = ({ value, label }) => (
-    <div className="group relative flex flex-col items-center w-full max-w-[80px] sm:max-w-[100px] md:max-w-[120px] lg:max-w-[140px]">
-      {/* Decorative ring background */}
-      <div className="absolute -inset-0.5 sm:-inset-1 bg-linear-to-br from-rose/20 via-gold/20 to-sage/20 rounded-xl sm:rounded-2xl blur-sm opacity-60 group-hover:opacity-100 transition-opacity duration-300"></div>
-
-      {/* Main card */}
-      <div className="relative w-full bg-white/70 backdrop-blur-md border border-rose/30 rounded-xl sm:rounded-2xl p-2 xs:p-3 sm:p-4 md:p-5 lg:p-6 shadow-lg transform transition-all duration-300 group-hover:scale-105 group-hover:shadow-xl text-center">
-        {/* Number */}
-        <div className="relative inline-block">
-          <span className="font-serif text-2xl xs:text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-semibold bg-linear-to-br from-rose-gold via-brown to-sage-dark bg-clip-text text-transparent leading-none">
-            {String(value).padStart(2, "0")}
-          </span>
-
-          {/* Animated sparkle - hidden on very small screens */}
-          <div className="hidden xs:block absolute -top-0.5 -right-0.5 sm:-top-1 sm:-right-1 w-1.5 sm:w-2 h-1.5 sm:h-2 bg-gold rounded-full animate-pulse-soft opacity-70"></div>
-        </div>
-
-        {/* Decorative line */}
-        <div className="w-full h-px bg-linear-to-r from-transparent via-rose/50 to-transparent my-1.5 sm:my-2 md:my-3"></div>
-
-        {/* Label */}
-        <span className="font-sans text-[8px] xs:text-[9px] sm:text-[10px] md:text-xs lg:text-sm tracking-[0.15em] sm:tracking-[0.2em] uppercase text-sage-dark">
-          {label}
-        </span>
-      </div>
-
-      {/* Bottom decorative dot - hidden on mobile for cleaner look */}
-      <div className="hidden sm:block w-1.5 h-1.5 rounded-full bg-gold/50 mt-2 sm:mt-3 group-hover:bg-gold transition-colors duration-300"></div>
-    </div>
-  );
-
-  const Separator = () => (
-    <div className="flex flex-col items-center justify-center gap-1 sm:gap-1.5 md:gap-2 px-0.5 sm:px-1 md:px-2 lg:px-3">
-      <div className="w-1 sm:w-1.5 h-1 sm:h-1.5 rounded-full bg-rose-gold animate-pulse-soft"></div>
-      <div className="w-0.5 sm:w-1 h-0.5 sm:h-1 rounded-full bg-rose/50"></div>
-      <div className="w-1 sm:w-1.5 h-1 sm:h-1.5 rounded-full bg-rose-gold animate-pulse-soft"></div>
-    </div>
-  );
 
   if (isExpired) {
     return (

@@ -1,24 +1,27 @@
 import React, { useState } from "react";
+import { motion } from "motion/react";
+import dekorKiriAtas from "/src/dekor/kiri-atas.webp";
+import dekorKananBawah from "/src/dekor/kanan-bawah.webp";
 
 // Data rekening - Ganti dengan data Anda
 const giftData = [
   {
-    name: "Sopian Sauri",
+    name: "Mempelai Pria",
     role: "Mempelai Pria",
     bank: "Bank BCA",
     accountNumber: "1234567890",
-    accountName: "Sopian Sauri",
+    accountName: "Mempelai Pria",
   },
   {
-    name: "Yuyun Yuningsih",
+    name: "Mempelai Wanita",
     role: "Mempelai Wanita",
     bank: "Bank Mandiri",
     accountNumber: "9876543210",
-    accountName: "Yuyun Yuningsih",
+    accountName: "Mempelai Wanita",
   },
 ];
 
-// Komponen Card Rekening
+// Komponen Card Rekening - Swiss Style
 const AccountCard = ({ data, index }) => {
   const [copied, setCopied] = useState(false);
 
@@ -33,235 +36,131 @@ const AccountCard = ({ data, index }) => {
   };
 
   return (
-    <div className="relative group">
-      {/* Outer glow */}
-      <div className="absolute -inset-2 sm:-inset-3 bg-linear-to-br from-rose/10 via-gold/5 to-sage/10 rounded-2xl sm:rounded-3xl blur-lg opacity-0 group-hover:opacity-100 transition-all duration-500"></div>
-
-      <div className="relative bg-white/80 backdrop-blur-sm border border-rose/20 rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-xl group-hover:shadow-2xl transition-all duration-300">
-        {/* Decorative corner accents */}
-        <div
-          className={`absolute top-0 ${
-            index === 0
-              ? "left-0 rounded-tl-2xl sm:rounded-tl-3xl bg-linear-to-br"
-              : "right-0 rounded-tr-2xl sm:rounded-tr-3xl bg-linear-to-bl"
-          } w-20 h-20 from-gold/10 to-transparent`}
-        ></div>
-
-        {/* Role Badge */}
-        <div className="flex justify-center mb-4">
-          <span className="inline-block px-4 py-1.5 bg-linear-to-r from-rose/10 to-gold/10 border border-rose/20 rounded-full text-xs sm:text-sm font-sans text-brown uppercase tracking-wider">
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-50px" }}
+      transition={{ duration: 0.6, delay: index * 0.2, ease: "easeOut" }}
+      className="bg-white border-t-[6px] border-brown shadow-sm hover:shadow-lg transition-shadow duration-500 overflow-hidden flex flex-col h-full"
+    >
+      <div className="p-8 sm:p-10 flex-1 flex flex-col justify-between">
+        <div>
+          {/* Functional Label */}
+          <p className="font-sans text-xs uppercase tracking-[0.2em] font-bold text-sage mb-2 border-l-2 border-sage pl-3">
             {data.role}
-          </span>
-        </div>
+          </p>
+          
+          {/* Strong Hierarchy Name */}
+          <h3 className="font-serif text-3xl md:text-4xl text-brown font-medium leading-none mb-10">
+            {data.name}
+          </h3>
 
-        {/* Name */}
-        <h3 className="font-serif text-xl sm:text-2xl md:text-3xl text-brown text-center mb-3 sm:mb-4">
-          {data.name}
-        </h3>
+          {/* Grid-based Info */}
+          <div className="space-y-6 mb-10">
+            <div className="flex justify-between items-end border-b border-cream-dark pb-2">
+              <span className="font-sans text-[10px] sm:text-xs uppercase tracking-widest text-brown/50 font-bold">Bank</span>
+              <span className="font-sans text-sm sm:text-base font-semibold text-brown">{data.bank}</span>
+            </div>
 
-        {/* Decorative line */}
-        <div className="flex items-center justify-center gap-2 mb-4 sm:mb-5">
-          <span className="block w-8 sm:w-10 h-px bg-linear-to-r from-transparent to-gold/40"></span>
-          <div className="w-1.5 sm:w-2 h-1.5 sm:h-2 rounded-full bg-rose/40"></div>
-          <span className="block w-8 sm:w-10 h-px bg-linear-to-l from-transparent to-gold/40"></span>
-        </div>
-
-        {/* Bank Info */}
-        <div className="space-y-3 mb-5 sm:mb-6">
-          {/* Bank Name */}
-          <div className="text-center">
-            <p className="text-xs sm:text-sm text-sage/70 mb-1">Bank</p>
-            <p className="font-sans text-sm sm:text-base font-medium text-brown">
-              {data.bank}
-            </p>
-          </div>
-
-          {/* Account Number */}
-          <div className="text-center">
-            <p className="text-xs sm:text-sm text-sage/70 mb-1">
-              Nomor Rekening
-            </p>
-            <div className="inline-flex items-center gap-2 px-4 py-2.5 bg-cream/50 border border-sage/20 rounded-lg">
-              <p className="font-mono text-base sm:text-lg font-semibold text-brown tracking-wider">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end border-b border-cream-dark pb-2 gap-2 sm:gap-0">
+              <span className="font-sans text-[10px] sm:text-xs uppercase tracking-widest text-brown/50 font-bold">No. Rekening</span>
+              <span className="font-mono text-xl sm:text-2xl font-bold tracking-widest text-brown bg-cream px-2 py-1 rounded-sm">
                 {data.accountNumber}
-              </p>
+              </span>
+            </div>
+
+            <div className="flex justify-between items-end border-b border-cream-dark pb-2">
+              <span className="font-sans text-[10px] sm:text-xs uppercase tracking-widest text-brown/50 font-bold">Atas Nama</span>
+              <span className="font-sans text-sm sm:text-base font-semibold text-brown">{data.accountName}</span>
             </div>
           </div>
-
-          {/* Account Name */}
-          <div className="text-center">
-            <p className="text-xs sm:text-sm text-sage/70 mb-1">Atas Nama</p>
-            <p className="font-sans text-sm sm:text-base font-medium text-brown">
-              {data.accountName}
-            </p>
-          </div>
         </div>
 
-        {/* Copy Button */}
+        {/* Brutalist/Swiss Geometry Button */}
         <button
           onClick={handleCopy}
-          className="relative w-full py-3 px-4 rounded-xl font-sans text-sm font-semibold uppercase tracking-wider transition-all duration-300 overflow-hidden bg-linear-to-r from-brown via-brown to-brown/90 text-white hover:shadow-lg hover:shadow-brown/20 hover:-translate-y-0.5 focus:outline-none focus:ring-4 focus:ring-gold/30 disabled:opacity-50 disabled:cursor-not-allowed"
+          className={`w-full py-5 font-sans text-xs sm:text-sm font-bold uppercase tracking-[0.2em] transition-colors duration-300 focus:outline-none ${
+            copied ? "bg-sage text-white" : "bg-brown text-cream hover:bg-brown-dark"
+          }`}
           disabled={copied}
         >
-          {/* Button glow effect */}
-          <div className="absolute inset-0 bg-linear-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
-
-          <span className="relative flex items-center justify-center gap-2">
-            {copied ? (
-              <>
-                <svg
-                  className="w-5 h-5"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M5 13l4 4L19 7"
-                  />
-                </svg>
-                Berhasil Disalin!
-              </>
-            ) : (
-              <>
-                <svg
-                  className="w-5 h-5"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
-                  />
-                </svg>
-                Salin Nomor Rekening
-              </>
-            )}
-          </span>
+          {copied ? "✓ Berhasil Disalin" : "Salin Rekening"}
         </button>
       </div>
-    </div>
+    </motion.div>
   );
 };
 
 const Hadiah = () => {
   return (
-    <section className="relative py-16 sm:py-20 md:py-24 lg:py-28 overflow-hidden">
-      {/* Combined Background - Single layer untuk mengurangi repaint di Android */}
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          background: `
-            linear-gradient(to bottom, #fdf8f3, rgba(139,157,131,0.3) 50%, #fdf8f3),
-            radial-gradient(ellipse at 10% 20%, rgba(201,169,166,0.08) 0%, transparent 40%),
-            radial-gradient(ellipse at 90% 80%, rgba(201,185,150,0.08) 0%, transparent 40%),
-            radial-gradient(ellipse at 50% 50%, rgba(139,157,131,0.05) 0%, transparent 50%)
-          `,
-          willChange: "transform",
-        }}
+    <section className="relative py-20 md:py-32 bg-cream overflow-hidden">
+      {/* Decorative subtle image layer (Reduced opacity for cleaner Swiss look) */}
+      <motion.img
+        src={dekorKiriAtas}
+        alt=""
+        loading="lazy"
+        className="absolute top-0 left-0 w-32 md:w-56 opacity-10 pointer-events-none grayscale"
+        animate={{ rotate: [0, 1, 0] }}
+        transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+      />
+      <motion.img
+        src={dekorKananBawah}
+        alt=""
+        loading="lazy"
+        className="absolute bottom-0 right-0 w-32 md:w-56 opacity-10 pointer-events-none grayscale"
+        animate={{ rotate: [0, -1, 0] }}
+        transition={{ duration: 12, repeat: Infinity, ease: "easeInOut", delay: 2 }}
       />
 
-      {/* ========================================== */}
-      {/* PLACEHOLDER DEKORASI - KIRI ATAS */}
-      {/* Ganti dengan gambar/ikon dekoratif Anda */}
-      {/* Contoh dengan parallax: */}
-      {/* <img 
-        src="/path/ke/bunga-kiri.png" 
-        className="absolute top-10 left-10 w-32 h-32 opacity-30" 
-        style={{ transform: `translateY(${scrollY * 0.2}px)` }}
-      /> */}
-      {/* ========================================== */}
-
-      {/* ========================================== */}
-      {/* PLACEHOLDER DEKORASI - KANAN ATAS */}
-      {/* Ganti dengan gambar/ikon dekoratif Anda */}
-      {/* Contoh dengan parallax: */}
-      {/* <img 
-        src="/path/ke/bunga-kanan.png" 
-        className="absolute top-10 right-10 w-32 h-32 opacity-30" 
-        style={{ transform: `translateY(${scrollY * -0.2}px)` }}
-      /> */}
-      {/* ========================================== */}
-
-      <div className="relative w-full">
-        {/* Section Title */}
-        <div className="text-center mb-12 sm:mb-14 md:mb-16 px-4">
-          {/* Pre-title with decorative elements */}
-          <div className="flex items-center justify-center gap-3 sm:gap-4 mb-3 sm:mb-4">
-            <span className="block w-8 sm:w-12 md:w-16 h-px bg-linear-to-r from-transparent via-gold/50 to-gold/50"></span>
-            <p className="font-sans text-[10px] sm:text-xs md:text-sm tracking-[0.2em] sm:tracking-[0.3em] uppercase text-sage">
-              Hadiah Pernikahan
+      <div className="relative w-full max-w-7xl mx-auto px-6 sm:px-10 lg:px-16">
+        
+        {/* Asymmetric Header - Swiss Philosophy */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 md:mb-24 gap-8 md:gap-12">
+          
+          <motion.div 
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="flex-1"
+          >
+            <p className="font-sans text-xs sm:text-sm tracking-[0.4em] font-bold uppercase text-sage mb-4 sm:mb-6 border-l-[3px] border-sage pl-4">
+              Tanda Kasih
             </p>
-            <span className="block w-8 sm:w-12 md:w-16 h-px bg-linear-to-l from-transparent via-gold/50 to-gold/50"></span>
-          </div>
+            <h2 className="font-serif text-5xl sm:text-6xl md:text-7xl lg:text-8xl text-brown font-medium leading-[0.9] tracking-tight">
+              Hadiah <br />
+              <span className="text-rose-gold italic font-normal">Pernikahan</span>
+            </h2>
+          </motion.div>
 
-          {/* Main Title */}
-          <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-brown mb-4 sm:mb-5">
-            Kirim Hadiah
-          </h2>
+          <motion.div 
+            initial={{ opacity: 0, x: 30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="md:max-w-md md:pl-10 md:border-l border-gold/30"
+          >
+            <p className="font-sans text-sm sm:text-base text-brown/70 leading-relaxed font-medium">
+              Doa restu Anda merupakan karunia yang sangat berarti bagi kami. 
+              Namun jika memberi adalah ungkapan tanda kasih, Anda dapat memberi 
+              kado secara cashless melalui rekening di bawah ini.
+            </p>
+          </motion.div>
 
-          {/* Decorative element under title */}
-          <div className="flex items-center justify-center gap-2 sm:gap-3 mb-4 sm:mb-6">
-            <span className="block w-10 sm:w-14 md:w-20 h-px bg-linear-to-r from-transparent to-rose/40"></span>
-            <div className="flex items-center gap-1.5 sm:gap-2">
-              <div className="w-1.5 sm:w-2 h-1.5 sm:h-2 rounded-full bg-gold/40"></div>
-              <div className="w-2 sm:w-2.5 h-2 sm:h-2.5 rounded-full bg-rose/50"></div>
-              <div className="w-1.5 sm:w-2 h-1.5 sm:h-2 rounded-full bg-gold/40"></div>
-            </div>
-            <span className="block w-10 sm:w-14 md:w-20 h-px bg-linear-to-l from-transparent to-rose/40"></span>
-          </div>
-
-          <p className="font-sans text-xs sm:text-sm md:text-base text-sage-dark max-w-2xl mx-auto leading-relaxed">
-            Doa restu Anda merupakan karunia yang sangat berarti bagi kami.
-            Namun jika memberi adalah ungkapan tanda kasih, Anda dapat memberi
-            kado secara cashless melalui:
-          </p>
         </div>
 
-        {/* Account Cards */}
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 md:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 md:gap-10 lg:gap-12">
-            {giftData.map((gift, index) => (
-              <AccountCard key={index} data={gift} index={index} />
-            ))}
-          </div>
+        {/* Modular Grid Layout for Cards */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12">
+          {giftData.map((gift, index) => (
+            <AccountCard key={index} data={gift} index={index} />
+          ))}
+        </div>
+        
+        {/* Minimal Footer Element */}
+        <div className="mt-20 md:mt-32 flex justify-center">
+           <div className="w-16 h-[2px] bg-brown/20"></div>
         </div>
 
-        {/* ========================================== */}
-        {/* PLACEHOLDER DEKORASI - KIRI BAWAH */}
-        {/* Ganti dengan gambar/ikon dekoratif Anda */}
-        {/* Contoh dengan parallax: */}
-        {/* <img 
-          src="/path/ke/daun-kiri.png" 
-          className="absolute bottom-10 left-10 w-24 h-24 opacity-20" 
-          style={{ transform: `translateY(${scrollY * -0.1}px)` }}
-        /> */}
-        {/* ========================================== */}
-
-        {/* ========================================== */}
-        {/* PLACEHOLDER DEKORASI - KANAN BAWAH */}
-        {/* Ganti dengan gambar/ikon dekoratif Anda */}
-        {/* Contoh dengan parallax: */}
-        {/* <img 
-          src="/path/ke/daun-kanan.png" 
-          className="absolute bottom-10 right-10 w-24 h-24 opacity-20" 
-          style={{ transform: `translateY(${scrollY * 0.15}px)` }}
-        /> */}
-        {/* ========================================== */}
-
-        {/* Bottom decorative element */}
-        <div className="flex items-center justify-center gap-3 mt-12 sm:mt-16 md:mt-20">
-          <span className="block w-8 sm:w-12 h-px bg-linear-to-r from-transparent to-gold/40"></span>
-          <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-full bg-white/80 border border-gold/30 flex items-center justify-center shadow-md">
-            <span className="text-sm sm:text-base">🎁</span>
-          </div>
-          <span className="block w-8 sm:w-12 h-px bg-linear-to-l from-transparent to-gold/40"></span>
-        </div>
       </div>
     </section>
   );

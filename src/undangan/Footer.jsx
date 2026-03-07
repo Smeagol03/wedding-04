@@ -3,7 +3,7 @@ import { motion } from "motion/react";
 
 // --- KONFIGURASI FOOTER ---
 const creatorName = "Alpian Tabrani";
-const portfolioUrl = "https://alpian-portfolio.netlify.app/";
+const portfolioUrl = "https://alpiant.my.id";
 const currentYear = new Date().getFullYear();
 
 const Footer = () => {

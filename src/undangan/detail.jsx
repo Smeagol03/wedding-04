@@ -212,7 +212,7 @@ const Detail = () => {
         </div>
 
         {/* Google Maps Button */}
-        <div className="mt-6 sm:mt-7 md:mt-8">
+        <div className="mt-6 sm:mt-7 md:mt-8 space-y-3">
           <a
             href={data.mapUrl}
             target="_blank"
@@ -255,6 +255,19 @@ const Detail = () => {
                 d="M9 5l7 7-7 7"
               />
             </svg>
+          </a>
+
+          {/* Add to Calendar Button */}
+          <a
+            href={`https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(data.judul + " - Mempelai Pria & Wanita")}&dates=${data.tanggal.includes("29") ? "20260329T003000Z/20260329T040000Z" : "20260329T013000Z/20260329T040000Z"}&details=${encodeURIComponent("Undangan Pernikahan Mempelai Pria & Wanita")}&location=${encodeURIComponent(data.lokasi + ", " + data.alamat)}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group/cal relative inline-flex items-center justify-center gap-2 w-full bg-white/80 backdrop-blur-sm border border-gold/30 text-brown font-sans text-[10px] sm:text-xs tracking-[0.15em] font-semibold uppercase px-5 sm:px-6 py-2.5 sm:py-3 rounded-2xl transition-all duration-300 hover:bg-gold/10 hover:border-gold/50 hover:shadow-md overflow-hidden"
+          >
+            <svg className="w-4 h-4 sm:w-[18px] sm:h-[18px]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+            <span>Simpan ke Kalender</span>
           </a>
         </div>
       </div>
